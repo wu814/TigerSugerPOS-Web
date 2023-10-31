@@ -3,9 +3,14 @@ import Navbar from '../../components/Navbar'
 
 export default function Home() {
   return (
-    <>
+    <div className={styles.container}>
         <Navbar/>
-        <p>Customer page (replace later)</p>
-    </>
+        <div className={styles.pContainer}>
+          <p className={styles.pItem}>Fruity and Refreshing</p>
+          <p className={styles.pItem}>Sweet and Creamy</p>
+          <p className={styles.pItem}>Coffee Flavored</p>
+          <p className={styles.pItem}>Seasonal Drinks</p>
+        </div>
+    </div>
   )
 }
