@@ -227,3 +227,20 @@
     transform: rotate(0deg);
   }
 }
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.pContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.pItem {
+  border: 10px solid #f4f186;
+  padding: 10px;
+  margin: 0;
+  font-size: 40px;
+}
