@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import styles from './page.module.css';
 import Navbar from '../../components/Navbar';
+import Footer from '../../components/Footer';
 
 export default function Home() {
   const [isDropdownOpen1, setDropdownOpen1] = useState(false);
@@ -129,7 +130,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      
+      <Footer />
     </>
   );
 }

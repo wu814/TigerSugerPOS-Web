@@ -232,10 +232,11 @@
 /* page.module.css */
 
 .container {
-  width: 30%; /* Set the width to 30% of the page */
-  margin: 0 0; /* Center the container horizontally */
+  width: 100%; /* Set the width to 30% of the page */
+  margin: 0 auto; /* Center the container horizontally */
   padding: 0;
   text-align: center; /* Center the button text */
+  
 }
 
 .image {
@@ -244,11 +245,15 @@
 }
 
 .imageContainer {
-  width: 100%; /* Set the image width to match the image */
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center horizontally */
-  justify-content: flex-start; /* Align to the top */
+  align-items: center; /* Center both horizontally and vertically */
+  justify-content: center; /* Center both horizontally and vertically */
+  position: relative;
+  max-width: 100%;
+  height: auto;
+  text-align: center;
 }
 
 .buttonContainer {
@@ -276,6 +281,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px;
+  box-sizing: content-box;
 }
 
 .dropdownButton {
@@ -289,16 +295,20 @@
 .dropdownContent {
   background-color: #FFD700; /* Set the background color of the dropdown content */
   padding: 10px;
-  max-height: 300px; /* Set the fixed height to match the image height */
   overflow-y: auto; /* Add vertical scroll if the content exceeds the max height */
-  width: 70%;
+  width: 100%;
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease-in-out;
 }
 
 .open .dropdownContent {
-  max-height: 300px; /* Set the max-height to expand when open */
+  max-height: 300px;
+  width: 100%;
+  /* position: absolute; */
+  z-index: 2;
+  top: 100%; /* Position it below the dropdown button */
+  left: 0; /* Align it with the left edge of the button */
 }
 
 /*Table Organization*/
@@ -306,7 +316,8 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* Three columns */
   gap: 20px; /* Spacing between items */
-  width: 90vw; /* Use viewport width to make the grid container full-width */
+  width: 90%; /* Use viewport width to make the grid container full-width */
+  margin: 0 auto; /* Center the grid container horizontally */
 }
 
 .imageContainer {
