@@ -11,7 +11,23 @@ export async function GET(request: NextRequest) {
 
 //ADDING A NEW ITEM TO THE MENU
 export async function POST(request: NextRequest) {
-    const reqMsg = request.json();
+    try{
+        const data = await request.json();
+        const {drink_name, price, ingredients, drink_type} = data;
+        for (const i of ingredients){
+            const checkQuery = "SELECT * FROM inventory WHERE supply = $1";
+            const check = await query(checkQuery,[i]);
+            if(check.rowCount == 0){
+                const newItem = "INSERT INTO inventory (inventory_id, supply, stock_remaining,minimum_stock) VALUES (DEFAULT, $1, 100, 100);";
+                await query(newItem,[i]);
+            }
+        }
 
-    return NextResponse.json({ message: reqMsg }, { status: 200 });
+        const sql = "INSERT INTO products (product_id, drink_name, price, ingredients, drink_type) VALUES (DEFAULT, $1, $2, $3, $4);";
+        const result = await query(sql,[drink_name, price, ingredients, drink_type]);
+        return NextResponse.json({ message: "Menu item added" }, { status: 200 });
+    }
+    catch(error:any){
+        return NextResponse.json({error: error.toString()},{status: 500});
+    }
 }

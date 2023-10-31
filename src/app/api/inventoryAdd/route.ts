@@ -19,7 +19,6 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ message: "Inventory item added" }, { status: 200 });
     }
     catch(error:any){
-       console.log("ASDF");
         return NextResponse.json({error: error.toString()},{status: 500});
     }
 }
