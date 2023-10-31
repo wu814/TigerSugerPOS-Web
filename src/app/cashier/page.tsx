@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
 import styles from './page.module.css';
 import Navbar from '../../components/Navbar';
@@ -38,7 +39,6 @@ export default function Home() {
           <p className={styles.pItem}><Link href="/cashier/seasonalDrinks">Seasonal Drinks</Link></p>
         </div>
     </div>
-      <Navbar />
       <div className={styles.container}>
         <div className={styles.gridContainer}>
           <div className={styles.imageContainer}>
@@ -143,5 +143,4 @@ export default function Home() {
     </>
   );
 }
-  )
-}
+
