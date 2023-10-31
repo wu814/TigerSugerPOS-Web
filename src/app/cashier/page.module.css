@@ -227,3 +227,60 @@
     transform: rotate(0deg);
   }
 }
+
+/* Button CSS */
+/* page.module.css */
+
+.container {
+  width: 30%; /* Set the width to 30% of the page */
+  margin: 0 auto; /* Center the container horizontally */
+  text-align: center; /* Center the button text */
+}
+
+.image {
+  max-width: 100%; /* Make sure the image fits within the container */
+  height: auto; /* Maintain the image's aspect ratio */
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bobaButton {
+  background-color: #FFD700; /* Set the background color */
+  color: #000; /* Set the text color */
+  border: none; /* Remove the button border */
+  cursor: pointer; /* Change the cursor on hover */
+  border-radius: 5px; /* Add border radius for rounded corners */
+  overflow: hidden; /* Hide overflow content */
+  transition: max-height 0.3s ease-in-out; /* Add a smooth transition for max-height */
+  max-height: 40px; /* Set the initial max-height (collapsed) */
+}
+
+.bobaButton.open {
+  max-height: 200px; /* Set the max-height to expand when open */
+}
+
+.buttonContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.dropdownButton {
+  background-color: #FFA500; /* Set the background color of the dropdown button */
+  color: #fff; /* Set the text color of the dropdown button */
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.dropdownContent {
+  background-color: #FFD700; /* Set the background color of the dropdown content */
+  padding: 10px;
+}
+
+
