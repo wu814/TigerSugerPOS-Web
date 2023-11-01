@@ -59,7 +59,6 @@ export default function Home() {
                 <Link role="link" className={styles.backButton} href="/manager">
                     Back
                 </Link>
-                <button className={styles.backButton} onClick={() => window.history.back()}>Back</button>
                 <h1 className={styles.mainHeading}>Manager View (Inventory)</h1>
                 <div>
                     <h2 className={styles.subHeading}>Inventory Data:</h2>
