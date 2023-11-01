@@ -169,6 +169,12 @@ export default function Home() {
                 </div>
             </div>
             </div>
+            <div className={styles.pContainer}>
+              <p className={styles.pItem}><Link href="/cashier/fruityAndRefreshing">Fruity and Refreshing</Link></p>
+              <p className={styles.pItem}><Link href="/cashier/sweetAndCreamy">Sweet and Creamy</Link></p>
+              <p className={styles.pItem}><Link href="/cashier/coffeeFlavored">Coffee Flavored</Link></p>
+              <p className={styles.pItem}><Link href="/cashier/seasonalDrinks">Seasonal Drinks</Link></p>
+            </div>
         </div>
       </div>
       <Footer />
