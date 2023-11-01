@@ -1,8 +1,9 @@
-"use client";
+"use client"; // necessary for useState to work
+import { NextResponse } from "next/server";
+import styles from './page.module.css'
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import styles from './page.module.css';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 
@@ -28,6 +29,41 @@ export default function Home() {
     setDropdownOpen4(!isDropdownOpen4);
   };
 
+  const [apiResponse, setApiResponse] = useState(null);
+  const placeOrder = async () => {
+    const orderData = { // Define orderData as an object
+        order_timestamp: "2023-10-29 14:33:00",
+        employee_id: 1,
+        customer_id: 2,
+        order_items: ["item1", "item2"],
+        order_total: 25.00,
+        drink_attributes: ["item1", "item2"],
+        drink_addons: ["item1", "item2"],
+    };
+    
+    try{
+      const response = await fetch("/api/placeOrder", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      if (response.ok) {
+        // If the response status is OK (200), parse the JSON response
+        const data = await response.json();
+        alert(`Order added successfully. Order ID: ${data.order_id}`);
+      } else {
+        const errorData = await response.json();
+        console.error("Error from API:", errorData);
+        alert(`Error: ${errorData.error}`);
+      }
+    }catch(error){
+      console.error('Error fetching API:', error);
+    }
+  }
+
   return (
     <>
     <div className={styles.container}>
@@ -39,6 +75,7 @@ export default function Home() {
           <p className={styles.pItem}><Link href="/cashier/seasonalDrinks">Seasonal Drinks</Link></p>
         </div>
     </div>
+      <button onClick={placeOrder}>Test placeOrder API Endpoint</button>
       <div className={styles.container}>
         <div className={styles.gridContainer}>
           <div className={styles.imageContainer}>
