@@ -1,8 +1,21 @@
 /* Navbar.module.css */
 
 .navbar {
-    background-color: pink;
-    padding: 10px;
+    background-color: black;
+    padding: 10px;}
 
+.navList {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
 
+.navItem {
+    list-style-type: none;
+}
+
+.imageContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

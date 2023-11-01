@@ -1,10 +1,7 @@
 .main {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6rem;
-  min-height: 100vh;
+    padding: 4rem;
+    min-height: 100vh;
+    background: #272936;
 }
 
 .description {
@@ -305,10 +302,8 @@
 .open .dropdownContent {
   max-height: 300px;
   width: 100%;
-  /* position: absolute; */
-  z-index: 2;
-  top: 100%; /* Position it below the dropdown button */
-  left: 0; /* Align it with the left edge of the button */
+  top: 100%;
+  left: 0;
 }
 
 /*Table Organization*/

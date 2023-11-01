@@ -6,29 +6,14 @@ const Footer = () => {
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
+            <Image src="/images/tiger-sugar-logo-small.png" alt="Tiger Sugar Logo" width={100} height={100} />
         <div className={styles.footerContent}>
-          <div className={styles.footerLogo}>
-            <Image
-              src="/images/tiger-sugar-logo.png"
-              alt="Tiger Sugar Logo"
-              width={400}
-              height={200}
-              className={styles.image}
-            />
-          </div>
           <div className={styles.footerLinks}>
-            <ul>
+            <ul className={styles.footerList}>
               <li><a href="/">Home</a></li>
               <li><a href="/menu">Menu</a></li>
               <li><a href="/locations">Locations</a></li>
               <li><a href="/contact">Contact Us</a></li>
-            </ul>
-          </div>
-          <div className={styles.footerSocial}>
-            <ul>
-              <li><a href="#"><i className="fab fa-facebook-f"></i></a></li>
-              <li><a href="#"><i className="fab fa-instagram"></i></a></li>
-              <li><a href="#"><i className="fab fa-twitter"></i></a></li>
             </ul>
           </div>
         </div>

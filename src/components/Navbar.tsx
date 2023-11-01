@@ -1,18 +1,30 @@
 import Link from 'next/link';
 import React from 'react';
 import styles from './Navbar.module.css'; // Import the CSS module
+import Image from 'next/image';
 
 const Navbar: React.FC = () => {
   return (
-    <nav className={styles.navbar}>
-        <ul>
-        <li><p>Obviously we won't have a nav bar for types of personas lol, when they log in to OAuth, we will check what type they are. This is for example</p></li>
-        <li><Link href="/">Home</Link></li>
-        <li><Link href="/cashier">Cashier</Link></li>
-        <li><Link href="/manager">Manager</Link></li>
-        <li><Link href="/customer">Customer</Link></li>
-        </ul>
-    </nav>
+    <>
+          <nav className={styles.navbar}>
+            <div className={styles.imageContainer}>
+                <Image
+                    src="/images/tiger-sugar-logo.png"
+                    alt="Tiger Sugar Logo"
+                    width={0}
+                    height={0}
+                    sizes="100vw"
+                    style={{ width: '10vw', height: 'auto' }}
+                />
+            </div>
+              <ul className={styles.navList}>
+                  <li className={styles.navItem}><Link href="/">Home</Link></li>
+                  <li className={styles.navItem}><Link href="/cashier">Cashier</Link></li>
+                  <li className={styles.navItem}><Link href="/manager">Manager</Link></li>
+                  <li className={styles.navItem}><Link href="/customer">Customer</Link></li>
+              </ul>
+          </nav>
+          </>
   );
 };
 
