@@ -25,6 +25,16 @@ export default function Home() {
         },
         body: JSON.stringify(orderData),
       });
+
+      if (response.ok) {
+        // If the response status is OK (200), parse the JSON response
+        const data = await response.json();
+        alert(`Order added successfully. Order ID: ${data.order_id}`);
+      } else {
+        const errorData = await response.json();
+        console.error("Error from API:", errorData);
+        alert(`Error: ${errorData.error}`);
+      }
     }catch(error){
       console.error('Error fetching API:', error);
     }
@@ -34,8 +44,7 @@ export default function Home() {
       <>
         <Navbar/>
         <p>Customer page (replace later)</p>
-        <button onClick={placeOrder}>Test API Endpoint</button>
-
+        <button onClick={placeOrder}>Test placeOrder API Endpoint</button>
     </>
   )
 }
