@@ -1,13 +1,13 @@
 // you can reach this endpoint at ourwebsite.com/api/example (you need the file to be named route.ts for this framework)
 import { NextRequest, NextResponse } from "next/server";
-import { query } from "../../../utils/database";
+import { query } from "../../../../utils/database";
 
 //Contacts the database and calculates a sales report
 //Returns a matrix
 //input: 'yyyy-mm-dd' 'yyyy-mm-dd'
 
 export async function GET(request: NextRequest) {
-    
+
 }
 
 // this would be used for CREATING things in the API (such as adding a row to a database)

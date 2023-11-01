@@ -16,13 +16,13 @@ export default function Home() {
     const [ingredientList, setIngredientList] = useState<string[]>([]);
 
     const fetchMenu = async () => {
-        const response = await fetch('/api/menuDisplay');
+        const response = await fetch('/api/manager/menuDisplay');
         const json = await response.json();
         setMenuData(json.message);
     }
 
     const handleAddItem = async () => {
-        const response = await fetch('/api/menuAdd', {
+        const response = await fetch('/api/manager/menuAdd', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ export default function Home() {
     };
 
     const handleRemoveItem = async (product_id: number) => {
-        const response = await fetch('/api/menuRemove', {
+        const response = await fetch('/api/manager/menuRemove', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ export default function Home() {
     };
 
     const fetchIngredients = async () => {
-        const response = await fetch('/api/inventoryDisplay');
+        const response = await fetch('/api/manager/inventoryDisplay');
         const json = await response.json();
 
         const suppliesArray = json.message.map((item: { supply: string; }) => item.supply);
