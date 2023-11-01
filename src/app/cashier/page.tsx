@@ -12,6 +12,7 @@ export default function Home() {
   const [isDropdownOpen2, setDropdownOpen2] = useState(false);
   const [isDropdownOpen3, setDropdownOpen3] = useState(false);
   const [isDropdownOpen4, setDropdownOpen4] = useState(false);
+  const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
 
   const toggleDropdown1 = () => {
     setDropdownOpen1(!isDropdownOpen1);
@@ -27,6 +28,10 @@ export default function Home() {
 
   const toggleDropdown4 = () => {
     setDropdownOpen4(!isDropdownOpen4);
+  };
+
+  const handleOrderSelection = (order: string) => {
+    setSelectedOrders([...selectedOrders, order]); // Add the selected order to the list
   };
 
   const [apiResponse, setApiResponse] = useState(null);
@@ -93,6 +98,7 @@ export default function Home() {
                     <p>Drink Name: Bubble Tea</p>
                     <p>Ingredients: Tapioca pearls, tea, milk, sugar</p>
                     <p>Flavors: Various fruit flavors</p>
+                    <button onClick={() => handleOrderSelection("Bubble Tea")}>Add to Order</button>
                 </div>
                 </div>
             </div>
