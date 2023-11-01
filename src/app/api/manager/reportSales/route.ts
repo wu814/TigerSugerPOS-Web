@@ -5,12 +5,6 @@ import { query } from "../../../../utils/database";
 //Contacts the database and calculates a sales report
 //Returns a matrix
 //input: 'yyyy-mm-dd' 'yyyy-mm-dd'
-
-export async function GET(request: NextRequest) {
-
-}
-
-// this would be used for CREATING things in the API (such as adding a row to a database)
 export async function POST(request: NextRequest) {
     try{ 
         const input = await request.json();

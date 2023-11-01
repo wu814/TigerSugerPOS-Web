@@ -2,16 +2,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { query } from "../../../../utils/database";
 
-// this would be used for RETRIEVING things from the API or another one (such as getting rows from a database)
+//returns all items in the inventory database
 export async function GET(request: NextRequest) {
    
     const queryMsg = await query("SELECT * FROM inventory");
     return NextResponse.json({ message: queryMsg.rows }, { status: 200 });
 }
 
-// this would be used for CREATING things in the API (such as adding a row to a database)
-export async function POST(request: NextRequest) {
-    const reqMsg = request.json();
-
-    return NextResponse.json({ message: reqMsg }, { status: 200 });
-}

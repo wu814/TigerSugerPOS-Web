@@ -35,7 +35,6 @@ export async function POST(request: NextRequest) {
             const row : string[] = [current.item1,current.item2,current.frequency];
             table.push(row);
        }
-    
 
         return NextResponse.json({ message: table }, { status: 200 });
     }catch(error:any){
