@@ -74,7 +74,7 @@ export default function Home() {
     }
     useEffect(() => {
         fetchMenu();
-    },);    
+    },[]);    
 
   return (
     <>
