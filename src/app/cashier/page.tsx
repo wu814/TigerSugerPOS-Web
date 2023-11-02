@@ -32,7 +32,8 @@ export default function Home() {
     };
 
     const handleOrderSelection = (order: string) => {
-        setSelectedOrders([...selectedOrders, order]); // Add the selected order to the list
+        order = order + "\n";
+        setSelectedOrders(prevOrder => [...prevOrder, order]); // Add the selected order to the list
     };
 
     const toggleCart = () => {
@@ -81,19 +82,18 @@ export default function Home() {
         <h1>Cashier Page</h1>
         <button onClick={placeOrder}>Test placeOrder API Endpoint</button><br/>
         <div className={`${styles.cartButton} ${isCartVisible ? styles.open : ''}`}>
-                <div className={styles.cartButtonContent}>
-                    <p>CART</p>
-                    <button className={styles.dropdownButton} onClick={toggleCart}>
-                    {isCartVisible ? 'Hide' : 'Show'}
-                    </button>
-                </div>
-                <div className={`${styles.cartDropdownContent} ${isCartVisible ? styles.open : ''}`}>
-                    {/* Add your boba drink information here for Image 1 */}
-                    <p>Drink 1 <button>Remove</button></p>
-                    <p>Drink 2 <button>Remove</button></p>
-                    <p>Drink 3 <button>Remove</button></p>
-                </div>
-                </div>
+            <div className={styles.cartButtonContent}>
+                <p>CART</p>
+                <button className={styles.dropdownButton} onClick={toggleCart}>
+                {isCartVisible ? 'Hide' : 'Show'}
+                </button>
+            </div>
+            <div className={`${styles.cartDropdownContent} ${isCartVisible ? styles.open : ''}`}>
+                {selectedOrders.map((message, index) => (
+                    <div key={index}>{message}</div>
+                ))}
+            </div>
+        </div>
         <div className={styles.container}>
             <div className={styles.gridContainer}>
             <div className={styles.imageContainer}>

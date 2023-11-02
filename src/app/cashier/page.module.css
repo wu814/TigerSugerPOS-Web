@@ -292,11 +292,9 @@
 .cartDropdownContent {
   background-color: #FFD700; /* Set the background color of the dropdown content */
   padding: 10px;
-  overflow-y: auto; /* Add vertical scroll if the content exceeds the max height */
   width: 100%;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease-in-out;
+  max-height: 5vh;
+  overflow-y: scroll;
 }
 
 .open .cartDropdownContent {
