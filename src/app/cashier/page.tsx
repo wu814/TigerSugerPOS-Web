@@ -1,68 +1,80 @@
 "use client"; // necessary for useState to work
 import { NextResponse } from "next/server";
 import styles from './page.module.css'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 
 export default function Home() {
-  const [isDropdownOpen1, setDropdownOpen1] = useState(false);
-  const [isDropdownOpen2, setDropdownOpen2] = useState(false);
-  const [isDropdownOpen3, setDropdownOpen3] = useState(false);
-  const [isDropdownOpen4, setDropdownOpen4] = useState(false);
+    const [isDropdownOpen1, setDropdownOpen1] = useState(false);
+    const [isDropdownOpen2, setDropdownOpen2] = useState(false);
+    const [isDropdownOpen3, setDropdownOpen3] = useState(false);
+    const [isDropdownOpen4, setDropdownOpen4] = useState(false);
+    const [menuData, setMenuData] = useState<any[]>([]); // for fetching menu data
 
-  const toggleDropdown1 = () => {
-    setDropdownOpen1(!isDropdownOpen1);
-  };
 
-  const toggleDropdown2 = () => {
-    setDropdownOpen2(!isDropdownOpen2);
-  };
-
-  const toggleDropdown3 = () => {
-    setDropdownOpen3(!isDropdownOpen3);
-  };
-
-  const toggleDropdown4 = () => {
-    setDropdownOpen4(!isDropdownOpen4);
-  };
-
-  const [apiResponse, setApiResponse] = useState(null);
-  const placeOrder = async () => {
-    const orderData = { // Define orderData as an object
-        order_timestamp: "2023-10-29 14:33:00",
-        employee_id: 1,
-        customer_id: 2,
-        order_items: ["item1", "item2"],
-        order_total: 25.00,
-        drink_attributes: ["item1", "item2"],
-        drink_addons: ["item1", "item2"],
+    const toggleDropdown1 = () => {
+        setDropdownOpen1(!isDropdownOpen1);
     };
-    
-    try{
-      const response = await fetch("/api/placeOrder", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(orderData),
-      });
 
-      if (response.ok) {
-        // If the response status is OK (200), parse the JSON response
-        const data = await response.json();
-        alert(`Order added successfully. Order ID: ${data.order_id}`);
-      } else {
-        const errorData = await response.json();
-        console.error("Error from API:", errorData);
-        alert(`Error: ${errorData.error}`);
-      }
-    }catch(error){
-      console.error('Error fetching API:', error);
+    const toggleDropdown2 = () => {
+        setDropdownOpen2(!isDropdownOpen2);
+    };
+
+    const toggleDropdown3 = () => {
+        setDropdownOpen3(!isDropdownOpen3);
+    };
+
+    const toggleDropdown4 = () => {
+        setDropdownOpen4(!isDropdownOpen4);
+    };
+
+    const [apiResponse, setApiResponse] = useState(null);
+
+    const fetchMenu = async () => {
+        const response = await fetch('/api/menuDisplay');
+        const json = await response.json();
+        setMenuData(json.message);
     }
-  }
+    const placeOrder = async () => {
+        const orderData = { // Define orderData as an object
+            order_timestamp: "2023-10-29 14:33:00",
+            employee_id: 1,
+            customer_id: 2,
+            order_items: ["item1", "item2"],
+            order_total: 25.00,
+            drink_attributes: ["item1", "item2"],
+            drink_addons: ["item1", "item2"],
+        };
+    
+        try{
+            const response = await fetch("/api/placeOrder", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(orderData),
+            });
+
+            if(response.ok){
+                // If the response status is OK (200), parse the JSON response
+                const data = await response.json();
+                alert(`Order added successfully. Order ID: ${data.order_id}`);
+            }
+            else{
+                const errorData = await response.json();
+                console.error("Error from API:", errorData);
+                alert(`Error: ${errorData.error}`);
+            }
+        }catch(error){
+            console.error('Error fetching API:', error);
+        }
+    }
+    useEffect(() => {
+        fetchMenu();
+    },);    
 
   return (
     <>
