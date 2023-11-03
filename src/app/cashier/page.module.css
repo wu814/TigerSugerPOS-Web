@@ -259,6 +259,52 @@
   align-items: center;
 }
 
+.cartButton {
+  background-color: #FFD700; /* Set the background color */
+  color: #000; /* Set the text color */
+  border: none; /* Remove the button border */
+  cursor: pointer; /* Change the cursor on hover */
+  overflow: hidden; /* Hide overflow content */
+  transition: max-height 0.3s ease-in-out; /* Add a smooth transition for max-height */
+  max-height: 40px; /* Set the initial max-height (collapsed) */
+}
+
+.cartButton.open {
+  max-height: 200px; /* Set the max-height to expand when open */
+}
+
+.cartButtonContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  box-sizing: content-box;
+}
+
+.cartDropdownButton {
+  background-color: #FFA500; /* Set the background color of the dropdown button */
+  color: #fff; /* Set the text color of the dropdown button */
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.cartDropdownContent {
+  background-color: #FFD700; /* Set the background color of the dropdown content */
+  padding: 10px;
+  width: 100%;
+  max-height: 5vh;
+  overflow-y: scroll;
+}
+
+.open .cartDropdownContent {
+  max-height: 300px;
+  width: 100%;
+  top: 100%;
+  left: 0;
+}
+
+
 .bobaButton {
   background-color: #FFD700; /* Set the background color */
   color: #000; /* Set the text color */
