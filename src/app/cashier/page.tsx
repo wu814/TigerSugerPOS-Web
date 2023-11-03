@@ -8,73 +8,92 @@ import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 
 export default function Home() {
-  const [isDropdownOpen1, setDropdownOpen1] = useState(false);
-  const [isDropdownOpen2, setDropdownOpen2] = useState(false);
-  const [isDropdownOpen3, setDropdownOpen3] = useState(false);
-  const [isDropdownOpen4, setDropdownOpen4] = useState(false);
-  const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
+    const [isDropdownOpen1, setDropdownOpen1] = useState(false);
+    const [isDropdownOpen2, setDropdownOpen2] = useState(false);
+    const [isDropdownOpen3, setDropdownOpen3] = useState(false);
+    const [isDropdownOpen4, setDropdownOpen4] = useState(false);
+    const [isCartVisible, setCartVisible] = useState(false); // Show the cart if true, hide if false
+    const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
 
-  const toggleDropdown1 = () => {
-    setDropdownOpen1(!isDropdownOpen1);
-  };
-
-  const toggleDropdown2 = () => {
-    setDropdownOpen2(!isDropdownOpen2);
-  };
-
-  const toggleDropdown3 = () => {
-    setDropdownOpen3(!isDropdownOpen3);
-  };
-
-  const toggleDropdown4 = () => {
-    setDropdownOpen4(!isDropdownOpen4);
-  };
-
-  const handleOrderSelection = (order: string) => {
-    setSelectedOrders([...selectedOrders, order]); // Add the selected order to the list
-  };
-
-  const [apiResponse, setApiResponse] = useState(null);
-  const placeOrder = async () => {
-    const orderData = { // Define orderData as an object
-        order_timestamp: "2023-10-29 14:33:00",
-        employee_id: 1,
-        customer_id: 2,
-        order_items: ["item1", "item2"],
-        order_total: 25.00,
-        drink_attributes: ["item1", "item2"],
-        drink_addons: ["item1", "item2"],
+    const toggleDropdown1 = () => {
+        setDropdownOpen1(!isDropdownOpen1);
     };
-    
-    try{
-      const response = await fetch("/api/placeOrder", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(orderData),
-      });
 
-      if (response.ok) {
-        // If the response status is OK (200), parse the JSON response
-        const data = await response.json();
-        alert(`Order added successfully. Order ID: ${data.order_id}`);
-      } else {
-        const errorData = await response.json();
-        console.error("Error from API:", errorData);
-        alert(`Error: ${errorData.error}`);
-      }
-    }catch(error){
-      console.error('Error fetching API:', error);
+    const toggleDropdown2 = () => {
+        setDropdownOpen2(!isDropdownOpen2);
+    };
+
+    const toggleDropdown3 = () => {
+        setDropdownOpen3(!isDropdownOpen3);
+    };
+
+    const toggleDropdown4 = () => {
+        setDropdownOpen4(!isDropdownOpen4);
+    };
+
+    const handleOrderSelection = (order: string) => {
+        order = order + "\n";
+        setSelectedOrders(prevOrder => [...prevOrder, order]); // Add the selected order to the list
+    };
+
+    const toggleCart = () => {
+        setCartVisible(!isCartVisible);
+    };
+
+    const [apiResponse, setApiResponse] = useState(null);
+    const placeOrder = async () => {
+        const orderData = { // Define orderData as an object
+            order_timestamp: "2023-10-29 14:33:00",
+            employee_id: 1,
+            customer_id: 2,
+            order_items: ["item1", "item2"],
+            order_total: 25.00,
+            drink_attributes: ["item1", "item2"],
+            drink_addons: ["item1", "item2"],
+        };
+        
+        try{
+        const response = await fetch("/api/placeOrder", {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json",
+            },
+            body: JSON.stringify(orderData),
+        });
+
+        if (response.ok) {
+            // If the response status is OK (200), parse the JSON response
+            const data = await response.json();
+            alert(`Order added successfully. Order ID: ${data.order_id}`);
+        } else {
+            const errorData = await response.json();
+            console.error("Error from API:", errorData);
+            alert(`Error: ${errorData.error}`);
+        }
+        }catch(error){
+            console.error('Error fetching API:', error);
+        }
     }
-  }
 
-  return (
+    return (
     <>
       <Navbar/>
       <div className={styles.main}>
         <h1>Cashier Page</h1>
-        <button onClick={placeOrder}>Test placeOrder API Endpoint</button>
+        <button onClick={placeOrder}>Test placeOrder API Endpoint</button><br/>
+        <div className={`${styles.cartButton} ${isCartVisible ? styles.open : ''}`}>
+            <div className={styles.cartButtonContent}>
+                <p>CART</p>
+                <button className={styles.dropdownButton} onClick={toggleCart}>
+                {isCartVisible ? 'Hide' : 'Show'}
+                </button>
+            </div>
+            <div className={`${styles.cartDropdownContent} ${isCartVisible ? styles.open : ''}`}>
+                {selectedOrders.map((message, index) => (
+                    <div key={index}>{message}</div>
+                ))}
+            </div>
+        </div>
         <div className={styles.container}>
             <div className={styles.gridContainer}>
             <div className={styles.imageContainer}>
