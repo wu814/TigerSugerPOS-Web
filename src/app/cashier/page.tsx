@@ -1,7 +1,7 @@
 "use client"; // necessary for useState to work
 import { NextResponse } from "next/server";
 import styles from './page.module.css'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Navbar from '../../components/Navbar';
@@ -12,9 +12,12 @@ export default function Home() {
     const [isDropdownOpen2, setDropdownOpen2] = useState(false);
     const [isDropdownOpen3, setDropdownOpen3] = useState(false);
     const [isDropdownOpen4, setDropdownOpen4] = useState(false);
+
     const [isCartVisible, setCartVisible] = useState(false); // Show the cart if true, hide if false
     const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
-
+    
+    const [menuData, setMenuData] = useState<any[]>([]); // for fetching menu data
+    
     const toggleDropdown1 = () => {
         setDropdownOpen1(!isDropdownOpen1);
     };
@@ -30,6 +33,14 @@ export default function Home() {
     const toggleDropdown4 = () => {
         setDropdownOpen4(!isDropdownOpen4);
     };
+    
+    const [apiResponse, setApiResponse] = useState(null);
+
+    const fetchMenu = async () => {
+        const response = await fetch('/api/menuDisplay');
+        const json = await response.json();
+        setMenuData(json.message);
+    }
 
     const handleOrderSelection = (order: string) => {
         order = order + "\n";
@@ -48,9 +59,7 @@ export default function Home() {
         // Update the state to reflect the removal
         setSelectedOrders(updatedOrders);
       };
-    
 
-    const [apiResponse, setApiResponse] = useState(null);
     const placeOrder = async () => {
         const orderData = { // Define orderData as an object
             order_timestamp: "2023-10-29 14:33:00",
@@ -84,6 +93,10 @@ export default function Home() {
             console.error('Error fetching API:', error);
         }
     }
+
+    useEffect(() => {
+        fetchMenu();
+    },[]);    
 
     return (
     <>
