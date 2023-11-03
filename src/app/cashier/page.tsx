@@ -40,6 +40,16 @@ export default function Home() {
         setCartVisible(!isCartVisible);
     };
 
+    const removeDrink = (drinkIndex: number) => {
+        // Create a copy of the selectedOrders array
+        const updatedOrders = [...selectedOrders];
+        // Remove the message at the specified index
+        updatedOrders.splice(drinkIndex, 1);
+        // Update the state to reflect the removal
+        setSelectedOrders(updatedOrders);
+      };
+    
+
     const [apiResponse, setApiResponse] = useState(null);
     const placeOrder = async () => {
         const orderData = { // Define orderData as an object
@@ -92,7 +102,7 @@ export default function Home() {
                 {selectedOrders.map((drinkName, drinkIndex) => (
                     <div key={drinkIndex}>
                         {drinkName}
-                        <button id={'button${drinkIndex}'}>remove</button>
+                        <button id={'button${drinkIndex}' } onClick={() => removeDrink(drinkIndex)}>remove</button>
                     </div>
                 ))}
             </div>
