@@ -89,8 +89,11 @@ export default function Home() {
                 </button>
             </div>
             <div className={`${styles.cartDropdownContent} ${isCartVisible ? styles.open : ''}`}>
-                {selectedOrders.map((message, index) => (
-                    <div key={index}>{message}</div>
+                {selectedOrders.map((drinkName, drinkIndex) => (
+                    <div key={drinkIndex}>
+                        {drinkName}
+                        <button id={'button${drinkIndex}'}>remove</button>
+                    </div>
                 ))}
             </div>
         </div>
