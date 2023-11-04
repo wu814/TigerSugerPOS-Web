@@ -228,49 +228,18 @@
 /* Button CSS */
 /* page.module.css */
 
-.container {
-  width: 100%; /* Set the width to 30% of the page */
-  margin: 0 auto; /* Center the container horizontally */
-  padding: 0;
-  text-align: center; /* Center the button text */
-  
-}
-
-.image {
-  max-width: 100%; /* Make sure the image fits within the container */
-  height: auto; /* Maintain the image's aspect ratio */
-}
-
-.imageContainer {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Center both horizontally and vertically */
-  justify-content: center; /* Center both horizontally and vertically */
-  position: relative;
-  max-width: 100%;
-  height: auto;
-  text-align: center;
-}
-
-.buttonContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .cartButton {
   background-color: #FFD700; /* Set the background color */
   color: #000; /* Set the text color */
   border: none; /* Remove the button border */
   cursor: pointer; /* Change the cursor on hover */
-  overflow: hidden; /* Hide overflow content */
   transition: max-height 0.3s ease-in-out; /* Add a smooth transition for max-height */
-  max-height: 40px; /* Set the initial max-height (collapsed) */
+  max-height: 5vh; /* Set the initial max-height (collapsed) */
 }
 
 .cartButton.open {
   max-height: 200px; /* Set the max-height to expand when open */
+  overflow: auto;
 }
 
 .cartButtonContent {
@@ -293,59 +262,12 @@
   background-color: #FFD700; /* Set the background color of the dropdown content */
   padding: 10px;
   width: 100%;
+  height: auto;
   max-height: 5vh;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .open .cartDropdownContent {
-  max-height: 300px;
-  width: 100%;
-  top: 100%;
-  left: 0;
-}
-
-
-.bobaButton {
-  background-color: #FFD700; /* Set the background color */
-  color: #000; /* Set the text color */
-  border: none; /* Remove the button border */
-  cursor: pointer; /* Change the cursor on hover */
-  overflow: hidden; /* Hide overflow content */
-  transition: max-height 0.3s ease-in-out; /* Add a smooth transition for max-height */
-  max-height: 40px; /* Set the initial max-height (collapsed) */
-}
-
-.bobaButton.open {
-  max-height: 200px; /* Set the max-height to expand when open */
-}
-
-.buttonContent {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  box-sizing: content-box;
-}
-
-.dropdownButton {
-  background-color: #FFA500; /* Set the background color of the dropdown button */
-  color: #fff; /* Set the text color of the dropdown button */
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
-.dropdownContent {
-  background-color: #FFD700; /* Set the background color of the dropdown content */
-  padding: 10px;
-  overflow-y: auto; /* Add vertical scroll if the content exceeds the max height */
-  width: 100%;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease-in-out;
-}
-
-.open .dropdownContent {
   max-height: 300px;
   width: 100%;
   top: 100%;
@@ -361,8 +283,14 @@
   margin: 150px auto; /* Center the grid container horizontally */
 }
 
+.image {
+  max-width: 100%; /* Make sure the image fits within the container */
+  height: auto; /* Maintain the image's aspect ratio */
+}
+
 .imageContainer {
   text-align: center; /* Center align the content within each grid item */
+  margin-bottom: 3vh;
 }
 
 .container {
@@ -373,7 +301,7 @@
 .pContainer {
   display: flex;
   justify-content: space-between;
-  position: absolute;
+  margin-bottom: 3vh;
 }
 
 .pItem {
