@@ -6,35 +6,16 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import { type } from "os";
 
 export default function Home() {
-    const [isDropdownOpen1, setDropdownOpen1] = useState(false);
-    const [isDropdownOpen2, setDropdownOpen2] = useState(false);
-    const [isDropdownOpen3, setDropdownOpen3] = useState(false);
-    const [isDropdownOpen4, setDropdownOpen4] = useState(false);
 
     const [isCartVisible, setCartVisible] = useState(false); // Show the cart if true, hide if false
     const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
-    
     const [menuData, setMenuData] = useState<any[]>([]); // for fetching menu data
-    
-    const toggleDropdown1 = () => {
-        setDropdownOpen1(!isDropdownOpen1);
-    };
+    const [isAddonPopoutOpen, setIsAddonPopoutOpen] = useState(false);
+    const [orderTotal, setOrderTotal] = useState(0);
 
-    const toggleDropdown2 = () => {
-        setDropdownOpen2(!isDropdownOpen2);
-    };
-
-    const toggleDropdown3 = () => {
-        setDropdownOpen3(!isDropdownOpen3);
-    };
-
-    const toggleDropdown4 = () => {
-        setDropdownOpen4(!isDropdownOpen4);
-    };
-    
-    const [apiResponse, setApiResponse] = useState(null);
 
     const fetchMenu = async () => {
         const response = await fetch('/api/menuDisplay');
@@ -42,8 +23,12 @@ export default function Home() {
         setMenuData(json.message);
     }
 
-    const handleOrderSelection = (order: string) => {
-        order = order + "\n";
+    // Fuctionality when click on Add to Order button
+    const handleOrderSelection = (order: string, price: number) => {
+        // Making sure the price is a number
+        const numPrice = Number(price);
+        setOrderTotal(prevOrderTotal => prevOrderTotal + numPrice);
+        order = order + " $" + price + "\n";
         setSelectedOrders(prevOrder => [...prevOrder, order]); // Add the selected order to the list
     };
 
@@ -51,6 +36,11 @@ export default function Home() {
         setCartVisible(!isCartVisible);
     };
 
+    const toggleCustumize = () => {
+        setIsAddonPopoutOpen(!isAddonPopoutOpen);
+    }
+
+    // Functionality when click on remove button
     const removeDrink = (drinkIndex: number) => {
         // Create a copy of the selectedOrders array
         const updatedOrders = [...selectedOrders];
@@ -59,7 +49,8 @@ export default function Home() {
         // Update the state to reflect the removal
         setSelectedOrders(updatedOrders);
       };
-
+    
+    // Functionality when click on place order button
     const placeOrder = async () => {
         const orderData = { // Define orderData as an object
             order_timestamp: "2023-10-29 14:33:00",
@@ -94,6 +85,7 @@ export default function Home() {
         }
     }
 
+    // Fetch menu data on page load
     useEffect(() => {
         fetchMenu();
     },[]);    
@@ -107,8 +99,9 @@ export default function Home() {
         <div className={`${styles.cartButton} ${isCartVisible ? styles.open : ''}`}>
             <div className={styles.cartButtonContent}>
                 <p>CART</p>
-                <button className={styles.dropdownButton} onClick={toggleCart}>
-                {isCartVisible ? 'Hide' : 'Show'}
+                <p>Order Total: ${Number(orderTotal)}</p>
+                <button className={styles.cartDropdownButton} onClick={toggleCart}>
+                    {isCartVisible ? 'Hide' : 'Show'}
                 </button>
             </div>
             <div className={`${styles.cartDropdownContent} ${isCartVisible ? styles.open : ''}`}>
@@ -121,23 +114,6 @@ export default function Home() {
             </div>
         </div>
         <div className={styles.container}>
-            
-        {menuData.map((menuItem, index) => (
-                    <div className={styles.imageContainer} key={index}>
-                        {/* Wrap the Image inside a Link so it's clickable */}
-                        <Link href={`http://localhost:3000/cashier`}>
-                                <Image
-                                    src="/images/brownsugarimgj.jpg"
-                                    alt={`Boba Drink ${index + 1}`}
-                                    width={300}
-                                    height={300}
-                                    className={styles.image}
-                                />
-                        </Link>
-                        <p>Boba Drink {index + 1}</p>
-                        <p>Drink Name: {menuItem.drink_name}</p>
-                    </div>
-                ))}
 
             <div className={styles.pContainer}>
               <p className={styles.pItem}><Link href="/cashier/fruityAndRefreshing">Fruity and Refreshing</Link></p>
@@ -146,9 +122,37 @@ export default function Home() {
               <p className={styles.pItem}><Link href="/cashier/seasonalDrinks">Seasonal Drinks</Link></p>
             </div>
         </div>
+        <div className={styles.container}>     
+            {menuData.map((menuItem, index) => (
+                <div className={styles.imageContainer} key={index}>
+                    {/* Wrap the Image inside a Link so it's clickable */}
+                    <Link href={`http://localhost:3000/cashier`}>
+                        <Image
+                            src="/images/brownsugarimgj.jpg"
+                            alt={`Boba Drink ${index + 1}`}
+                            width={300}
+                            height={300}
+                            className={styles.image}
+                        />
+                    </Link>
+                    <p>Boba Drink {index + 1}</p>
+                    <p>Drink Name: {menuItem.drink_name}</p>
+                    {/* <button onClick={() => handleOrderSelection(menuItem.drink_name)}>Add to Order</button> */}
+                    <button onClick={toggleCustumize}>Custumize</button>
+                        {isAddonPopoutOpen && (
+                            <div className={styles.addonPopout}>
+                                {/* Here, render your addon options */}
+                                <p>Select your addons:</p>
+                                {/* Add checkboxes, dropdowns, or other inputs for addon selection */}
+                            </div>
+                        )}
+                        <br/>
+                    <button onClick={()=>handleOrderSelection(menuItem.drink_name, menuItem.price)}>Add to Order</button>
+                </div>
+            ))}
+        </div>
       </div>
       <Footer />
     </>
   );
 }
-
