@@ -135,7 +135,7 @@ export default function Home() {
                                 />
                         </Link>
                         <p>Boba Drink {index + 1}</p>
-                        <p>Drink Name: {menuItem.name}</p>
+                        <p>Drink Name: {menuItem.drink_name}</p>
                     </div>
                 ))}
 

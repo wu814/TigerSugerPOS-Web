@@ -263,17 +263,17 @@ with open('CSVFiles/orders_test.csv', mode='r') as orders_file:
         if timestamp_key not in inventory_history:
             inventory_history[timestamp_key] = used_inventory
 
-"""         print(f"Timestamp: {timestamp_str}")
+        print(f"Timestamp: {timestamp_str}")
         for item, quantity in used_inventory.items():
             if quantity > 0:
                 print(f"{item}: {quantity}")
 
         # Print the used inventory for this timestamp
         if (counter == 1):
-            break """
+            break
 # Write the updated inventory history to 'inventory_history.csv' file
 with open('CSVFiles/inventory_history.csv', mode='w', newline='') as history_file:
-    fieldnames = ["order_timestamp"] + list(inventory.keys())
+    fieldnames = ["order_timestamp" , "inventory_item", "quantity"]
     writer = csv.DictWriter(history_file, fieldnames=fieldnames)
     writer.writeheader()
 
