@@ -13,13 +13,13 @@ export default function Home() {
     const [removeItemId, setRemoveItemId] = useState<number>(-1); 
 
     const fetchInventory = async () => {
-        const response = await fetch('/api/inventoryDisplay');
+        const response = await fetch('/api/manager/inventoryDisplay');
         const json = await response.json();
         setInventoryData(json.message);
     }
 
     const handleAddItem = async () => {
-        const response = await fetch('/api/inventoryAdd', {
+        const response = await fetch('/api/manager/inventoryAdd', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ export default function Home() {
     };
 
     const handleRemoveItem = async (inventory_id: number) => {
-        const response = await fetch('/api/inventoryRemove', {
+        const response = await fetch('/api/manager/inventoryRemove', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
