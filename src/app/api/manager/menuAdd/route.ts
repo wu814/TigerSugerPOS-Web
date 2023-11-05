@@ -6,10 +6,18 @@ export async function POST(request: NextRequest) {
     try{
         const data = await request.json();
         const {drink_name, price, ingredients, drink_type} = data;
+
+        //check that item is not already in menu
+        const dupeQuery = "SELECT * FROM products WHERE drink_name = $1;";
+        const dupe = await query(dupeQuery,[drink_name]);
+        if(dupe.rows.length > 0){
+            console.log("Dupe Menu");
+            return NextResponse.json({error:"Item already exists on menu!"},{status: 500});
+        }
         
         for (const i of ingredients){
             //If ingredient is not in inventory, add to inventory
-            const checkQuery = "SELECT * FROM inventory WHERE supply = $1";
+            const checkQuery = "SELECT * FROM inventory WHERE supply = $1;";
             const check = await query(checkQuery,[i]);
             if(check.rowCount == 0){
                 const newItem = "INSERT INTO inventory (inventory_id, supply, stock_remaining,minimum_stock) VALUES (DEFAULT, $1, 100, 100);";

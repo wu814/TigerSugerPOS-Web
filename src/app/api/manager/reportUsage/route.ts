@@ -1,17 +1,34 @@
-// you can reach this endpoint at ourwebsite.com/api/example (you need the file to be named route.ts for this framework)
 import { NextRequest, NextResponse } from "next/server";
 import { query } from "../../../../utils/database";
 
-// this would be used for RETRIEVING things from the API or another one (such as getting rows from a database)
 export async function GET(request: NextRequest) {
-    // you will want a more descriptive name than queryMsg in your API (this is for example's sake)
-    const queryMsg = await query("SELECT * FROM orders");
-    return NextResponse.json({ message: queryMsg.rows[0] }, { status: 200 });
+    const input = await request.json();
+    const {start,end} = input; //start date
+    let map = new Map<string,number>();
+
+    const excessQuery = "SELECT * FROM inventory_history WHERE order_timestamp BETWEEN $1 AND $2;";
+    const excessData = await query(excessQuery,[start,end]);
+
+    //process data from query in a map
+    for(const current of excessData.rows){
+        const currItem:string = current.inventory_item;
+        const currQuantity:number = current.quantity;
+        if(map.has(currItem)){ //key already in map
+            const updateQuantity:number = currQuantity + (map.get(currItem) ?? 0);
+            map.set(currItem,updateQuantity);
+        }
+        else{ //key not in map
+            map.set(currItem,currQuantity);
+        }
+    } 
+
+    //translate map to table
+    let table: string[][] = [];
+    map.forEach((value, key) => {
+        const row : string[] = [key,value.toString()];
+        table.push(row);
+      });
+
+    return NextResponse.json({ message: table }, { status: 200 });
 }
 
-// this would be used for CREATING things in the API (such as adding a row to a database)
-export async function POST(request: NextRequest) {
-    const reqMsg = request.json();
-
-    return NextResponse.json({ message: reqMsg }, { status: 200 });
-}
