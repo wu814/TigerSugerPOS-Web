@@ -136,12 +136,47 @@ export default function Home() {
                     <p>Boba Drink {index + 1}</p>
                     <p>Drink Name: {menuItem.drink_name}</p>
                     {/* <button onClick={() => handleOrderSelection(menuItem.drink_name)}>Add to Order</button> */}
-                    <button onClick={toggleCustumize}>Custumize</button>
+                    <button onClick={toggleCustumize}>Customize</button>
                         {isAddonPopoutOpen && (
                             <div className={styles.addonPopout}>
                                 {/* Here, render your addon options */}
                                 <p>Select your addons:</p>
                                 {/* Add checkboxes, dropdowns, or other inputs for addon selection */}
+                                <label className="checkbox-label">
+                                    <input type="checkbox" name="addon1" value="Addon 1" />
+                                    Extra Boba
+                                </label>
+                                <br/>
+                                <label className="checkbox-label">
+                                    <input type="checkbox" name="addon2" value="Addon 2" />
+                                    Cream Mousse
+                                </label>
+                                <br/>
+                                <label className="checkbox-label">
+                                    <input type="checkbox" name="addon3" value="Addon 3" />
+                                    Red Bean
+                                </label>
+                                <br/>
+                                <label className="checkbox-label">
+                                    <input type="checkbox" name="addon4" value="Addon 4" />
+                                    Mochi
+                                </label>
+                                <br/>
+                                <label className="checkbox-label">
+                                    <input type="checkbox" name="addon5" value="Addon 5" />
+                                    Tiger Pearls
+                                </label>
+                                <br/>
+                                <label className="checkbox-label">
+                                    <input type="checkbox" name="addon6" value="Addon 6" />
+                                    Taro
+                                </label>
+                                <br/>
+                                <label className="checkbox-label">
+                                    <input type="checkbox" name="addon7" value="Addon 7" />
+                                    Pudding
+                                </label>
+                                <br/>
                             </div>
                         )}
                         <br/>
