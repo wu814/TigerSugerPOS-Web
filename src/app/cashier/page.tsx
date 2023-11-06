@@ -11,7 +11,7 @@ import { type } from "os";
 export default function Home() {
 
     const [isCartVisible, setCartVisible] = useState(false); // Show the cart if true, hide if false
-    const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
+    const [selectedOrders, setSelectedOrders] = useState<any[]>([]);
     const [menuData, setMenuData] = useState<any[]>([]); // for fetching menu data
     const [isAddonPopoutOpen, setIsAddonPopoutOpen] = useState(false);
     const [orderTotal, setOrderTotal] = useState(0);
@@ -24,12 +24,10 @@ export default function Home() {
     }
 
     // Fuctionality when click on Add to Order button
-    const handleOrderSelection = (order: string, price: number) => {
+    const handleOrderSelection = (orderItem: any) => {
         // Making sure the price is a number
-        const numPrice = Number(price);
-        setOrderTotal(prevOrderTotal => prevOrderTotal + numPrice);
-        order = order + " $" + price + "\n";
-        setSelectedOrders(prevOrder => [...prevOrder, order]); // Add the selected order to the list
+        setOrderTotal(prevOrderTotal => prevOrderTotal + Number(orderItem.price));
+        setSelectedOrders(prevOrder => [...prevOrder, orderItem]); // Add the selected order to the list
     };
 
     const toggleCart = () => {
@@ -41,13 +39,14 @@ export default function Home() {
     }
 
     // Functionality when click on remove button
-    const removeDrink = (drinkIndex: number) => {
+    const removeDrink = (drinkPrice: number, drinkIndex: number) => {
         // Create a copy of the selectedOrders array
         const updatedOrders = [...selectedOrders];
         // Remove the message at the specified index
         updatedOrders.splice(drinkIndex, 1);
         // Update the state to reflect the removal
         setSelectedOrders(updatedOrders);
+        setOrderTotal(prevOrderTotal => prevOrderTotal - Number(drinkPrice));
       };
     
     // Functionality when click on place order button
@@ -105,10 +104,9 @@ export default function Home() {
                 </button>
             </div>
             <div className={`${styles.cartDropdownContent} ${isCartVisible ? styles.open : ''}`}>
-                {selectedOrders.map((drinkName, drinkIndex) => (
-                    <div key={drinkIndex}>
-                        {drinkName}
-                        <button id={'button${drinkIndex}' } onClick={() => removeDrink(drinkIndex)}>remove</button>
+                {selectedOrders.map((item, index) => (
+                    <div key={index}>
+                        <p>{item.drink_name} ${item.price} <button id={'button${drinkIndex}' } onClick={() => removeDrink(item.price, index)}>remove</button></p> 
                     </div>
                 ))}
             </div>
@@ -147,7 +145,7 @@ export default function Home() {
                             </div>
                         )}
                         <br/>
-                    <button onClick={()=>handleOrderSelection(menuItem.drink_name, menuItem.price)}>Add to Order</button>
+                    <button onClick={()=>handleOrderSelection(menuItem)}>Add to Order</button>
                 </div>
             ))}
         </div>
