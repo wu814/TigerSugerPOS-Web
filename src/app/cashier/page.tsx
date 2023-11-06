@@ -18,7 +18,7 @@ export default function Home() {
 
 
     const fetchMenu = async () => {
-        const response = await fetch('/api/menuDisplay');
+        const response = await fetch('/api/manager/menuDisplay');
         const json = await response.json();
         setMenuData(json.message);
     }
@@ -122,7 +122,7 @@ export default function Home() {
               <p className={styles.pItem}><Link href="/cashier/seasonalDrinks">Seasonal Drinks</Link></p>
             </div>
         </div>
-        <div className={styles.container}>     
+        <div className={styles.container}>
             {menuData.map((menuItem, index) => (
                 <div className={styles.imageContainer} key={index}>
                     {/* Wrap the Image inside a Link so it's clickable */}
