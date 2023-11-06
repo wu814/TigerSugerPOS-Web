@@ -106,11 +106,12 @@ export default function Home() {
             <div className={`${styles.cartDropdownContent} ${isCartVisible ? styles.open : ''}`}>
                 {selectedOrders.map((item, index) => (
                     <div key={index}>
-                        <p>{item.drink_name} ${item.price} <button id={'button${drinkIndex}' } onClick={() => removeDrink(item.price, index)}>remove</button></p> 
+                        <p>{item.drink_name} ${item.price} <button id={'button${drinkIndex}' } onClick={() => removeDrink(item.price, index)}>remove</button></p>
                     </div>
                 ))}
             </div>
         </div>
+        <button>Charge</button>
         <div className={styles.container}>
 
             <div className={styles.pContainer}>
