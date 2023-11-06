@@ -289,13 +289,15 @@
 }
 
 .imageContainer {
+  width: 33%;
   text-align: center; /* Center align the content within each grid item */
   margin-bottom: 3vh;
 }
 
 .container {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  margin: 0 auto;
 }
 
 .pContainer {
