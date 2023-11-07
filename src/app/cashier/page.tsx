@@ -236,6 +236,11 @@ export default function Home() {
                                 <label>
                                     <input type="radio" name="cupSize" value="XL" /> XL
                                 </label>
+                                <br/>
+                                <br/>
+                                <label>
+                                    <input type="text" name="specialInstructions" placeholder="Add special instructions" />
+                                </label>
                             </div>
                         )}
                         <br/>
