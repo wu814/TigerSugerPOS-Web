@@ -178,6 +178,69 @@ export default function Home() {
                                     Pudding
                                 </label>
                                 <br/>
+                                <br/>
+                                <br/>
+                                Dairy Free Alternatives
+                                <br/>
+                                <label>
+                                    <input type="radio" name="dairyFree" value="None" defaultChecked /> None
+                                </label>
+                                <br />
+                                <label>
+                                    <input type="radio" name="dairyFree" value="Oat" /> Oat
+                                </label>
+                                <br />
+                                <label>
+                                    <input type="radio" name="dairyFree" value="Soy" /> Soy
+                                </label>
+                                <br />
+                                <label>
+                                    <input type="radio" name="dairyFree" value="Lactose Free" /> Lactose Free
+                                </label>
+                                <br/>
+                                <br/>
+                                Sweetness Level
+                                <br/>
+                                <label>
+                                    <input type="radio" name="sweetnessLevel" value="100%" defaultChecked /> 100%
+                                </label>
+                                <br/>
+                                <label>
+                                    <input type="radio" name="sweetnessLevel" value="50%" /> 50%
+                                </label>
+                                <br/>
+                                <br/>
+                                Ice Level
+                                <br/>
+                                <label>
+                                    <input type="radio" name="iceLevel" value="Normal" defaultChecked /> Normal
+                                </label>
+                                <br/>
+                                <label>
+                                    <input type="radio" name="iceLevel" value="Less Ice" /> Less Ice
+                                </label>
+                                <br/>
+                                <label>
+                                    <input type="radio" name="iceLevel" value="None" /> None
+                                </label>
+                                <br/>
+                                <br/>
+                                <label>
+                                    <input type="radio" name="cupSize" value="Regular" defaultChecked /> Regular
+                                </label>
+                                <br/>
+                                <label>
+                                    <input type="radio" name="cupSize" value="Regular Hot" /> Regular Hot
+                                </label>
+                                <br/>
+                                <label>
+                                    <input type="radio" name="cupSize" value="XL" /> XL
+                                </label>
+                                <br/>
+                                <br/>
+                                <label>
+                                    <input type="text" name="specialInstructions" placeholder="Add special instructions" />
+                                </label>
                             </div>
                         )}
                         <br/>
