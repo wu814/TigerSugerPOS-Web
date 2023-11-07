@@ -40,6 +40,10 @@
     background-color: #EED484;
 }
 
+.inventoryTable tr:hover {
+    background-color: #1f6d76;
+}
+
 .actions {
     margin: 1rem;
 }
@@ -85,6 +89,7 @@
     font-weight: bold;
     font-size: 3rem;
     cursor: pointer;
+    width: 100%;
 }
 
 .backButton:hover {

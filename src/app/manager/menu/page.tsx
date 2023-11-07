@@ -12,8 +12,11 @@ export default function Home() {
         ingredients: [] as string[],
         drink_type: '',
     });
+
+    const [drinkTypes, setDrinkTypes] = useState<string[]>([]);
     const [removeItemId, setRemoveItemId] = useState<number>(-1); 
     const [ingredientList, setIngredientList] = useState<string[]>([]);
+    const [isDataFetched, setIsDataFetched] = useState(false);
 
     const fetchMenu = async () => {
         const response = await fetch('/api/manager/menuDisplay');
@@ -21,6 +24,7 @@ export default function Home() {
         setMenuData(json.message);
     }
 
+    // TODO: Add validation for the new item (and success/error messages frontend)
     const handleAddItem = async () => {
         const response = await fetch('/api/manager/menuAdd', {
             method: 'POST',
@@ -34,6 +38,7 @@ export default function Home() {
         fetchMenu();
     };
 
+    // TODO: Add validation for the remove item (and success/error messages frontend)
     const handleRemoveItem = async (product_id: number) => {
         const response = await fetch('/api/manager/menuRemove', {
             method: 'POST',
@@ -45,7 +50,7 @@ export default function Home() {
 
         const json = await response.json();
         // Refresh the inventory data after removing an item
-        fetchMenu();
+        await fetchMenu();
     };
 
     const fetchIngredients = async () => {
@@ -56,10 +61,31 @@ export default function Home() {
         setIngredientList(suppliesArray);
     };
 
+    const fetchDrinkTypes = async () => {        
+        const uniqueDrinkTypes: string[] = [];
+        menuData.forEach((item) => {
+            if (!uniqueDrinkTypes.includes(item.drink_type)) {
+                uniqueDrinkTypes.push(item.drink_type);
+            }
+        });
+        setDrinkTypes(uniqueDrinkTypes);
+    }
+
     useEffect(() => {
-        fetchMenu();
-        fetchIngredients();
-    }, []);    
+        const fetchData = async () => {
+            await fetchMenu();
+            await fetchIngredients();
+            setIsDataFetched(true);
+        };
+
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        if (isDataFetched) {
+            fetchDrinkTypes();
+        }
+    }, [isDataFetched]);
 
     return (
         <>
@@ -77,8 +103,8 @@ export default function Home() {
                             <tr>
                                 <th>Inventory ID</th>
                                 <th>Name</th>
-                                <th>Stock Remaining</th>
-                                <th>Minimum Stock</th>
+                                <th>Ingredients</th>
+                                <th>Drink Type</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -138,14 +164,19 @@ export default function Home() {
 
                     <div>
                         <label htmlFor="drink_type">Drink Type:</label>
-                        <input
-                            type="text"
+                        <select
                             id="drink_type"
                             value={newItem.drink_type}
                             onChange={(e) => setNewItem({ ...newItem, drink_type: e.target.value })}
-                        />
+                        >
+                            <option value="">Select Drink Type</option>
+                            {drinkTypes.map((type) => (
+                                <option key={type} value={type}>
+                                    {type}
+                                </option>
+                            ))}
+                        </select>
                     </div>
-
 
                     <button onClick={handleAddItem}>Add Item</button>
                 </div>
