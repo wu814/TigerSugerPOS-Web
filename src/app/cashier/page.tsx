@@ -148,7 +148,6 @@ export default function Home() {
       <Navbar/>
       <div className={styles.main}>
         <h1>Cashier Page</h1>
-        <button onClick={placeOrder}>Test placeOrder API Endpoint</button><br/>
         <div className={`${styles.cartButton} ${isCartVisible ? styles.open : ''}`}>
             <div className={styles.cartButtonContent}>
                 <p>CART</p>
@@ -343,7 +342,7 @@ export default function Home() {
                     </div>
                 ))}
             </div>
-            <button>Charge</button>
+            <button onClick={placeOrder}>Charge</button><br/>
         </div>
         <div className={styles.container}>
 
