@@ -46,7 +46,7 @@ export default function Home() {
 
     // Fuctionality when click on Add to Order button
     const handleOrderSelection = (orderItem: any) => {
-        setOrderTotal(prevOrderTotal => prevOrderTotal + Number(orderItem.price));
+        setOrderTotal(prevOrderTotal => parseFloat((Number(prevOrderTotal) + Number(orderItem.price)).toFixed(2)));
         setSelectedOrders(prevOrder => [...prevOrder, orderItem]); // Add the selected order to the list
         // Create a new AddonPair for the item and add it to selectedAddons
         const newAddonPair = { ...AddonPair };
@@ -94,14 +94,14 @@ export default function Home() {
 
     // Functionality when click on remove button
     const removeDrink = (drinkPrice: number, drinkIndex: number) => {
-        // Create a copy of the selectedOrders array
-        const updatedOrders = [...selectedOrders];
-        // Remove the message at the specified index
-        updatedOrders.splice(drinkIndex, 1);
-        // Update the state to reflect the removal
-        setSelectedOrders(updatedOrders);
-        setOrderTotal(prevOrderTotal => prevOrderTotal - Number(drinkPrice));
-      };
+            // Create a copy of the selectedOrders array
+            const updatedOrders = [...selectedOrders];
+            // Remove the message at the specified index
+            updatedOrders.splice(drinkIndex, 1);
+            // Update the state to reflect the removal
+            setSelectedOrders(updatedOrders);
+            setOrderTotal(prevOrderTotal => parseFloat((Number(prevOrderTotal) - Number(drinkPrice)).toFixed(2)));
+        };
     
     // Functionality when click on place order button
     const placeOrder = async () => {
