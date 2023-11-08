@@ -9,6 +9,13 @@ export async function POST(request: NextRequest) {
     const input = await request.json();
     const {start} = input; //start date
     const end = new Date(); //end date
+    const dateFormatPattern = /^\d{4}-\d{2}-\d{2}$/;
+
+    //input validation
+    if (!dateFormatPattern.test(start) || isNaN(Date.parse(start)) )
+        return NextResponse.json({ error: "Please enter a valid date with format 'yyyy-mm-dd'" }, { status: 500 });
+
+    
     let map = new Map<string,number>();
 
     const excessQuery = "SELECT * FROM inventory_history WHERE order_timestamp BETWEEN $1 AND $2;";
