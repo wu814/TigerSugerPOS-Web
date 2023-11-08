@@ -161,8 +161,8 @@ export default function Home() {
                 {selectedOrders.map((item, index) => (
                     <div key={index}>
                         <p>{item.drink_name} ${item.price} <br/>
-                        {Object.entries(selectedAddons[index])} <br/>
-                        {Object.entries(selectedDrinkAttributes[index])} <br/>
+                        {/* {Object.entries(selectedAddons[index])} <br/>
+                        {Object.entries(selectedDrinkAttributes[index])} <br/> */}
                         <button onClick={toggleCustumize}>Customize</button>
                         {isAddonPopoutOpen && (
                             <div className={styles.addonPopout}>
