@@ -9,11 +9,32 @@ import Footer from '../../components/Footer';
 import { type } from "os";
 
 export default function Home() {
+    const AddonPair = {
+        Boba: "None",
+        CreamMousse: "None",
+        RedBean: "None",
+        Mochi: "None",
+        TigerPearls: "None",
+        Taro: "None",
+        Pudding: "None",
+    }
+
+    const DrinkAttributePair = {
+        DairyFree: "None",
+        SweetnessLevel: "100%",
+        IceLevel: "Normal",
+        CupSize: "Regular",
+        SpecialInstructions: "None",
+    }
+    
 
     const [isCartVisible, setCartVisible] = useState(false); // Show the cart if true, hide if false
     const [selectedOrders, setSelectedOrders] = useState<any[]>([]);
     const [menuData, setMenuData] = useState<any[]>([]); // for fetching menu data
     const [isAddonPopoutOpen, setIsAddonPopoutOpen] = useState(false);
+    const [selectedAddons, setSelectedAddons] = useState<any[]>([]); // for storing selected addons
+    const [selectedDrinkAttributes, setSelectedDrinkAttributes] = useState<any[]>([]); // for storing selected drink attributes
+    const [specialInstructions, setSpecialInstructions] = useState('');
     const [orderTotal, setOrderTotal] = useState(0);
 
 
@@ -25,9 +46,14 @@ export default function Home() {
 
     // Fuctionality when click on Add to Order button
     const handleOrderSelection = (orderItem: any) => {
-        // Making sure the price is a number
         setOrderTotal(prevOrderTotal => prevOrderTotal + Number(orderItem.price));
         setSelectedOrders(prevOrder => [...prevOrder, orderItem]); // Add the selected order to the list
+        // Create a new AddonPair for the item and add it to selectedAddons
+        const newAddonPair = { ...AddonPair };
+        // Create a new DrinkAttributePair for the item and add it to selectedDrinkAttributes
+        const newDrinkAttributePair = { ...DrinkAttributePair };
+        setSelectedAddons([...selectedAddons, newAddonPair]);
+        setSelectedDrinkAttributes([...selectedDrinkAttributes, newDrinkAttributePair]);
     };
 
     const toggleCart = () => {
@@ -36,7 +62,35 @@ export default function Home() {
 
     const toggleCustumize = () => {
         setIsAddonPopoutOpen(!isAddonPopoutOpen);
-    }
+    };
+
+    const handleAddonSelection = (drinkIndex: number, addon: string) => {
+        const newSelectedAddons = [...selectedAddons];
+        const newAddonPair = newSelectedAddons[drinkIndex];
+        if (newAddonPair[addon] !== "None") {
+            newAddonPair[addon] = "None";
+        } 
+        else {
+            newAddonPair[addon] = "Added";
+        }
+        newSelectedAddons[drinkIndex] = newAddonPair;
+        setSelectedAddons(newSelectedAddons);
+    };
+
+    const handleAttributeSelection = (drinkIndex: number, attribute: string, value: string) => {
+        const newSelectedDrinkAttributes = [...selectedDrinkAttributes];
+        const newDrinkAttributePair = newSelectedDrinkAttributes[drinkIndex];
+        if (attribute === "SpecialInstructions") {
+            setSpecialInstructions(value);
+            newDrinkAttributePair[attribute] = value;
+        }
+        else if (newDrinkAttributePair[attribute] !== value) {
+            newDrinkAttributePair[attribute] = value;
+        } 
+        newSelectedDrinkAttributes[drinkIndex] = newDrinkAttributePair;
+        setSelectedDrinkAttributes(newSelectedDrinkAttributes);
+    };
+
 
     // Functionality when click on remove button
     const removeDrink = (drinkPrice: number, drinkIndex: number) => {
@@ -106,12 +160,191 @@ export default function Home() {
             <div className={`${styles.cartDropdownContent} ${isCartVisible ? styles.open : ''}`}>
                 {selectedOrders.map((item, index) => (
                     <div key={index}>
-                        <p>{item.drink_name} ${item.price} <button id={'button${drinkIndex}' } onClick={() => removeDrink(item.price, index)}>remove</button></p>
+                        <p>{item.drink_name} ${item.price} <br/>
+                        {/* {Object.entries(selectedAddons[index])} <br/>
+                        {Object.entries(selectedDrinkAttributes[index])} <br/> */}
+                        <button onClick={toggleCustumize}>Customize</button>
+                        {isAddonPopoutOpen && (
+                            <div className={styles.addonPopout}>
+                                <p>Select your addons:</p>
+                                <label className="checkbox-label">
+                                    <input type="checkbox" name="extraBoba" value="Boba" 
+                                        onChange={()=> handleAddonSelection(index, "Boba")}
+                                        checked={selectedAddons[index]["Boba"] === "Added"}
+                                    />
+                                    Extra Boba
+                                </label>
+                                <br/>
+                                <label className="checkbox-label">
+                                    <input type="checkbox" name="extraCreamMousse" value="Cream Mousse" 
+                                        onChange={()=> handleAddonSelection(index, "CreamMousse")}
+                                        checked={selectedAddons[index]["CreamMousse"] === "Added"}
+                                    />
+                                    Cream Mousse
+                                </label>
+                                <br/>
+                                <label className="checkbox-label">
+                                    <input type="checkbox" name="extraRedBean" value="Red Bean" 
+                                        onChange={()=> handleAddonSelection(index, "RedBean")}
+                                        checked={selectedAddons[index]["RedBean"] === "Added"}
+                                    />
+                                    Red Bean
+                                </label>
+                                <br/>
+                                <label className="checkbox-label">
+                                    <input type="checkbox" name="extraMochi" value="Mochi" 
+                                        onChange={()=> handleAddonSelection(index, "Mochi")}
+                                        checked={selectedAddons[index]["Mochi"] === "Added"}
+                                    />
+                                    Mochi
+                                </label>
+                                <br/>
+                                <label className="checkbox-label">
+                                    <input type="checkbox" name="extraTigerPearls" value="Tiger Pearls" 
+                                        onChange={()=> handleAddonSelection(index, "TigerPearls")}
+                                        checked={selectedAddons[index]["TigerPearls"] === "Added"}
+                                    />
+                                    Tiger Pearls
+                                </label>
+                                <br/>
+                                <label className="checkbox-label">
+                                    <input type="checkbox" name="extraTaro" value="Taro" 
+                                        onChange={()=> handleAddonSelection(index, "Taro")}
+                                        checked={selectedAddons[index]["Taro"] === "Added"}
+                                    />
+                                    Taro
+                                </label>
+                                <br/>
+                                <label className="checkbox-label">
+                                    <input type="checkbox" name="extraPudding" value="Pudding" 
+                                        onChange={()=> handleAddonSelection(index, "Pudding")}
+                                        checked={selectedAddons[index]["Pudding"] === "Added"}
+                                    />
+                                    Pudding
+                                </label>
+                                <br/>
+                                <br/>
+                                <br/>
+                                Dairy Free Alternatives
+                                <br/>
+                                <label>
+                                    <input type="radio" name="dairyFree" value="None" defaultChecked 
+                                        onChange={()=> handleAttributeSelection(index, "DairyFree", "None")}
+                                        checked={selectedDrinkAttributes[index]["DairyFree"] === "None"}
+                                    /> 
+                                    None
+                                </label>
+                                <br />
+                                <label>
+                                    <input type="radio" name="dairyFree" value="Oat" 
+                                        onChange={()=> handleAttributeSelection(index, "DairyFree", "Oat")}
+                                        checked={selectedDrinkAttributes[index]["DairyFree"] === "Oat"}
+                                    />
+                                    Oat
+                                </label>
+                                <br />
+                                <label>
+                                    <input type="radio" name="dairyFree" value="Soy" 
+                                        onChange={()=> handleAttributeSelection(index, "DairyFree", "Soy")}
+                                        checked={selectedDrinkAttributes[index]["DairyFree"] === "Soy"}
+                                    /> 
+                                    Soy
+                                </label>
+                                <br />
+                                <label>
+                                    <input type="radio" name="dairyFree" value="Lactose Free" 
+                                        onChange={()=> handleAttributeSelection(index, "DairyFree", "Lactose Free")}
+                                        checked={selectedDrinkAttributes[index]["DairyFree"] === "Lactose Free"}
+                                    /> 
+                                    Lactose Free
+                                </label>
+                                <br/>
+                                <br/>
+                                Sweetness Level
+                                <br/>
+                                <label>
+                                    <input type="radio" name="sweetnessLevel" value="100%" defaultChecked 
+                                        onChange={()=> handleAttributeSelection(index, "SweetnessLevel", "100%")}
+                                        checked={selectedDrinkAttributes[index]["SweetnessLevel"] === "100%"}
+                                    /> 
+                                    100%
+                                </label>
+                                <br/>
+                                <label>
+                                    <input type="radio" name="sweetnessLevel" value="50%" 
+                                        onChange={()=> handleAttributeSelection(index, "SweetnessLevel", "50%")}
+                                        checked={selectedDrinkAttributes[index]["SweetnessLevel"] === "50%"}
+                                    /> 
+                                    50%
+                                </label>
+                                <br/>
+                                <br/>
+                                Ice Level
+                                <br/>
+                                <label>
+                                    <input type="radio" name="iceLevel" value="Normal" defaultChecked 
+                                        onChange={()=> handleAttributeSelection(index, "IceLevel", "Normal")}
+                                        checked={selectedDrinkAttributes[index]["IceLevel"] === "Normal"}
+                                    /> 
+                                    Normal
+                                </label>
+                                <br/>
+                                <label>
+                                    <input type="radio" name="iceLevel" value="Less Ice" 
+                                        onChange={()=> handleAttributeSelection(index, "IceLevel", "Less Ice")}
+                                        checked={selectedDrinkAttributes[index]["IceLevel"] === "Less Ice"}
+                                    /> 
+                                    Less Ice
+                                </label>
+                                <br/>
+                                <label>
+                                    <input type="radio" name="iceLevel" value="None" 
+                                        onChange={()=> handleAttributeSelection(index, "IceLevel", "None")}
+                                        checked={selectedDrinkAttributes[index]["IceLevel"] === "None"}
+                                    />
+                                    None
+                                </label>
+                                <br/>
+                                <br/>
+                                <label>
+                                    <input type="radio" name="cupSize" value="Regular" defaultChecked 
+                                        onChange={()=> handleAttributeSelection(index, "CupSize", "Regular")}
+                                        checked={selectedDrinkAttributes[index]["CupSize"] === "Regular"}
+                                    /> 
+                                    Regular
+                                </label>
+                                <br/>
+                                <label>
+                                    <input type="radio" name="cupSize" value="Regular Hot" 
+                                        onChange={()=> handleAttributeSelection(index, "CupSize", "Regular Hot")}
+                                        checked={selectedDrinkAttributes[index]["CupSize"] === "Regular Hot"}
+                                    /> 
+                                    Regular Hot
+                                </label>
+                                <br/>
+                                <label>
+                                    <input type="radio" name="cupSize" value="XL" 
+                                        onChange={()=> handleAttributeSelection(index, "CupSize", "XL")}
+                                        checked={selectedDrinkAttributes[index]["CupSize"] === "XL"}
+                                    /> 
+                                    XL
+                                </label>
+                                <br/>
+                                <br/>
+                                <label>
+                                    <input type="text" name="specialInstructions" placeholder="Add special instructions" value={specialInstructions}
+                                        onChange={(event)=> handleAttributeSelection(index, "SpecialInstructions", event.target.value)}
+                                    />
+                                </label>
+                            </div>
+                        )}
+                        {" "}<button id={'button${drinkIndex}' } onClick={() => removeDrink(item.price, index)}>remove</button>
+                        </p>
                     </div>
                 ))}
             </div>
+            <button>Charge</button>
         </div>
-        <button>Charge</button>
         <div className={styles.container}>
 
             <div className={styles.pContainer}>
@@ -136,114 +369,6 @@ export default function Home() {
                     </Link>
                     <p>Boba Drink {index + 1}</p>
                     <p>Drink Name: {menuItem.drink_name}</p>
-                    {/* <button onClick={() => handleOrderSelection(menuItem.drink_name)}>Add to Order</button> */}
-                    <button onClick={toggleCustumize}>Customize</button>
-                        {isAddonPopoutOpen && (
-                            <div className={styles.addonPopout}>
-                                {/* Here, render your addon options */}
-                                <p>Select your addons:</p>
-                                {/* Add checkboxes, dropdowns, or other inputs for addon selection */}
-                                <label className="checkbox-label">
-                                    <input type="checkbox" name="addon1" value="Addon 1" />
-                                    Extra Boba
-                                </label>
-                                <br/>
-                                <label className="checkbox-label">
-                                    <input type="checkbox" name="addon2" value="Addon 2" />
-                                    Cream Mousse
-                                </label>
-                                <br/>
-                                <label className="checkbox-label">
-                                    <input type="checkbox" name="addon3" value="Addon 3" />
-                                    Red Bean
-                                </label>
-                                <br/>
-                                <label className="checkbox-label">
-                                    <input type="checkbox" name="addon4" value="Addon 4" />
-                                    Mochi
-                                </label>
-                                <br/>
-                                <label className="checkbox-label">
-                                    <input type="checkbox" name="addon5" value="Addon 5" />
-                                    Tiger Pearls
-                                </label>
-                                <br/>
-                                <label className="checkbox-label">
-                                    <input type="checkbox" name="addon6" value="Addon 6" />
-                                    Taro
-                                </label>
-                                <br/>
-                                <label className="checkbox-label">
-                                    <input type="checkbox" name="addon7" value="Addon 7" />
-                                    Pudding
-                                </label>
-                                <br/>
-                                <br/>
-                                <br/>
-                                Dairy Free Alternatives
-                                <br/>
-                                <label>
-                                    <input type="radio" name="dairyFree" value="None" defaultChecked /> None
-                                </label>
-                                <br />
-                                <label>
-                                    <input type="radio" name="dairyFree" value="Oat" /> Oat
-                                </label>
-                                <br />
-                                <label>
-                                    <input type="radio" name="dairyFree" value="Soy" /> Soy
-                                </label>
-                                <br />
-                                <label>
-                                    <input type="radio" name="dairyFree" value="Lactose Free" /> Lactose Free
-                                </label>
-                                <br/>
-                                <br/>
-                                Sweetness Level
-                                <br/>
-                                <label>
-                                    <input type="radio" name="sweetnessLevel" value="100%" defaultChecked /> 100%
-                                </label>
-                                <br/>
-                                <label>
-                                    <input type="radio" name="sweetnessLevel" value="50%" /> 50%
-                                </label>
-                                <br/>
-                                <br/>
-                                Ice Level
-                                <br/>
-                                <label>
-                                    <input type="radio" name="iceLevel" value="Normal" defaultChecked /> Normal
-                                </label>
-                                <br/>
-                                <label>
-                                    <input type="radio" name="iceLevel" value="Less Ice" /> Less Ice
-                                </label>
-                                <br/>
-                                <label>
-                                    <input type="radio" name="iceLevel" value="None" /> None
-                                </label>
-                                <br/>
-                                <br/>
-                                <label>
-                                    <input type="radio" name="cupSize" value="Regular" defaultChecked /> Regular
-                                </label>
-                                <br/>
-                                <label>
-                                    <input type="radio" name="cupSize" value="Regular Hot" /> Regular Hot
-                                </label>
-                                <br/>
-                                <label>
-                                    <input type="radio" name="cupSize" value="XL" /> XL
-                                </label>
-                                <br/>
-                                <br/>
-                                <label>
-                                    <input type="text" name="specialInstructions" placeholder="Add special instructions" />
-                                </label>
-                            </div>
-                        )}
-                        <br/>
                     <button onClick={()=>handleOrderSelection(menuItem)}>Add to Order</button>
                 </div>
             ))}
