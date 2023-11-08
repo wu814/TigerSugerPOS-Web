@@ -8,9 +8,10 @@ export default function Home() {
     const [inventoryData, setInventoryData] = useState<any[]>([]);
     const [newItem, setNewItem] = useState({
         supply: '',
-        stock_remaining: ''
+        stock_remaining: '',
+        minimum_stock: ''
     });
-    const [removeItemId, setRemoveItemId] = useState<number>(-1); 
+    const [removeItemName, setRemoveItemName] = useState(''); 
 
     const fetchInventory = async () => {
         const response = await fetch('/api/manager/inventoryDisplay');
@@ -29,21 +30,35 @@ export default function Home() {
         const json = await response.json();
         console.log(json); // Handle the response as needed
         // Refresh the inventory data after adding an item
+        
+        // check whether or not the fetch status was 500 or not
+        if (response.status == 500) {
+            alert(json.error);
+        } else {
+            alert(json.message);
+        }
         fetchInventory();
     };
 
-    const handleRemoveItem = async (inventory_id: number) => {
+    const handleRemoveItem = async (supply: string) => {
         const response = await fetch('/api/manager/inventoryRemove', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({inventory_id: inventory_id}),
+            body: JSON.stringify({supply: supply}),
         });
 
         const json = await response.json();
         console.log(json); // Handle the response as needed
         // Refresh the inventory data after removing an item
+
+        if (response.status == 500) {
+            alert(json.error);
+        } else {
+            alert(json.message);
+        }
+        
         fetchInventory();
     };
 
@@ -103,21 +118,29 @@ export default function Home() {
                             onChange={(e) => setNewItem({ ...newItem, stock_remaining: e.target.value })}
                         />
                     </div>
+                    <div>
+                        <label htmlFor="minimum_stock">Minimum Stock:</label>
+                        <input
+                            type="text"
+                            id="minimum_stock"
+                            value={newItem.minimum_stock}
+                            onChange={(e) => setNewItem({ ...newItem, minimum_stock: e.target.value })}
+                        />
+                    </div>
                     <button onClick={handleAddItem}>Add Item</button>
                 </div>
                 <div className={styles.actions}>
                     <h2>Remove Item:</h2>
-                    <label htmlFor="removeItemId">Inventory ID:</label>
+                    <label htmlFor="removeItemId">Inventory Item Name:</label>
                     <input
                         type="text"
                         id="removeItemId"
                         onChange={(e) => {
                             // You can add additional validation if needed
-                            const inventoryId = parseInt(e.target.value, 10);
-                            setRemoveItemId(inventoryId);
+                            setRemoveItemName(e.target.value);
                         }}
                     />
-                    <button onClick={() => handleRemoveItem(removeItemId)}>Remove Item</button>
+                    <button onClick={() => handleRemoveItem(removeItemName)}>Remove Item</button>
                 </div>
             </div>
         </>

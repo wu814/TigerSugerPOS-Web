@@ -27,6 +27,9 @@ export default function Home() {
                     <Link role="link" className={styles.button} href="/manager/restockreport">
                         Restock Report
                     </Link>
+                    <Link role="link" className={styles.button} href="/manager/excessreport">
+                        Excess Report
+                    </Link>
                     <Link role="link" className={styles.button} href="/manager/popularpairs">
                         Popular Pairs
                     </Link>
