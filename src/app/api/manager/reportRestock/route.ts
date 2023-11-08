@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { query } from "../../../../utils/database";
 
+export const dynamic = 'force-dynamic';
+
 //Contacts the database and calculates a restock report
 //Returns a matrix with columns supply, stock_remaining, and minimum_stock
 export async function GET(request: NextRequest) {

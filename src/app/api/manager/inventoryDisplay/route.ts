@@ -2,6 +2,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { query } from "../../../../utils/database";
 
+export const dynamic = 'force-dynamic';
+
 //returns all items in the inventory database
 export async function GET(request: NextRequest) {
    

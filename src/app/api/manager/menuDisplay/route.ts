@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { query } from "../../../../utils/database";
 
+export const dynamic = 'force-dynamic';
+
 //returns the contents of the products table (our menu)
 export async function GET(request: NextRequest) {
    

@@ -35,6 +35,13 @@ export default function Home() {
         });
         const json = await response.json();
         // Refresh the inventory data after adding an item
+
+        if (response.status == 500) {
+            alert(json.error);
+        } else {
+            alert(json.message);
+        }
+
         fetchMenu();
     };
 
@@ -50,6 +57,13 @@ export default function Home() {
 
         const json = await response.json();
         // Refresh the inventory data after removing an item
+
+        if (response.status == 500) {
+            alert(json.error);
+        } else {
+            alert(json.message);
+        }
+
         await fetchMenu();
     };
 

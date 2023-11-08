@@ -7,6 +7,8 @@ export async function POST(request: NextRequest) {
         const data = await request.json();
         let {drink_name, price, ingredients, drink_type} = data;
 
+        console.log(data);
+
         ///////INPUT VALIDATION///////
         //Drink Name
         //check that item is not already in menu
@@ -37,7 +39,6 @@ export async function POST(request: NextRequest) {
 
         //drink type doesn't need validation because there are buttons
         //////////////////////////////
-        return NextResponse.json({error: "god"},{status: 500});
         //add new item
         const sql = "INSERT INTO products (product_id, drink_name, price, ingredients, drink_type) VALUES (DEFAULT, $1, $2, $3, $4);";
         const result = await query(sql,[drink_name, price, ingredients, drink_type]);
