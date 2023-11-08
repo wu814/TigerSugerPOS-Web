@@ -9,6 +9,15 @@ export async function POST(request: NextRequest) {
         let table: string[][] = [];
         const input = await request.json();
         const {start, end} = input;  
+        const dateFormatPattern = /^\d{4}-\d{2}-\d{2}$/;
+        
+        //input validation
+        if (!dateFormatPattern.test(start) || isNaN(Date.parse(start)) )
+            return NextResponse.json({ error: "Please enter a valid start date with format 'yyyy-mm-dd'" }, { status: 500 });
+        if (!dateFormatPattern.test(end) || isNaN(Date.parse(end)) )
+            return NextResponse.json({ error: "Please enter a valid end date with format 'yyyy-mm-dd'" }, { status: 500 });
+        if(!(Date.parse(start) < Date.parse(end))) //ensure start is before end
+            return NextResponse.json({ error: "Start Date must be before end date'" }, { status: 500 });
 
         const pairsQuery = "WITH OrderItems AS (\n" +
         "   SELECT DISTINCT\n" +
