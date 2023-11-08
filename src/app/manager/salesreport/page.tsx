@@ -9,6 +9,7 @@ export default function Home() {
     const [startTimestamp, setStartTimestamp] = useState('2023-06-05');
     const [endTimestamp, setEndTimestamp] = useState('2023-06-06');
     const [salesReport, setSalesReport] = useState([]);
+    const [loading, setLoading] = useState(false); // Loading state
 
     // Function to handle form submission (you can modify this according to your needs)
     const handleSubmit = (e) => {
@@ -22,6 +23,7 @@ export default function Home() {
     };
 
     const fetchSalesReport = async () => {
+        setLoading(true);
         const response = await fetch('/api/manager/reportSales', {
             method: 'POST',
             headers: {
@@ -30,6 +32,7 @@ export default function Home() {
             body: JSON.stringify({start: startTimestamp, end: endTimestamp}),
         });
         const data = await response.json();
+        setLoading(false);
         setSalesReport(data.message);
     }
 
@@ -69,6 +72,9 @@ export default function Home() {
                     <button className={styles.submitButton} type="submit">Submit</button>
                 </form>
 
+                {loading && <p>Loading...</p>}
+
+                {!loading && (
                 <table className={styles.salesReportTable}>
                     <thead>
                         <tr>
@@ -87,6 +93,7 @@ export default function Home() {
                         ))}
                     </tbody>
                 </table>
+                )}
                 
             </div>
         </>
