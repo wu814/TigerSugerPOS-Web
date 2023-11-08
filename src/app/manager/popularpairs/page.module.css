@@ -23,24 +23,24 @@
     flex-direction: row;
 }
 
-.salesReportTable {
+.popularPairsTable {
     width: 100%;
     border-collapse: collapse;
     margin: 1rem;
 }
   
-.salesReportTable th,
-.salesReportTable td {
+.popularPairsTable th,
+.popularPairsTable td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
 }
   
-.salesReportTable th {
+.popularPairsTable th {
     background-color: #EED484;
 }
   
-.salesReportTable tr:hover {
+.popularPairsTable tr:hover {
     background-color: #1f6d76;
 }
 

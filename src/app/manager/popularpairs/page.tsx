@@ -8,20 +8,21 @@ export default function Home() {
     // State variables for start and end timestamps
     const [startTimestamp, setStartTimestamp] = useState('2023-06-05');
     const [endTimestamp, setEndTimestamp] = useState('2023-06-06');
-    const [salesReport, setSalesReport] = useState([]);
+    const [popularPairs, setPopularPairs] = useState([]);
+    const [loading, setLoading] = useState(false); // Loading state
 
     // Function to handle form submission (you can modify this according to your needs)
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         // Perform actions with startTimestamp and endTimestamp
         console.log('Start Timestamp:', startTimestamp);
         console.log('End Timestamp:', endTimestamp);
 
         // Fetch sales report
-        fetchSalesReport();
+        fetchPopularPairs();
     };
 
-    const fetchSalesReport = async () => {
+    const fetchPopularPairs = async () => {
         const response = await fetch('/api/manager/popularPairs', {
             method: 'POST',
             headers: {
@@ -30,7 +31,7 @@ export default function Home() {
             body: JSON.stringify({start: startTimestamp, end: endTimestamp}),
         });
         const data = await response.json();
-        setSalesReport(data.message);
+        setPopularPairs(data.message);
     }
 
     return (
@@ -69,7 +70,10 @@ export default function Home() {
                     <button className={styles.submitButton} type="submit">Submit</button>
                 </form>
 
-                <table className={styles.salesReportTable}>
+                {loading && <p>Loading...</p>}
+
+                {!loading && (
+                <table className={styles.popularPairsTable}>
                     <thead>
                         <tr>
                             <th>Drink 1</th>
@@ -78,7 +82,7 @@ export default function Home() {
                         </tr>
                     </thead>
                     <tbody>
-                        {salesReport.map((row, index) => (
+                        {popularPairs.map((row, index) => (
                             <tr key={index}>
                                 <td>{row[0]}</td>
                                 <td>{row[1]}</td>
@@ -87,6 +91,7 @@ export default function Home() {
                         ))}
                     </tbody>
                 </table>
+                )}
                 
             </div>
         </>

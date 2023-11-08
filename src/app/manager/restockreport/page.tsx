@@ -7,23 +7,26 @@ import Link from 'next/link';
 export default function Home() {
     // State variables for start and end timestamps
     const [restockReport, setRestockReport] = useState([]);
+    const [loading, setLoading] = useState(true); // Loading state
 
     // Function to handle form submission (you can modify this according to your needs)
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         // Perform actions with startTimestamp and endTimestamp
         // Fetch sales report
-        fetchSalesReport();
+        fetchRestockReport();
     };
 
-    const fetchSalesReport = async () => {
+    const fetchRestockReport = async () => {
+        setLoading(true);
         const response = await fetch('/api/manager/reportRestock');
         const data = await response.json();
+        setLoading(false);
         setRestockReport(data.message);
     }
 
     useEffect(() => {
-        fetchSalesReport();
+        fetchRestockReport();
     } , []);
 
     return (
@@ -36,6 +39,13 @@ export default function Home() {
                 </Link>
                 <h1 className={styles.mainHeading}>Manager View (Restock Report)</h1>
 
+                {loading && <p>Loading...</p>}
+
+                {!loading &&
+                    <button className={styles.refreshButton} onClick={fetchRestockReport}> Refresh </button>
+                }
+
+                {!loading && (
                 <table className={styles.restockReportTable}>
                     <thead>
                         <tr>
@@ -54,6 +64,7 @@ export default function Home() {
                         ))}
                     </tbody>
                 </table>
+                )}
                 
             </div>
         </>

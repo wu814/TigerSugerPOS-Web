@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
         const stockUsed:number = (map.get(currItem) ?? 0);
         const totalStock:number = stockUsed + currStock;
         if(stockUsed < (totalStock * 0.1)){
-            const row : string[] = [currItem,stockUsed.toString(),totalStock.toString()];
+            const row : string[] = [currItem,currStock.toString(), stockUsed.toString(),totalStock.toString()];
             table.push(row);
         }
     }
