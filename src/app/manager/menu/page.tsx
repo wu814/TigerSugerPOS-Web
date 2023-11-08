@@ -14,7 +14,7 @@ export default function Home() {
     });
 
     const [drinkTypes, setDrinkTypes] = useState<string[]>([]);
-    const [removeItemId, setRemoveItemId] = useState<number>(-1); 
+    const [removeItemName, setRemoveItemName] = useState(''); 
     const [ingredientList, setIngredientList] = useState<string[]>([]);
     const [isDataFetched, setIsDataFetched] = useState(false);
 
@@ -39,13 +39,13 @@ export default function Home() {
     };
 
     // TODO: Add validation for the remove item (and success/error messages frontend)
-    const handleRemoveItem = async (product_id: number) => {
+    const handleRemoveItem = async (drink_name: string) => {
         const response = await fetch('/api/manager/menuRemove', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({product_id: product_id}),
+            body: JSON.stringify({drink_name: drink_name}),
         });
 
         const json = await response.json();
@@ -182,17 +182,17 @@ export default function Home() {
                 </div>
                 <div className={styles.actions}>
                     <h2>Remove Item:</h2>
-                    <label htmlFor="removeItemId">Inventory ID:</label>
+                    <label htmlFor="removeItemId">Menu Item Name:</label>
                     <input
                         type="text"
                         id="removeItemId"
                         onChange={(e) => {
                             // You can add additional validation if needed
-                            const menuId = parseInt(e.target.value, 10);
-                            setRemoveItemId(menuId);
+                            const menuName = e.target.value;
+                            setRemoveItemName(menuName);
                         }}
                     />
-                    <button onClick={() => handleRemoveItem(removeItemId)}>Remove Item</button>
+                    <button onClick={() => handleRemoveItem(removeItemName)}>Remove Item</button>
                 </div>
             </div>
         </>
