@@ -3,8 +3,9 @@ import { query } from "../../../../utils/database";
 
 // excess report:
 // given a timestamp, display the list of inventory items that only sold less than 10% of their inventory between the timestamp and now
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
     //initialize variables and input
+    try{
     const input = await request.json();
     const {start} = input; //start date
     const end = new Date(); //end date
@@ -41,10 +42,9 @@ export async function GET(request: NextRequest) {
             table.push(row);
         }
     }
-
-
-
-
-    return NextResponse.json({ message: excessData.rows }, { status: 200 });
+    return NextResponse.json({ message: table }, { status: 200 });
+    }catch(error:any){
+        return NextResponse.json({error: error.toString()},{status: 500});
+    }
 }
 
