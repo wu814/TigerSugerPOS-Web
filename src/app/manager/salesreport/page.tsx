@@ -12,7 +12,7 @@ export default function Home() {
     const [loading, setLoading] = useState(false); // Loading state
 
     // Function to handle form submission (you can modify this according to your needs)
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         // Perform actions with startTimestamp and endTimestamp
         console.log('Start Timestamp:', startTimestamp);
