@@ -23,24 +23,24 @@
     flex-direction: row;
 }
 
-.inventoryTable {
+.salesReportTable {
     width: 100%;
     border-collapse: collapse;
     margin: 1rem;
 }
   
-.inventoryTable th,
-.inventoryTable td {
+.salesReportTable th,
+.salesReportTable td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
 }
   
-.inventoryTable th {
+.salesReportTable th {
     background-color: #EED484;
 }
   
-.inventoryTable tr:hover {
+.salesReportTable tr:hover {
     background-color: #1f6d76;
 }
 

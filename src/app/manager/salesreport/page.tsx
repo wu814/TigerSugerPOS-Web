@@ -69,7 +69,7 @@ export default function Home() {
                     <button className={styles.submitButton} type="submit">Submit</button>
                 </form>
 
-                <table className={styles.inventoryTable}>
+                <table className={styles.salesReportTable}>
                     <thead>
                         <tr>
                             <th>Drink Name</th>
