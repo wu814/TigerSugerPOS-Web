@@ -115,8 +115,9 @@ export default function Home() {
                     <table className={styles.inventoryTable}>
                         <thead>
                             <tr>
-                                <th>Inventory ID</th>
+                                {/* <th>Inventory ID</th> */}
                                 <th>Name</th>
+                                <th>Price</th>
                                 <th>Ingredients</th>
                                 <th>Drink Type</th>
                             </tr>
@@ -124,8 +125,9 @@ export default function Home() {
                         <tbody>
                             {menuData.map((item) => (
                                 <tr key={item.product_id}>
-                                    <td>{item.product_id}</td>
+                                    {/* <td>{item.product_id}</td> */}
                                     <td>{item.drink_name}</td>
+                                    <td>${item.price}</td>
                                     <td>{item.ingredients.join(', ')}</td>
                                     <td>{item.drink_type}</td>
                                 </tr>

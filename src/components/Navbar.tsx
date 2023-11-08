@@ -22,6 +22,7 @@ const Navbar: React.FC = () => {
                   <li className={styles.navItem}><Link href="/cashier">Cashier</Link></li>
                   <li className={styles.navItem}><Link href="/manager">Manager</Link></li>
                   <li className={styles.navItem}><Link href="/customer">Customer</Link></li>
+                  <li className={styles.navItem}><Link href="/menuboard">Menu Board</Link></li>
               </ul>
           </nav>
           </>

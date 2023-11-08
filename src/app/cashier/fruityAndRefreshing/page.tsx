@@ -5,7 +5,9 @@ export default function Home() {
   return (
     <>
     <Navbar/>
-    Fruity And Refreshing
+    <div className={styles.main}>
+        Fruity And Refreshing
+    </div>
     </>
   )
 }
