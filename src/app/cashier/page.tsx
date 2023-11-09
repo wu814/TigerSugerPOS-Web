@@ -27,14 +27,14 @@ export default function Home() {
         SpecialInstructions: "None",
     }
     
-
     const [isCartVisible, setCartVisible] = useState(false); // Show the cart if true, hide if false
     const [selectedOrders, setSelectedOrders] = useState<any[]>([]);
     const [menuData, setMenuData] = useState<any[]>([]); // for fetching menu data
-    const [isAddonPopoutOpen, setIsAddonPopoutOpen] = useState(false);
+    const [isAddonPopoutOpen, setIsAddonPopoutOpen] = useState<boolean[]>([]);
     const [selectedAddons, setSelectedAddons] = useState<any[]>([]); // for storing selected addons
     const [selectedDrinkAttributes, setSelectedDrinkAttributes] = useState<any[]>([]); // for storing selected drink attributes
     const [specialInstructions, setSpecialInstructions] = useState('');
+    const [extraCharge, setExtraCharge] = useState<number[]>([]);
     const [orderTotal, setOrderTotal] = useState(0);
 
 
@@ -44,65 +44,119 @@ export default function Home() {
         setMenuData(json.message);
     }
 
+
     // Fuctionality when click on Add to Order button
     const handleOrderSelection = (orderItem: any) => {
-        setOrderTotal(prevOrderTotal => parseFloat((Number(prevOrderTotal) + Number(orderItem.price)).toFixed(2)));
+        setOrderTotal(prevOrderTotal => parseFloat((prevOrderTotal + Number(orderItem.price)).toFixed(2)));
         setSelectedOrders(prevOrder => [...prevOrder, orderItem]); // Add the selected order to the list
-        // Create a new AddonPair for the item and add it to selectedAddons
-        const newAddonPair = { ...AddonPair };
-        // Create a new DrinkAttributePair for the item and add it to selectedDrinkAttributes
-        const newDrinkAttributePair = { ...DrinkAttributePair };
+        const newAddonPair = { ...AddonPair }; // Create a new AddonPair for the item and add it to selectedAddons  
+        const newDrinkAttributePair = { ...DrinkAttributePair }; // Create a new DrinkAttributePair for the item and add it to selectedDrinkAttributes      
+        const newExtraCharge = [...extraCharge]; // Create a new extraCharge for the item and add it to extraCharge
+        const newIsAddonPopoutOpen = [...isAddonPopoutOpen]; // Create a new isAddonPopoutOpen for the item and add it to isAddonPopoutOpen
+
         setSelectedAddons([...selectedAddons, newAddonPair]);
         setSelectedDrinkAttributes([...selectedDrinkAttributes, newDrinkAttributePair]);
+        setExtraCharge([...newExtraCharge, 0]);
+        setIsAddonPopoutOpen([...newIsAddonPopoutOpen, false]);
     };
+
 
     const toggleCart = () => {
         setCartVisible(!isCartVisible);
     };
 
-    const toggleCustumize = () => {
-        setIsAddonPopoutOpen(!isAddonPopoutOpen);
+
+    const toggleCustumize = (drinkIndex: number) => {
+        const newIsAddonPopoutOpen = [...isAddonPopoutOpen];  // Create a copy of the isAddonPopoutOpen array
+        newIsAddonPopoutOpen[drinkIndex] = !newIsAddonPopoutOpen[drinkIndex];
+        setIsAddonPopoutOpen(newIsAddonPopoutOpen);
     };
 
+
     const handleAddonSelection = (drinkIndex: number, addon: string) => {
-        const newSelectedAddons = [...selectedAddons];
+        const newSelectedAddons = [...selectedAddons];  // Create a copy of the selecteAddons array
         const newAddonPair = newSelectedAddons[drinkIndex];
+        const newExtraCharge = [...extraCharge];  // Create a copy of the extraCharge array
+
         if (newAddonPair[addon] !== "None") {
             newAddonPair[addon] = "None";
+            newExtraCharge[drinkIndex] -= 0.5; 
+            setOrderTotal(prevOrderTotal => parseFloat((prevOrderTotal - 0.5).toFixed(2)));
         } 
         else {
             newAddonPair[addon] = "Added";
+            newExtraCharge[drinkIndex] += 0.5;
+            setOrderTotal(prevOrderTotal => parseFloat((prevOrderTotal + 0.5).toFixed(2)));
         }
         newSelectedAddons[drinkIndex] = newAddonPair;
         setSelectedAddons(newSelectedAddons);
+        setExtraCharge(newExtraCharge);
     };
 
+
     const handleAttributeSelection = (drinkIndex: number, attribute: string, value: string) => {
-        const newSelectedDrinkAttributes = [...selectedDrinkAttributes];
-        const newDrinkAttributePair = newSelectedDrinkAttributes[drinkIndex];
+        const newSelectedDrinkAttributes = [...selectedDrinkAttributes];  // Create a copy of the selectedDrinkAttributes array
+        const newDrinkAttributePair = newSelectedDrinkAttributes[drinkIndex];  
+        const newExtraCharge = [...extraCharge];  // Create a copy of the extraCharge array
+        // Changing price based on cup size
+        if (attribute === "CupSize"){
+            // Regular to Regular Hot
+            if (value === "Regular Hot" && newDrinkAttributePair["CupSize"] === "Regular"){
+                newExtraCharge[drinkIndex] += 1; 
+                setOrderTotal(prevOrderTotal => parseFloat((prevOrderTotal + 1).toFixed(2)));
+            }
+            // Regular to XL
+            else if (value === "XL" && newDrinkAttributePair["CupSize"] === "Regular"){
+                newExtraCharge[drinkIndex] += 2;
+                setOrderTotal(prevOrderTotal => parseFloat((prevOrderTotal + 2).toFixed(2)));  
+                console.log("XL to Regular"); 
+            }
+            // Regular Hot to Regular
+            else if (value === "Regular" && newDrinkAttributePair["CupSize"] === "Regular Hot"){
+                newExtraCharge[drinkIndex] -= 1; 
+                setOrderTotal(prevOrderTotal => parseFloat((prevOrderTotal - 1).toFixed(2)));
+            }
+            // Regular Hot to XL
+            else if (value === "XL" && newDrinkAttributePair["CupSize"] === "Regular Hot"){
+                newExtraCharge[drinkIndex] += 1;
+                setOrderTotal(prevOrderTotal => parseFloat((prevOrderTotal + 1).toFixed(2)));
+            }
+            // XL to Regular
+            else if (value === "Regular" && newDrinkAttributePair["CupSize"] === "XL"){
+                newExtraCharge[drinkIndex] -= 2;
+                setOrderTotal(prevOrderTotal => parseFloat((prevOrderTotal - 2).toFixed(2)));
+            }
+            // XL to Regular Hot    
+            else if (value === "Regular Hot" && newDrinkAttributePair["CupSize"] === "XL"){
+                newExtraCharge[drinkIndex] -= 1;
+                setOrderTotal(prevOrderTotal => parseFloat((prevOrderTotal - 1).toFixed(2)));
+            }
+        }
+
         if (attribute === "SpecialInstructions") {
             setSpecialInstructions(value);
-            newDrinkAttributePair[attribute] = value;
         }
-        else if (newDrinkAttributePair[attribute] !== value) {
+        if (newDrinkAttributePair[attribute] !== value) {
             newDrinkAttributePair[attribute] = value;
         } 
+
         newSelectedDrinkAttributes[drinkIndex] = newDrinkAttributePair;
         setSelectedDrinkAttributes(newSelectedDrinkAttributes);
+        setExtraCharge(newExtraCharge);
     };
 
 
     // Functionality when click on remove button
     const removeDrink = (drinkPrice: number, drinkIndex: number) => {
-            // Create a copy of the selectedOrders array
-            const updatedOrders = [...selectedOrders];
+            const updatedOrders = [...selectedOrders];  // Create a copy of the selectedOrders array
             // Remove the message at the specified index
             updatedOrders.splice(drinkIndex, 1);
             // Update the state to reflect the removal
             setSelectedOrders(updatedOrders);
-            setOrderTotal(prevOrderTotal => parseFloat((Number(prevOrderTotal) - Number(drinkPrice)).toFixed(2)));
+            setOrderTotal(prevOrderTotal => parseFloat((prevOrderTotal - drinkPrice - extraCharge[drinkIndex]).toFixed(2)));
         };
     
+
     // Functionality when click on place order button
     const placeOrder = async () => {
         const orderData = { // Define orderData as an object
@@ -138,10 +192,15 @@ export default function Home() {
         }
     }
 
+
     // Fetch menu data on page load
     useEffect(() => {
         fetchMenu();
     },[]);    
+
+
+
+
 
     return (
     <>
@@ -151,7 +210,7 @@ export default function Home() {
         <div className={`${styles.cartButton} ${isCartVisible ? styles.open : ''}`}>
             <div className={styles.cartButtonContent}>
                 <p>CART</p>
-                <p>Order Total: ${Number(orderTotal)}</p>
+                <p>Order Total: ${orderTotal.toFixed(2)}</p>
                 <button className={styles.cartDropdownButton} onClick={toggleCart}>
                     {isCartVisible ? 'Hide' : 'Show'}
                 </button>
@@ -159,11 +218,11 @@ export default function Home() {
             <div className={`${styles.cartDropdownContent} ${isCartVisible ? styles.open : ''}`}>
                 {selectedOrders.map((item, index) => (
                     <div key={index}>
-                        <p>{item.drink_name} ${item.price} <br/>
+                        <p>{item.drink_name} ${(Number(item.price)+extraCharge[index]).toFixed(2)} <br/>
                         {/* {Object.entries(selectedAddons[index])} <br/>
                         {Object.entries(selectedDrinkAttributes[index])} <br/> */}
-                        <button onClick={toggleCustumize}>Customize</button>
-                        {isAddonPopoutOpen && (
+                        <button onClick={() => toggleCustumize(index)}>Customize</button>
+                        {isAddonPopoutOpen[index] && (
                             <div className={styles.addonPopout}>
                                 <p>Select your addons:</p>
                                 <label className="checkbox-label">
@@ -171,7 +230,7 @@ export default function Home() {
                                         onChange={()=> handleAddonSelection(index, "Boba")}
                                         checked={selectedAddons[index]["Boba"] === "Added"}
                                     />
-                                    Extra Boba
+                                    Extra Boba ($0.50)
                                 </label>
                                 <br/>
                                 <label className="checkbox-label">
@@ -179,7 +238,7 @@ export default function Home() {
                                         onChange={()=> handleAddonSelection(index, "CreamMousse")}
                                         checked={selectedAddons[index]["CreamMousse"] === "Added"}
                                     />
-                                    Cream Mousse
+                                    Cream Mousse ($0.50)
                                 </label>
                                 <br/>
                                 <label className="checkbox-label">
@@ -187,7 +246,7 @@ export default function Home() {
                                         onChange={()=> handleAddonSelection(index, "RedBean")}
                                         checked={selectedAddons[index]["RedBean"] === "Added"}
                                     />
-                                    Red Bean
+                                    Red Bean ($0.50)
                                 </label>
                                 <br/>
                                 <label className="checkbox-label">
@@ -195,7 +254,7 @@ export default function Home() {
                                         onChange={()=> handleAddonSelection(index, "Mochi")}
                                         checked={selectedAddons[index]["Mochi"] === "Added"}
                                     />
-                                    Mochi
+                                    Mochi  ($0.50)
                                 </label>
                                 <br/>
                                 <label className="checkbox-label">
@@ -203,7 +262,7 @@ export default function Home() {
                                         onChange={()=> handleAddonSelection(index, "TigerPearls")}
                                         checked={selectedAddons[index]["TigerPearls"] === "Added"}
                                     />
-                                    Tiger Pearls
+                                    Tiger Pearls ($0.50)
                                 </label>
                                 <br/>
                                 <label className="checkbox-label">
@@ -211,7 +270,7 @@ export default function Home() {
                                         onChange={()=> handleAddonSelection(index, "Taro")}
                                         checked={selectedAddons[index]["Taro"] === "Added"}
                                     />
-                                    Taro
+                                    Taro ($0.50)
                                 </label>
                                 <br/>
                                 <label className="checkbox-label">
@@ -219,7 +278,7 @@ export default function Home() {
                                         onChange={()=> handleAddonSelection(index, "Pudding")}
                                         checked={selectedAddons[index]["Pudding"] === "Added"}
                                     />
-                                    Pudding
+                                    Pudding ($0.50)
                                 </label>
                                 <br/>
                                 <br/>
@@ -318,7 +377,7 @@ export default function Home() {
                                         onChange={()=> handleAttributeSelection(index, "CupSize", "Regular Hot")}
                                         checked={selectedDrinkAttributes[index]["CupSize"] === "Regular Hot"}
                                     /> 
-                                    Regular Hot
+                                    Regular Hot ($1.00)
                                 </label>
                                 <br/>
                                 <label>
@@ -326,7 +385,7 @@ export default function Home() {
                                         onChange={()=> handleAttributeSelection(index, "CupSize", "XL")}
                                         checked={selectedDrinkAttributes[index]["CupSize"] === "XL"}
                                     /> 
-                                    XL
+                                    XL ($2.00)
                                 </label>
                                 <br/>
                                 <br/>
