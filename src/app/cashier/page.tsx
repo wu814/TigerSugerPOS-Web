@@ -147,18 +147,22 @@ export default function Home() {
             const updateAddOns = [...selectedAddOns];  // Create a copy of the selectedAddOns array
             const updateDrinkAttributes = [...selectedDrinkAttributes];  // Create a copy of the selectedDrinkAttributes array
             const updateExtraCharge = [...extraCharge];  // Create a copy of the extraCharge array
+            const updateIsAddOnPopoutOpen = [...isAddOnPopoutOpen];  // Create a copy of the isAddonPopoutOpen array
             // Remove the message at the specified index
             updatedOrders.splice(drinkIndex, 1);
             // Make sure all the state variables are back to default values
             updateAddOns[drinkIndex] = AddOnPair;
             updateDrinkAttributes[drinkIndex] = DrinkAttributePair;
             updateExtraCharge[drinkIndex] = 0;
+            updateIsAddOnPopoutOpen[drinkIndex] = false;
             // Update the state to reflect the removal
             setOrderTotal(prevOrderTotal => parseFloat((prevOrderTotal - drinkPrice - extraCharge[drinkIndex]).toFixed(2)));
             setSelectedOrders(updatedOrders);
             setSelectedAddOns(updateAddOns);
             setSelectedDrinkAttributes(updateDrinkAttributes);
             setExtraCharge(updateExtraCharge);
+            setIsAddOnPopoutOpen(updateIsAddOnPopoutOpen);
+            setSpecialInstructions('');
     };
     
 
