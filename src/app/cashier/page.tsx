@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import { type } from "os";
+import { clear } from "console";
 
 export default function Home() {
     const AddOnPair = {
@@ -33,7 +34,7 @@ export default function Home() {
     const [isAddOnPopoutOpen, setIsAddOnPopoutOpen] = useState<boolean[]>([]);
     const [selectedAddOns, setSelectedAddOns] = useState<any[]>([]); // for storing selected add ons
     const [selectedDrinkAttributes, setSelectedDrinkAttributes] = useState<any[]>([]); // for storing selected drink attributes
-    const [specialInstructions, setSpecialInstructions] = useState('');
+    const [specialInstructions, setSpecialInstructions] = useState<string[]>([]);
     const [extraCharge, setExtraCharge] = useState<number[]>([]);
     const [orderTotal, setOrderTotal] = useState(0);
 
@@ -92,6 +93,7 @@ export default function Home() {
     const handleAttributeSelection = (drinkIndex: number, attribute: string, value: string) => {
         const newSelectedDrinkAttributes = [...selectedDrinkAttributes];  // Create a copy of the selectedDrinkAttributes array
         const newDrinkAttributePair = newSelectedDrinkAttributes[drinkIndex];  
+        const newSpecialInstruction = [...specialInstructions];  // Create a copy of the specialInstructions array
         const newExtraCharge = [...extraCharge];  // Create a copy of the extraCharge array
         // Changing price based on cup size
         if (attribute === "CupSize"){
@@ -129,11 +131,12 @@ export default function Home() {
         }
 
         if (attribute === "SpecialInstructions") {
-            setSpecialInstructions(value);
+            newSpecialInstruction[drinkIndex] = value;
+            setSpecialInstructions(newSpecialInstruction);
         }
-        if (newDrinkAttributePair[attribute] !== value) {
-            newDrinkAttributePair[attribute] = value;
-        } 
+
+        // update the drink attribute pair
+        newDrinkAttributePair[attribute] = value;
 
         newSelectedDrinkAttributes[drinkIndex] = newDrinkAttributePair;
         setSelectedDrinkAttributes(newSelectedDrinkAttributes);
@@ -148,6 +151,7 @@ export default function Home() {
             const updateDrinkAttributes = [...selectedDrinkAttributes];  // Create a copy of the selectedDrinkAttributes array
             const updateExtraCharge = [...extraCharge];  // Create a copy of the extraCharge array
             const updateIsAddOnPopoutOpen = [...isAddOnPopoutOpen];  // Create a copy of the isAddonPopoutOpen array
+            const updateSpecialInstruction = [...specialInstructions];  // Create a copy of the specialInstructions array
             // Remove the message at the specified index
             updatedOrders.splice(drinkIndex, 1);
             // Make sure all the state variables are back to default values
@@ -155,6 +159,7 @@ export default function Home() {
             updateDrinkAttributes[drinkIndex] = DrinkAttributePair;
             updateExtraCharge[drinkIndex] = 0;
             updateIsAddOnPopoutOpen[drinkIndex] = false;
+            updateSpecialInstruction[drinkIndex] = "None";
             // Update the state to reflect the removal
             setOrderTotal(prevOrderTotal => parseFloat((prevOrderTotal - drinkPrice - extraCharge[drinkIndex]).toFixed(2)));
             setSelectedOrders(updatedOrders);
@@ -162,12 +167,24 @@ export default function Home() {
             setSelectedDrinkAttributes(updateDrinkAttributes);
             setExtraCharge(updateExtraCharge);
             setIsAddOnPopoutOpen(updateIsAddOnPopoutOpen);
-            setSpecialInstructions('');
+            setSpecialInstructions(updateSpecialInstruction);
     };
     
 
+    const clearCart = () => {
+        setSelectedOrders([]);
+        setSelectedAddOns([]);
+        setSelectedDrinkAttributes([]);
+        setExtraCharge([]);
+        setIsAddOnPopoutOpen([]);
+        setSpecialInstructions([]);
+        setOrderTotal(0);
+    };
+
+
     // Functionality when click on place order button
     const placeOrder = async () => {
+        clearCart();
         const orderData = { // Define orderData as an object
             order_timestamp: "2023-10-29 14:33:00",
             employee_id: 1,
@@ -228,8 +245,8 @@ export default function Home() {
                 {selectedOrders.map((item, index) => (
                     <div key={index}>
                         <p>{item.drink_name} ${(Number(item.price)+extraCharge[index]).toFixed(2)} <br/>
-                        {/* {Object.entries(selectedAddons[index])} <br/>
-                        {Object.entries(selectedDrinkAttributes[index])} <br/> */}
+                        {Object.entries(selectedAddOns[index])} <br/>
+                        {Object.entries(selectedDrinkAttributes[index])} <br/>
                         <button onClick={() => toggleCustumize(index)}>Customize</button>
                         {isAddOnPopoutOpen[index] && (
                             <div className={styles.addOnPopout}>
@@ -295,7 +312,7 @@ export default function Home() {
                                 Dairy Free Alternatives
                                 <br/>
                                 <label>
-                                    <input type="radio" name="dairyFree" value="None" defaultChecked 
+                                    <input type="radio" name={`dairyFree-${index}`} value="None" defaultChecked 
                                         onChange={()=> handleAttributeSelection(index, "DairyFree", "None")}
                                         checked={selectedDrinkAttributes[index]["DairyFree"] === "None"}
                                     /> 
@@ -303,7 +320,7 @@ export default function Home() {
                                 </label>
                                 <br />
                                 <label>
-                                    <input type="radio" name="dairyFree" value="Oat" 
+                                    <input type="radio" name={`dairyFree-${index}`} value="Oat" 
                                         onChange={()=> handleAttributeSelection(index, "DairyFree", "Oat")}
                                         checked={selectedDrinkAttributes[index]["DairyFree"] === "Oat"}
                                     />
@@ -311,7 +328,7 @@ export default function Home() {
                                 </label>
                                 <br />
                                 <label>
-                                    <input type="radio" name="dairyFree" value="Soy" 
+                                    <input type="radio" name={`dairyFree-${index}`} value="Soy" 
                                         onChange={()=> handleAttributeSelection(index, "DairyFree", "Soy")}
                                         checked={selectedDrinkAttributes[index]["DairyFree"] === "Soy"}
                                     /> 
@@ -319,7 +336,7 @@ export default function Home() {
                                 </label>
                                 <br />
                                 <label>
-                                    <input type="radio" name="dairyFree" value="Lactose Free" 
+                                    <input type="radio" name={`dairyFree-${index}`} value="Lactose Free" 
                                         onChange={()=> handleAttributeSelection(index, "DairyFree", "Lactose Free")}
                                         checked={selectedDrinkAttributes[index]["DairyFree"] === "Lactose Free"}
                                     /> 
@@ -330,7 +347,7 @@ export default function Home() {
                                 Sweetness Level
                                 <br/>
                                 <label>
-                                    <input type="radio" name="sweetnessLevel" value="100%" defaultChecked 
+                                    <input type="radio" name={`sweetnessLevel-${index}`} value="100%" defaultChecked 
                                         onChange={()=> handleAttributeSelection(index, "SweetnessLevel", "100%")}
                                         checked={selectedDrinkAttributes[index]["SweetnessLevel"] === "100%"}
                                     /> 
@@ -338,7 +355,7 @@ export default function Home() {
                                 </label>
                                 <br/>
                                 <label>
-                                    <input type="radio" name="sweetnessLevel" value="50%" 
+                                    <input type="radio" name={`sweetnessLevel-${index}`} value="50%" 
                                         onChange={()=> handleAttributeSelection(index, "SweetnessLevel", "50%")}
                                         checked={selectedDrinkAttributes[index]["SweetnessLevel"] === "50%"}
                                     /> 
@@ -349,7 +366,7 @@ export default function Home() {
                                 Ice Level
                                 <br/>
                                 <label>
-                                    <input type="radio" name="iceLevel" value="Normal" defaultChecked 
+                                    <input type="radio" name={`iceLevel-${index}`} value="Normal" defaultChecked 
                                         onChange={()=> handleAttributeSelection(index, "IceLevel", "Normal")}
                                         checked={selectedDrinkAttributes[index]["IceLevel"] === "Normal"}
                                     /> 
@@ -357,7 +374,7 @@ export default function Home() {
                                 </label>
                                 <br/>
                                 <label>
-                                    <input type="radio" name="iceLevel" value="Less Ice" 
+                                    <input type="radio" name={`iceLevel-${index}`} value="Less Ice" 
                                         onChange={()=> handleAttributeSelection(index, "IceLevel", "Less Ice")}
                                         checked={selectedDrinkAttributes[index]["IceLevel"] === "Less Ice"}
                                     /> 
@@ -365,7 +382,7 @@ export default function Home() {
                                 </label>
                                 <br/>
                                 <label>
-                                    <input type="radio" name="iceLevel" value="None" 
+                                    <input type="radio" name={`iceLevel-${index}`} value="None" 
                                         onChange={()=> handleAttributeSelection(index, "IceLevel", "None")}
                                         checked={selectedDrinkAttributes[index]["IceLevel"] === "None"}
                                     />
@@ -374,7 +391,7 @@ export default function Home() {
                                 <br/>
                                 <br/>
                                 <label>
-                                    <input type="radio" name="cupSize" value="Regular" defaultChecked 
+                                    <input type="radio" name={`cupSize-${index}`} value="Regular" defaultChecked 
                                         onChange={()=> handleAttributeSelection(index, "CupSize", "Regular")}
                                         checked={selectedDrinkAttributes[index]["CupSize"] === "Regular"}
                                     /> 
@@ -382,7 +399,7 @@ export default function Home() {
                                 </label>
                                 <br/>
                                 <label>
-                                    <input type="radio" name="cupSize" value="Regular Hot" 
+                                    <input type="radio" name={`cupSize-${index}`} value="Regular Hot" 
                                         onChange={()=> handleAttributeSelection(index, "CupSize", "Regular Hot")}
                                         checked={selectedDrinkAttributes[index]["CupSize"] === "Regular Hot"}
                                     /> 
@@ -390,7 +407,7 @@ export default function Home() {
                                 </label>
                                 <br/>
                                 <label>
-                                    <input type="radio" name="cupSize" value="XL" 
+                                    <input type="radio" name={`cupSize-${index}`} value="XL" 
                                         onChange={()=> handleAttributeSelection(index, "CupSize", "XL")}
                                         checked={selectedDrinkAttributes[index]["CupSize"] === "XL"}
                                     /> 
@@ -399,7 +416,7 @@ export default function Home() {
                                 <br/>
                                 <br/>
                                 <label>
-                                    <input type="text" name="specialInstructions" placeholder="Add special instructions" value={specialInstructions}
+                                    <input type="text" name={`specialInstruction-${index}`} placeholder="Add special instructions" value={specialInstructions[index]}
                                         onChange={(event)=> handleAttributeSelection(index, "SpecialInstructions", event.target.value)}
                                     />
                                 </label>
@@ -411,6 +428,7 @@ export default function Home() {
                 ))}
             </div>
             <button onClick={placeOrder}>Charge</button><br/>
+            <button onClick={clearCart}>Clear Cart</button>
         </div>
         <div className={styles.container}>
             <div className={styles.pContainer}>
