@@ -11,21 +11,21 @@ import { clear } from "console";
 
 export default function Home() {
     const AddOnPair = {
-        Boba: "None",
-        CreamMousse: "None",
-        RedBean: "None",
-        Mochi: "None",
-        TigerPearls: "None",
-        Taro: "None",
-        Pudding: "None",
+        "Extra Boba": "None",
+        "Cream Mousse": "None",
+        "Red Bean": "None",
+        "Mochi": "None",
+        "Tiger Pearls": "None",
+        "Taro": "None",
+        "Pudding": "None",
     }
 
     const DrinkAttributePair = {
-        DairyFree: "None",
-        SweetnessLevel: "100%",
-        IceLevel: "Normal",
-        CupSize: "Regular",
-        SpecialInstructions: "None",
+        "Dairy Free Alternative": "None",
+        "Sweetness Level": "100%",
+        "Ice Level": "Normal",
+        "Cup Size": "Regular",
+        "Special Instructions": "None",
     }
     
     const [isCartVisible, setCartVisible] = useState(false); // Show the cart if true, hide if false
@@ -182,17 +182,44 @@ export default function Home() {
     };
 
 
+    const getCurrentTimestamp = () => {
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        const day = String(currentDate.getDate()).padStart(2, '0');
+        const hours = String(currentDate.getHours()).padStart(2, '0');
+        const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+        const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+      
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+      };
+
+
     // Functionality when click on place order button
     const placeOrder = async () => {
-        clearCart();
+        const orderItemArray = []; // for converting an array of order items to a string
+        const drinkAddOnsArray = []; // for converting an array of drink add ons to a string
+        const drinkAttributesArray = []; // for converting an array of drink attributes to a string
+        const currentTimeStamp = getCurrentTimestamp(); // get the current timestamp
+        for (let i = 0; i < selectedOrders.length; i++) {
+            orderItemArray.push(selectedOrders[i].drink_name);
+        }
+        for (let i = 0; i < selectedAddOns.length; i++) {
+            drinkAddOnsArray.push(Object.entries(selectedAddOns[i]).map(([key, value]) => `${key}: ${value}`)
+            .join(', '));
+        }
+        for (let i = 0; i < selectedDrinkAttributes.length; i++) {
+            drinkAttributesArray.push(Object.entries(selectedDrinkAttributes[i]).map(([key, value]) => `${key}: ${value}`)
+            .join(', '));
+        }
         const orderData = { // Define orderData as an object
-            order_timestamp: "2023-10-29 14:33:00",
-            employee_id: 1,
-            customer_id: 2,
-            order_items: ["item1", "item2"],
-            order_total: 25.00,
-            drink_attributes: ["item1", "item2"],
-            drink_addons: ["item1", "item2"],
+            orderTimestamp: currentTimeStamp,
+            employeeId: 1,
+            customerId: 2,
+            orderItems: orderItemArray,
+            orderTotal: orderTotal,
+            drinkAttributes: drinkAttributesArray,
+            drinkAddOns: drinkAddOnsArray,
         };
         
         try{
@@ -216,6 +243,7 @@ export default function Home() {
         }catch(error){
             console.error('Error fetching API:', error);
         }
+        clearCart(); 
     }
 
 
@@ -245,32 +273,30 @@ export default function Home() {
                 {selectedOrders.map((item, index) => (
                     <div key={index}>
                         <p>{item.drink_name} ${(Number(item.price)+extraCharge[index]).toFixed(2)} <br/>
-                        {Object.entries(selectedAddOns[index])} <br/>
-                        {Object.entries(selectedDrinkAttributes[index])} <br/>
                         <button onClick={() => toggleCustumize(index)}>Customize</button>
                         {isAddOnPopoutOpen[index] && (
                             <div className={styles.addOnPopout}>
                                 <p>Select your add ons:</p>
                                 <label className="checkbox-label">
                                     <input type="checkbox" name="extraBoba" value="Boba" 
-                                        onChange={()=> handleAddOnSelection(index, "Boba")}
-                                        checked={selectedAddOns[index]["Boba"] === "Added"}
+                                        onChange={()=> handleAddOnSelection(index, "Extra Boba")}
+                                        checked={selectedAddOns[index]["Extra Boba"] === "Added"}
                                     />
                                     Extra Boba ($0.50)
                                 </label>
                                 <br/>
                                 <label className="checkbox-label">
                                     <input type="checkbox" name="extraCreamMousse" value="Cream Mousse" 
-                                        onChange={()=> handleAddOnSelection(index, "CreamMousse")}
-                                        checked={selectedAddOns[index]["CreamMousse"] === "Added"}
+                                        onChange={()=> handleAddOnSelection(index, "Cream Mousse")}
+                                        checked={selectedAddOns[index]["Cream Mousse"] === "Added"}
                                     />
                                     Cream Mousse ($0.50)
                                 </label>
                                 <br/>
                                 <label className="checkbox-label">
                                     <input type="checkbox" name="extraRedBean" value="Red Bean" 
-                                        onChange={()=> handleAddOnSelection(index, "RedBean")}
-                                        checked={selectedAddOns[index]["RedBean"] === "Added"}
+                                        onChange={()=> handleAddOnSelection(index, "Red Bean")}
+                                        checked={selectedAddOns[index]["Red Bean"] === "Added"}
                                     />
                                     Red Bean ($0.50)
                                 </label>
@@ -285,8 +311,8 @@ export default function Home() {
                                 <br/>
                                 <label className="checkbox-label">
                                     <input type="checkbox" name="extraTigerPearls" value="Tiger Pearls" 
-                                        onChange={()=> handleAddOnSelection(index, "TigerPearls")}
-                                        checked={selectedAddOns[index]["TigerPearls"] === "Added"}
+                                        onChange={()=> handleAddOnSelection(index, "Tiger Pearls")}
+                                        checked={selectedAddOns[index]["Tiger Pearls"] === "Added"}
                                     />
                                     Tiger Pearls ($0.50)
                                 </label>
@@ -313,32 +339,32 @@ export default function Home() {
                                 <br/>
                                 <label>
                                     <input type="radio" name={`dairyFree-${index}`} value="None" defaultChecked 
-                                        onChange={()=> handleAttributeSelection(index, "DairyFree", "None")}
-                                        checked={selectedDrinkAttributes[index]["DairyFree"] === "None"}
+                                        onChange={()=> handleAttributeSelection(index, "Dairy Free Alternative", "None")}
+                                        checked={selectedDrinkAttributes[index]["Dairy Free Alternative"] === "None"}
                                     /> 
                                     None
                                 </label>
                                 <br />
                                 <label>
                                     <input type="radio" name={`dairyFree-${index}`} value="Oat" 
-                                        onChange={()=> handleAttributeSelection(index, "DairyFree", "Oat")}
-                                        checked={selectedDrinkAttributes[index]["DairyFree"] === "Oat"}
+                                        onChange={()=> handleAttributeSelection(index, "Dairy Free Alternative", "Oat")}
+                                        checked={selectedDrinkAttributes[index]["Dairy Free Alternative"] === "Oat"}
                                     />
                                     Oat
                                 </label>
                                 <br />
                                 <label>
                                     <input type="radio" name={`dairyFree-${index}`} value="Soy" 
-                                        onChange={()=> handleAttributeSelection(index, "DairyFree", "Soy")}
-                                        checked={selectedDrinkAttributes[index]["DairyFree"] === "Soy"}
+                                        onChange={()=> handleAttributeSelection(index, "Dairy Free Alternative", "Soy")}
+                                        checked={selectedDrinkAttributes[index]["Dairy Free Alternative"] === "Soy"}
                                     /> 
                                     Soy
                                 </label>
                                 <br />
                                 <label>
                                     <input type="radio" name={`dairyFree-${index}`} value="Lactose Free" 
-                                        onChange={()=> handleAttributeSelection(index, "DairyFree", "Lactose Free")}
-                                        checked={selectedDrinkAttributes[index]["DairyFree"] === "Lactose Free"}
+                                        onChange={()=> handleAttributeSelection(index, "Dairy Free Alternative", "Lactose Free")}
+                                        checked={selectedDrinkAttributes[index]["Dairy Free Alternative"] === "Lactose Free"}
                                     /> 
                                     Lactose Free
                                 </label>
@@ -348,16 +374,16 @@ export default function Home() {
                                 <br/>
                                 <label>
                                     <input type="radio" name={`sweetnessLevel-${index}`} value="100%" defaultChecked 
-                                        onChange={()=> handleAttributeSelection(index, "SweetnessLevel", "100%")}
-                                        checked={selectedDrinkAttributes[index]["SweetnessLevel"] === "100%"}
+                                        onChange={()=> handleAttributeSelection(index, "Sweetness Level", "100%")}
+                                        checked={selectedDrinkAttributes[index]["Sweetness Level"] === "100%"}
                                     /> 
                                     100%
                                 </label>
                                 <br/>
                                 <label>
                                     <input type="radio" name={`sweetnessLevel-${index}`} value="50%" 
-                                        onChange={()=> handleAttributeSelection(index, "SweetnessLevel", "50%")}
-                                        checked={selectedDrinkAttributes[index]["SweetnessLevel"] === "50%"}
+                                        onChange={()=> handleAttributeSelection(index, "Sweetness Level", "50%")}
+                                        checked={selectedDrinkAttributes[index]["Sweetness Level"] === "50%"}
                                     /> 
                                     50%
                                 </label>
@@ -367,8 +393,8 @@ export default function Home() {
                                 <br/>
                                 <label>
                                     <input type="radio" name={`iceLevel-${index}`} value="Normal" defaultChecked 
-                                        onChange={()=> handleAttributeSelection(index, "IceLevel", "Normal")}
-                                        checked={selectedDrinkAttributes[index]["IceLevel"] === "Normal"}
+                                        onChange={()=> handleAttributeSelection(index, "Ice Level", "Normal")}
+                                        checked={selectedDrinkAttributes[index]["Ice Level"] === "Normal"}
                                     /> 
                                     Normal
                                 </label>
@@ -376,40 +402,42 @@ export default function Home() {
                                 <label>
                                     <input type="radio" name={`iceLevel-${index}`} value="Less Ice" 
                                         onChange={()=> handleAttributeSelection(index, "IceLevel", "Less Ice")}
-                                        checked={selectedDrinkAttributes[index]["IceLevel"] === "Less Ice"}
+                                        checked={selectedDrinkAttributes[index]["Ice Level"] === "Less Ice"}
                                     /> 
                                     Less Ice
                                 </label>
                                 <br/>
                                 <label>
                                     <input type="radio" name={`iceLevel-${index}`} value="None" 
-                                        onChange={()=> handleAttributeSelection(index, "IceLevel", "None")}
-                                        checked={selectedDrinkAttributes[index]["IceLevel"] === "None"}
+                                        onChange={()=> handleAttributeSelection(index, "Ice Level", "None")}
+                                        checked={selectedDrinkAttributes[index]["Ice Level"] === "None"}
                                     />
                                     None
                                 </label>
                                 <br/>
                                 <br/>
+                                Cup Size
+                                <br/>
                                 <label>
                                     <input type="radio" name={`cupSize-${index}`} value="Regular" defaultChecked 
-                                        onChange={()=> handleAttributeSelection(index, "CupSize", "Regular")}
-                                        checked={selectedDrinkAttributes[index]["CupSize"] === "Regular"}
+                                        onChange={()=> handleAttributeSelection(index, "Cup Size", "Regular")}
+                                        checked={selectedDrinkAttributes[index]["Cup Size"] === "Regular"}
                                     /> 
                                     Regular
                                 </label>
                                 <br/>
                                 <label>
                                     <input type="radio" name={`cupSize-${index}`} value="Regular Hot" 
-                                        onChange={()=> handleAttributeSelection(index, "CupSize", "Regular Hot")}
-                                        checked={selectedDrinkAttributes[index]["CupSize"] === "Regular Hot"}
+                                        onChange={()=> handleAttributeSelection(index, "Cup Size", "Regular Hot")}
+                                        checked={selectedDrinkAttributes[index]["Cup Size"] === "Regular Hot"}
                                     /> 
                                     Regular Hot ($1.00)
                                 </label>
                                 <br/>
                                 <label>
                                     <input type="radio" name={`cupSize-${index}`} value="XL" 
-                                        onChange={()=> handleAttributeSelection(index, "CupSize", "XL")}
-                                        checked={selectedDrinkAttributes[index]["CupSize"] === "XL"}
+                                        onChange={()=> handleAttributeSelection(index, "Cup Size", "XL")}
+                                        checked={selectedDrinkAttributes[index]["Cup Size"] === "XL"}
                                     /> 
                                     XL ($2.00)
                                 </label>
@@ -417,7 +445,7 @@ export default function Home() {
                                 <br/>
                                 <label>
                                     <input type="text" name={`specialInstruction-${index}`} placeholder="Add special instructions" value={specialInstructions[index]}
-                                        onChange={(event)=> handleAttributeSelection(index, "SpecialInstructions", event.target.value)}
+                                        onChange={(event)=> handleAttributeSelection(index, "Special Instructions", event.target.value)}
                                     />
                                 </label>
                             </div>
