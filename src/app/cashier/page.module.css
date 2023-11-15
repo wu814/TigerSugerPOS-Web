@@ -239,7 +239,7 @@
 
 .cartButton.open {
   max-height: 1000px; /* Set the max-height to expand when open */
-  overflow: auto;
+  /* overflow: auto; */
 }
 
 .cartButtonContent {
@@ -268,7 +268,7 @@
 }
 
 .open .cartDropdownContent {
-  max-height: 300px;
+  max-height: 1000px;
   width: 100%;
   top: 100%;
   left: 0;
