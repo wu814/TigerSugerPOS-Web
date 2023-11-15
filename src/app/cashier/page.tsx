@@ -284,7 +284,7 @@ export default function Home() {
                                     />
                                     Extra Boba ($0.50)
                                 </label>
-                                <br/>
+                                <span style={{ marginLeft: '10px' }}></span>
                                 <label className="checkbox-label">
                                     <input type="checkbox" name="extraCreamMousse" value="Cream Mousse" 
                                         onChange={()=> handleAddOnSelection(index, "Cream Mousse")}
@@ -292,7 +292,7 @@ export default function Home() {
                                     />
                                     Cream Mousse ($0.50)
                                 </label>
-                                <br/>
+                                <span style={{ marginLeft: '10px' }}></span>
                                 <label className="checkbox-label">
                                     <input type="checkbox" name="extraRedBean" value="Red Bean" 
                                         onChange={()=> handleAddOnSelection(index, "Red Bean")}
@@ -300,7 +300,7 @@ export default function Home() {
                                     />
                                     Red Bean ($0.50)
                                 </label>
-                                <br/>
+                                <span style={{ marginLeft: '10px' }}></span>
                                 <label className="checkbox-label">
                                     <input type="checkbox" name="extraMochi" value="Mochi" 
                                         onChange={()=> handleAddOnSelection(index, "Mochi")}
@@ -308,7 +308,7 @@ export default function Home() {
                                     />
                                     Mochi  ($0.50)
                                 </label>
-                                <br/>
+                                <span style={{ marginLeft: '10px' }}></span>
                                 <label className="checkbox-label">
                                     <input type="checkbox" name="extraTigerPearls" value="Tiger Pearls" 
                                         onChange={()=> handleAddOnSelection(index, "Tiger Pearls")}
@@ -316,7 +316,7 @@ export default function Home() {
                                     />
                                     Tiger Pearls ($0.50)
                                 </label>
-                                <br/>
+                                <span style={{ marginLeft: '10px' }}></span>
                                 <label className="checkbox-label">
                                     <input type="checkbox" name="extraTaro" value="Taro" 
                                         onChange={()=> handleAddOnSelection(index, "Taro")}
@@ -324,7 +324,7 @@ export default function Home() {
                                     />
                                     Taro ($0.50)
                                 </label>
-                                <br/>
+                                <span style={{ marginLeft: '10px' }}></span>
                                 <label className="checkbox-label">
                                     <input type="checkbox" name="extraPudding" value="Pudding" 
                                         onChange={()=> handleAddOnSelection(index, "Pudding")}
@@ -332,7 +332,6 @@ export default function Home() {
                                     />
                                     Pudding ($0.50)
                                 </label>
-                                <br/>
                                 <br/>
                                 <br/>
                                 Dairy Free Alternatives
@@ -344,7 +343,7 @@ export default function Home() {
                                     /> 
                                     None
                                 </label>
-                                <br />
+                                <span style={{ marginLeft: '10px' }}></span>
                                 <label>
                                     <input type="radio" name={`dairyFree-${index}`} value="Oat" 
                                         onChange={()=> handleAttributeSelection(index, "Dairy Free Alternative", "Oat")}
@@ -352,7 +351,7 @@ export default function Home() {
                                     />
                                     Oat
                                 </label>
-                                <br />
+                                <span style={{ marginLeft: '10px' }}></span>
                                 <label>
                                     <input type="radio" name={`dairyFree-${index}`} value="Soy" 
                                         onChange={()=> handleAttributeSelection(index, "Dairy Free Alternative", "Soy")}
@@ -360,7 +359,7 @@ export default function Home() {
                                     /> 
                                     Soy
                                 </label>
-                                <br />
+                                <span style={{ marginLeft: '10px' }}></span>
                                 <label>
                                     <input type="radio" name={`dairyFree-${index}`} value="Lactose Free" 
                                         onChange={()=> handleAttributeSelection(index, "Dairy Free Alternative", "Lactose Free")}
@@ -379,7 +378,7 @@ export default function Home() {
                                     /> 
                                     100%
                                 </label>
-                                <br/>
+                                <span style={{ marginLeft: '10px' }}></span>
                                 <label>
                                     <input type="radio" name={`sweetnessLevel-${index}`} value="50%" 
                                         onChange={()=> handleAttributeSelection(index, "Sweetness Level", "50%")}
@@ -398,7 +397,7 @@ export default function Home() {
                                     /> 
                                     Normal
                                 </label>
-                                <br/>
+                                <span style={{ marginLeft: '10px' }}></span>
                                 <label>
                                     <input type="radio" name={`iceLevel-${index}`} value="Less Ice" 
                                         onChange={()=> handleAttributeSelection(index, "IceLevel", "Less Ice")}
@@ -406,7 +405,7 @@ export default function Home() {
                                     /> 
                                     Less Ice
                                 </label>
-                                <br/>
+                                <span style={{ marginLeft: '10px' }}></span>
                                 <label>
                                     <input type="radio" name={`iceLevel-${index}`} value="None" 
                                         onChange={()=> handleAttributeSelection(index, "Ice Level", "None")}
@@ -425,7 +424,7 @@ export default function Home() {
                                     /> 
                                     Regular
                                 </label>
-                                <br/>
+                                <span style={{ marginLeft: '10px' }}></span>
                                 <label>
                                     <input type="radio" name={`cupSize-${index}`} value="Regular Hot" 
                                         onChange={()=> handleAttributeSelection(index, "Cup Size", "Regular Hot")}
@@ -433,7 +432,7 @@ export default function Home() {
                                     /> 
                                     Regular Hot ($1.00)
                                 </label>
-                                <br/>
+                                <span style={{ marginLeft: '10px' }}></span>
                                 <label>
                                     <input type="radio" name={`cupSize-${index}`} value="XL" 
                                         onChange={()=> handleAttributeSelection(index, "Cup Size", "XL")}
