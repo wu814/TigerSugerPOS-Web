@@ -238,8 +238,8 @@
 }
 
 .cartButton.open {
-  max-height: 1000px; /* Set the max-height to expand when open */
-  /* overflow: auto; */
+  max-height: 500px; /* Set the max-height to expand when open */
+  overflow: auto;
 }
 
 .cartButtonContent {
@@ -268,7 +268,7 @@
 }
 
 .open .cartDropdownContent {
-  max-height: 1000px;
+  max-height: 500px;
   width: 100%;
   top: 100%;
   left: 0;
