@@ -5,7 +5,6 @@ import { query } from "../../../utils/database";
 export async function POST(request: NextRequest) {
     try {
         const reqData = await request.json();
-        console.log(reqData);
         // Extract order details from the request data
         const { orderTimestamp, employeeId, customerId, orderItems, orderTotal, drinkAttributes, drinkAddOns } = reqData;
         // Construct the SQL query to insert a new order

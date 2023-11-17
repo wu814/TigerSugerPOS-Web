@@ -221,32 +221,57 @@ export default function Home() {
             drinkAttributes: drinkAttributesArray,
             drinkAddOns: drinkAddOnsArray,
         };
+        const inventoryModList = {
+            amount: 0,
+            supply: ""
+        };
         
+        // writing new order to orders table
         try{
-        const response = await fetch("/api/placeOrder", {
-            method: "POST",
-            headers: {
-            "Content-Type": "application/json",
-            },
-            body: JSON.stringify(orderData),
-        });
+            const response = await fetch("/api/placeOrder", {
+                method: "POST",
+                headers: {
+                "Content-Type": "application/json",
+                },
+                body: JSON.stringify(orderData),
+            });
 
-        if (response.ok) {
-            // If the response status is OK (200), parse the JSON response
-            const data = await response.json();
-            alert(`Order added successfully. Order ID: ${data.order_id}`);
-        } else {
-            const errorData = await response.json();
-            console.error("Error from API:", errorData);
-            alert(`Error: ${errorData.error}`);
+            if (response.ok) {
+                // If the response status is OK (200), parse the JSON response
+                const data = await response.json();
+                alert(`Order added successfully. Order ID: ${data.order_id}`);
+            } else {
+                const errorData = await response.json();
+                console.error("Error from API:", errorData);
+                alert(`Error: ${errorData.error}`);
+            }
+        }catch(error){
+            console.error('Error fetching API:', error);
         }
+
+        // subtracting corresponding add ons and drink ingredients from inventory
+        try{
+            const response = await fetch("/api/subtractFromInventory", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(inventoryModList),
+            });
+            if (response.ok) {
+                // If the response status is OK (200), parse the JSON response
+                const data = await response.json();
+                alert("subtract from inventory successfully.");
+            } else {
+                const errorData = await response.json();
+                console.error("Error from API:", errorData);
+                alert(`Error: ${errorData.error}`);
+            }
         }catch(error){
             console.error('Error fetching API:', error);
         }
         clearCart(); 
     }
-
-
     // Fetch menu data on page load
     useEffect(() => {
         fetchMenu();
