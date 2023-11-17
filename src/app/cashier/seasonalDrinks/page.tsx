@@ -1,10 +1,10 @@
 import styles from './page.module.css'
-import Navbar from '../../../components/Navbar'
+import Cart from '../page'
 
 export default function Home() {
   return (
     <>
-    <Navbar/>
+    <Cart/>
     <div className={styles.main}>
         Seasonal Drinks
     </div>
