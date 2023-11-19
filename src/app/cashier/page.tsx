@@ -11,9 +11,9 @@ import { clear } from "console";
 
 export default function Home() {
     const AddOnPair = {
-        "Extra Boba": "None",
+        "Tapioca Pearls (Boba)": "None",
         "Cream Mousse": "None",
-        "Red Bean": "None",
+        "Red Beans": "None",
         "Mochi": "None",
         "Tiger Pearls": "None",
         "Taro": "None",
@@ -24,9 +24,10 @@ export default function Home() {
         "Dairy Free Alternative": "None",
         "Sweetness Level": "100%",
         "Ice Level": "Normal",
-        "Cup Size": "Regular",
+        "Cup Size": "Cups (Regular)",
         "Special Instructions": "None",
     }
+
     
     const [isCartVisible, setCartVisible] = useState(false); // Show the cart if true, hide if false
     const [selectedOrders, setSelectedOrders] = useState<any[]>([]);
@@ -37,6 +38,8 @@ export default function Home() {
     const [specialInstructions, setSpecialInstructions] = useState<string[]>([]);
     const [extraCharge, setExtraCharge] = useState<number[]>([]);
     const [orderTotal, setOrderTotal] = useState(0);
+    const [usedSupply, setUsedSupply] = useState<string[]>([]); // for tracking all the supplies need to be subtracted from inventory
+    const [subtractFromInventoryQuery, setSubtractFromInventoryQuery] = useState<string>(""); // for storing the query for subtracting from inventory
 
 
     const fetchMenu = async () => {
@@ -98,33 +101,32 @@ export default function Home() {
         // Changing price based on cup size
         if (attribute === "CupSize"){
             // Regular to Regular Hot
-            if (value === "Regular Hot" && newDrinkAttributePair["CupSize"] === "Regular"){
+            if (value === "Cups (Regular Hot)" && newDrinkAttributePair["CupSize"] === "Cups (Regular)"){
                 newExtraCharge[drinkIndex] += 1; 
                 setOrderTotal(prevOrderTotal => parseFloat((prevOrderTotal + 1).toFixed(2)));
             }
             // Regular to XL
-            else if (value === "XL" && newDrinkAttributePair["CupSize"] === "Regular"){
+            else if (value === "Cups (XL)" && newDrinkAttributePair["CupSize"] === "Cups (Regular)"){
                 newExtraCharge[drinkIndex] += 2;
                 setOrderTotal(prevOrderTotal => parseFloat((prevOrderTotal + 2).toFixed(2)));  
-                console.log("XL to Regular"); 
             }
             // Regular Hot to Regular
-            else if (value === "Regular" && newDrinkAttributePair["CupSize"] === "Regular Hot"){
+            else if (value === "Cups (Regular)" && newDrinkAttributePair["CupSize"] === "Cups (Regular Hot)"){
                 newExtraCharge[drinkIndex] -= 1; 
                 setOrderTotal(prevOrderTotal => parseFloat((prevOrderTotal - 1).toFixed(2)));
             }
             // Regular Hot to XL
-            else if (value === "XL" && newDrinkAttributePair["CupSize"] === "Regular Hot"){
+            else if (value === "Cups (XL)" && newDrinkAttributePair["CupSize"] === "Cups (Regular Hot)"){
                 newExtraCharge[drinkIndex] += 1;
                 setOrderTotal(prevOrderTotal => parseFloat((prevOrderTotal + 1).toFixed(2)));
             }
             // XL to Regular
-            else if (value === "Regular" && newDrinkAttributePair["CupSize"] === "XL"){
+            else if (value === "Cups (Regular)" && newDrinkAttributePair["CupSize"] === "Cups (XL)"){
                 newExtraCharge[drinkIndex] -= 2;
                 setOrderTotal(prevOrderTotal => parseFloat((prevOrderTotal - 2).toFixed(2)));
             }
             // XL to Regular Hot    
-            else if (value === "Regular Hot" && newDrinkAttributePair["CupSize"] === "XL"){
+            else if (value === "Cups (Regular Hot)" && newDrinkAttributePair["CupSize"] === "Cups (XL)"){
                 newExtraCharge[drinkIndex] -= 1;
                 setOrderTotal(prevOrderTotal => parseFloat((prevOrderTotal - 1).toFixed(2)));
             }
@@ -179,7 +181,54 @@ export default function Home() {
         setIsAddOnPopoutOpen([]);
         setSpecialInstructions([]);
         setOrderTotal(0);
+        setUsedSupply([]);
+        setSubtractFromInventoryQuery("");
     };
+
+
+    const loadUsedSupply = () => {
+        const newUsedSupply = [...usedSupply];
+        const orders = [...selectedOrders]
+        // collecting ingredients in each drink in the selectedOrders array
+        for (let i = 0; i < orders.length; i++) {
+            for (let j = 0; j < orders[i].ingredients.length; j++) {
+                const newUsedSupplyName = orders[i].ingredients[j];
+                newUsedSupply.push(newUsedSupplyName);
+            }
+        }
+        //collecting ingredients in selectedAddOns array
+        for (let i = 0; i < selectedAddOns.length; i++) {
+            for (let key in selectedAddOns[i]) {
+                if (selectedAddOns[i][key] === "Added") {
+                    const newUsedSupplyName = key;
+                    newUsedSupply.push(newUsedSupplyName);
+                }
+            }
+        }
+        //collecting ingredients in selectedDrinkAttributes array
+        for (let i = 0; i < selectedDrinkAttributes.length; i++) {
+            if(selectedDrinkAttributes[i]["Dairy Free Alternative"] !== "None"){
+                const newUsedSupplyName = selectedDrinkAttributes[i]["Dairy Free Alternative"];
+                newUsedSupply.push(newUsedSupplyName);
+            }
+            const newUsedSupplyName = selectedDrinkAttributes[i]["Cup Size"];
+            newUsedSupply.push(newUsedSupplyName);
+        }
+        setUsedSupply([...newUsedSupply]);
+    };
+
+
+    const loadSubtractFromInventoryQuery = () => {
+        try{
+            let newSubtractFromInventoryQuery = '';
+            for (let i = 0; i < usedSupply.length; i++) {
+                newSubtractFromInventoryQuery += `UPDATE inventory SET stock_remaining = stock_remaining - 1 WHERE supply = '${usedSupply[i]}';`;
+            }
+            setSubtractFromInventoryQuery(newSubtractFromInventoryQuery);
+        }catch(error){
+            console.error('Error in loadSubtractFromInventoryQuery:', error);
+        }
+    }
 
 
     const getCurrentTimestamp = () => {
@@ -222,24 +271,46 @@ export default function Home() {
             drinkAddOns: drinkAddOnsArray,
         };
         
+        // writing new order to orders table
         try{
-        const response = await fetch("/api/placeOrder", {
-            method: "POST",
-            headers: {
-            "Content-Type": "application/json",
-            },
-            body: JSON.stringify(orderData),
-        });
+            const response = await fetch("/api/placeOrder", {
+                method: "POST",
+                headers: {
+                "Content-Type": "application/json",
+                },
+                body: JSON.stringify(orderData),
+            });
 
-        if (response.ok) {
-            // If the response status is OK (200), parse the JSON response
-            const data = await response.json();
-            alert(`Order added successfully. Order ID: ${data.order_id}`);
-        } else {
-            const errorData = await response.json();
-            console.error("Error from API:", errorData);
-            alert(`Error: ${errorData.error}`);
+            if (response.ok) {
+                // If the response status is OK (200), parse the JSON response
+                const data = await response.json();
+                alert(`Order added successfully. Order ID: ${data.order_id}`);
+            } else {
+                const errorData = await response.json();
+                console.error("Error from API:", errorData);
+                alert(`Error: ${errorData.error}`);
+            }
+        }catch(error){
+            console.error('Error fetching API:', error);
         }
+
+        // subtracting corresponding add ons and drink ingredients from inventory
+        try{
+            const response = await fetch("/api/subtractFromInventory", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: subtractFromInventoryQuery,
+            });
+            if (response.ok) {
+                // If the response status is OK (200), parse the JSON response
+                const data = await response.json();
+            } else {
+                const errorData = await response.json();
+                console.error("Error from API:", errorData);
+                alert(`Error: ${errorData.error}`);
+            }
         }catch(error){
             console.error('Error fetching API:', error);
         }
@@ -252,6 +323,22 @@ export default function Home() {
         fetchMenu();
     },[]);    
 
+
+    // loadSubtractFromInventoryQuery will be called after usedSupply is updated
+    useEffect(() => {
+        if (usedSupply.length > 0) {
+            loadSubtractFromInventoryQuery();
+        }
+    }, [usedSupply]);
+
+
+    // placeOrder will be called after subtractFromInventoryQuery is updated
+    useEffect(() => {
+        if (subtractFromInventoryQuery.length > 0) {
+            placeOrder();
+        }
+    }, [subtractFromInventoryQuery]);
+    
 
 
 
@@ -279,10 +366,10 @@ export default function Home() {
                                 <p>Select your add ons:</p>
                                 <label className="checkbox-label">
                                     <input type="checkbox" name="extraBoba" value="Boba" 
-                                        onChange={()=> handleAddOnSelection(index, "Extra Boba")}
-                                        checked={selectedAddOns[index]["Extra Boba"] === "Added"}
+                                        onChange={()=> handleAddOnSelection(index, "Tapioca Pearls (Boba)")}
+                                        checked={selectedAddOns[index]["Tapioca Pearls (Boba)"] === "Added"}
                                     />
-                                    Extra Boba ($0.50)
+                                    Tapioca Pearls (Boba) ($0.50)
                                 </label>
                                 <span style={{ marginLeft: '10px' }}></span>
                                 <label className="checkbox-label">
@@ -294,11 +381,11 @@ export default function Home() {
                                 </label>
                                 <span style={{ marginLeft: '10px' }}></span>
                                 <label className="checkbox-label">
-                                    <input type="checkbox" name="extraRedBean" value="Red Bean" 
-                                        onChange={()=> handleAddOnSelection(index, "Red Bean")}
-                                        checked={selectedAddOns[index]["Red Bean"] === "Added"}
+                                    <input type="checkbox" name="extraRedBean" value="Red Beans" 
+                                        onChange={()=> handleAddOnSelection(index, "Red Beans")}
+                                        checked={selectedAddOns[index]["Red Beans"] === "Added"}
                                     />
-                                    Red Bean ($0.50)
+                                    Red Beans ($0.50)
                                 </label>
                                 <span style={{ marginLeft: '10px' }}></span>
                                 <label className="checkbox-label">
@@ -345,27 +432,27 @@ export default function Home() {
                                 </label>
                                 <span style={{ marginLeft: '10px' }}></span>
                                 <label>
-                                    <input type="radio" name={`dairyFree-${index}`} value="Oat" 
-                                        onChange={()=> handleAttributeSelection(index, "Dairy Free Alternative", "Oat")}
-                                        checked={selectedDrinkAttributes[index]["Dairy Free Alternative"] === "Oat"}
+                                    <input type="radio" name={`dairyFree-${index}`} value="Oat Milk" 
+                                        onChange={()=> handleAttributeSelection(index, "Dairy Free Alternative", "Oat Milk")}
+                                        checked={selectedDrinkAttributes[index]["Dairy Free Alternative"] === "Oat Milk"}
                                     />
-                                    Oat
+                                    Oat Milk
                                 </label>
                                 <span style={{ marginLeft: '10px' }}></span>
                                 <label>
-                                    <input type="radio" name={`dairyFree-${index}`} value="Soy" 
-                                        onChange={()=> handleAttributeSelection(index, "Dairy Free Alternative", "Soy")}
-                                        checked={selectedDrinkAttributes[index]["Dairy Free Alternative"] === "Soy"}
+                                    <input type="radio" name={`dairyFree-${index}`} value="Soy Milk" 
+                                        onChange={()=> handleAttributeSelection(index, "Dairy Free Alternative", "Soy Milk")}
+                                        checked={selectedDrinkAttributes[index]["Dairy Free Alternative"] === "Soy Milk"}
                                     /> 
-                                    Soy
+                                    Soy Milk
                                 </label>
                                 <span style={{ marginLeft: '10px' }}></span>
                                 <label>
-                                    <input type="radio" name={`dairyFree-${index}`} value="Lactose Free" 
-                                        onChange={()=> handleAttributeSelection(index, "Dairy Free Alternative", "Lactose Free")}
-                                        checked={selectedDrinkAttributes[index]["Dairy Free Alternative"] === "Lactose Free"}
+                                    <input type="radio" name={`dairyFree-${index}`} value="Lactose Free Milk" 
+                                        onChange={()=> handleAttributeSelection(index, "Dairy Free Alternative", "Lactose Free Milk")}
+                                        checked={selectedDrinkAttributes[index]["Dairy Free Alternative"] === "Lactose Free Milk"}
                                     /> 
-                                    Lactose Free
+                                    Lactose Free Milk
                                 </label>
                                 <br/>
                                 <br/>
@@ -418,25 +505,25 @@ export default function Home() {
                                 Cup Size
                                 <br/>
                                 <label>
-                                    <input type="radio" name={`cupSize-${index}`} value="Regular" defaultChecked 
-                                        onChange={()=> handleAttributeSelection(index, "Cup Size", "Regular")}
-                                        checked={selectedDrinkAttributes[index]["Cup Size"] === "Regular"}
+                                    <input type="radio" name={`cupSize-${index}`} value="Cups (Regular)" defaultChecked 
+                                        onChange={()=> handleAttributeSelection(index, "Cup Size", "Cups (Regular)")}
+                                        checked={selectedDrinkAttributes[index]["Cup Size"] === "Cups (Regular)"}
                                     /> 
                                     Regular
                                 </label>
                                 <span style={{ marginLeft: '10px' }}></span>
                                 <label>
-                                    <input type="radio" name={`cupSize-${index}`} value="Regular Hot" 
-                                        onChange={()=> handleAttributeSelection(index, "Cup Size", "Regular Hot")}
-                                        checked={selectedDrinkAttributes[index]["Cup Size"] === "Regular Hot"}
+                                    <input type="radio" name={`cupSize-${index}`} value="Cups (Regular Hot)" 
+                                        onChange={()=> handleAttributeSelection(index, "Cup Size", "Cups (Regular Hot)")}
+                                        checked={selectedDrinkAttributes[index]["Cup Size"] === "Cups (Regular Hot)"}
                                     /> 
                                     Regular Hot ($1.00)
                                 </label>
                                 <span style={{ marginLeft: '10px' }}></span>
                                 <label>
-                                    <input type="radio" name={`cupSize-${index}`} value="XL" 
-                                        onChange={()=> handleAttributeSelection(index, "Cup Size", "XL")}
-                                        checked={selectedDrinkAttributes[index]["Cup Size"] === "XL"}
+                                    <input type="radio" name={`cupSize-${index}`} value="Cups (XL)" 
+                                        onChange={()=> handleAttributeSelection(index, "Cup Size", "Cups (XL)")}
+                                        checked={selectedDrinkAttributes[index]["Cup Size"] === "Cups (XL)"}
                                     /> 
                                     XL ($2.00)
                                 </label>
@@ -454,7 +541,7 @@ export default function Home() {
                     </div>
                 ))}
             </div>
-            <button onClick={placeOrder}>Charge</button><br/>
+            <button onClick={loadUsedSupply}>Charge</button><br/>
             <button onClick={clearCart}>Clear Cart</button>
         </div>
         <div className={styles.container}>
