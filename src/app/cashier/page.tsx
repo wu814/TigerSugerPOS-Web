@@ -211,6 +211,8 @@ export default function Home() {
                 const newUsedSupplyName = selectedDrinkAttributes[i]["Dairy Free Alternative"];
                 newUsedSupply.push(newUsedSupplyName);
             }
+            const newUsedSupplyName = selectedDrinkAttributes[i]["Cup Size"];
+            newUsedSupply.push(newUsedSupplyName);
         }
         setUsedSupply([...newUsedSupply]);
     };
