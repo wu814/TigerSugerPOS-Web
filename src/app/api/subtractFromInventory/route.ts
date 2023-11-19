@@ -4,17 +4,14 @@ import { query } from "../../../utils/database";
 
 export async function POST(request: NextRequest) {
     try {
-        const reqData = await request.json();
+        const subtractFromInventoryQuery = await request.text();
         // Extract order details from the request data
-        const {amount, supply} = reqData;
-        // Construct the SQL query to insert a new order
-        const insertQuery = "UPDATE inventory SET stock_remaining = stock_remaining - $1 WHERE supply = $2 RETURNING supply;";
-
+        console.log(subtractFromInventoryQuery);
         // Execute the query with parameters
-        const result = await query(insertQuery, [amount, supply]);
+        const result = await query(subtractFromInventoryQuery);
 
 
-        return NextResponse.json({ message: "supply removed successfully: "+ supply}, { status: 200 });
+        return NextResponse.json({ message: "supply removed successfully"}, { status: 200 });
     } catch (error:any) {
         return NextResponse.json({ error: error.toString() }, { status: 500 });
     }
