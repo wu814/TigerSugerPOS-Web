@@ -1,9 +1,20 @@
+"use client";
 import Link from 'next/link';
 import React from 'react';
 import styles from './Navbar.module.css'; // Import the CSS module
 import Image from 'next/image';
+import { useSession } from 'next-auth/react';
 
-const Navbar: React.FC = () => {
+function AuthButton() {
+  const { data: session } = useSession();
+  if (session) {
+    return <Link href="/api/auth/signout">Sign out</Link>;
+  }
+  return <Link href="/api/auth/signin">Sign in</Link>;
+
+}
+
+export default function Navbar() {
   return (
     <>
           <nav className={styles.navbar}>
@@ -23,10 +34,9 @@ const Navbar: React.FC = () => {
                   <li className={styles.navItem}><Link href="/manager">Manager</Link></li>
                   <li className={styles.navItem}><Link href="/customer">Customer</Link></li>
                   <li className={styles.navItem}><Link href="/menuboard">Menu Board</Link></li>
+                  <li className={styles.navItem}><AuthButton/></li>
               </ul>
           </nav>
           </>
   );
 };
-
-export default Navbar;
