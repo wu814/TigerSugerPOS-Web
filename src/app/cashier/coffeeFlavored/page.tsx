@@ -1,13 +1,10 @@
 "use client"; // necessary for useState to work
-import { NextResponse } from "next/server";
 import styles from './page.module.css'
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Navbar from '../../../components/Navbar';
 import Footer from '../../../components/Footer';
-import { type } from "os";
-import { clear } from "console";
 import Cart from '../page'
 
 export default function Home() {
@@ -30,7 +27,6 @@ export default function Home() {
     }
 
     
-    const [isCartVisible, setCartVisible] = useState(false); // Show the cart if true, hide if false
     const [selectedOrders, setSelectedOrders] = useState<any[]>([]);
     const [menuData, setMenuData] = useState<any[]>([]); // for fetching menu data
     const [isAddOnPopoutOpen, setIsAddOnPopoutOpen] = useState<boolean[]>([]);
@@ -60,120 +56,6 @@ export default function Home() {
         setIsAddOnPopoutOpen(prevIsAddOnPopoutOpen => [...prevIsAddOnPopoutOpen, false]);
     };
 
-
-    const toggleCart = () => {
-        setCartVisible(!isCartVisible);
-    };
-
-
-    const toggleCustumize = (drinkIndex: number) => {
-        const newIsAddOnPopoutOpen = [...isAddOnPopoutOpen];  // Create a copy of the isAddonPopoutOpen array
-        newIsAddOnPopoutOpen[drinkIndex] = !newIsAddOnPopoutOpen[drinkIndex];
-        setIsAddOnPopoutOpen(newIsAddOnPopoutOpen);
-    };
-
-
-    const handleAddOnSelection = (drinkIndex: number, addOn: string) => {
-        const newSelectedAddOns = [...selectedAddOns];  // Create a copy of the selecteAddons array
-        const newAddOnPair = newSelectedAddOns[drinkIndex];
-        const newExtraCharge = [...extraCharge];  // Create a copy of the extraCharge array
-
-        if (newAddOnPair[addOn] !== "None") {
-            newAddOnPair[addOn] = "None";
-            newExtraCharge[drinkIndex] -= 0.5; 
-            setOrderTotal(prevOrderTotal => parseFloat((prevOrderTotal - 0.5).toFixed(2)));
-        } 
-        else {
-            newAddOnPair[addOn] = "Added";
-            newExtraCharge[drinkIndex] += 0.5;
-            setOrderTotal(prevOrderTotal => parseFloat((prevOrderTotal + 0.5).toFixed(2)));
-        }
-        newSelectedAddOns[drinkIndex] = newAddOnPair;
-        setSelectedAddOns(newSelectedAddOns);
-        setExtraCharge(newExtraCharge);
-    };
-
-
-    const handleAttributeSelection = (drinkIndex: number, attribute: string, value: string) => {
-        const newSelectedDrinkAttributes = [...selectedDrinkAttributes];  // Create a copy of the selectedDrinkAttributes array
-        const newDrinkAttributePair = newSelectedDrinkAttributes[drinkIndex];  
-        const newSpecialInstruction = [...specialInstructions];  // Create a copy of the specialInstructions array
-        const newExtraCharge = [...extraCharge];  // Create a copy of the extraCharge array
-        // Changing price based on cup size
-        if (attribute === "CupSize"){
-            // Regular to Regular Hot
-            if (value === "Cups (Regular Hot)" && newDrinkAttributePair["CupSize"] === "Cups (Regular)"){
-                newExtraCharge[drinkIndex] += 1; 
-                setOrderTotal(prevOrderTotal => parseFloat((prevOrderTotal + 1).toFixed(2)));
-            }
-            // Regular to XL
-            else if (value === "Cups (XL)" && newDrinkAttributePair["CupSize"] === "Cups (Regular)"){
-                newExtraCharge[drinkIndex] += 2;
-                setOrderTotal(prevOrderTotal => parseFloat((prevOrderTotal + 2).toFixed(2)));  
-            }
-            // Regular Hot to Regular
-            else if (value === "Cups (Regular)" && newDrinkAttributePair["CupSize"] === "Cups (Regular Hot)"){
-                newExtraCharge[drinkIndex] -= 1; 
-                setOrderTotal(prevOrderTotal => parseFloat((prevOrderTotal - 1).toFixed(2)));
-            }
-            // Regular Hot to XL
-            else if (value === "Cups (XL)" && newDrinkAttributePair["CupSize"] === "Cups (Regular Hot)"){
-                newExtraCharge[drinkIndex] += 1;
-                setOrderTotal(prevOrderTotal => parseFloat((prevOrderTotal + 1).toFixed(2)));
-            }
-            // XL to Regular
-            else if (value === "Cups (Regular)" && newDrinkAttributePair["CupSize"] === "Cups (XL)"){
-                newExtraCharge[drinkIndex] -= 2;
-                setOrderTotal(prevOrderTotal => parseFloat((prevOrderTotal - 2).toFixed(2)));
-            }
-            // XL to Regular Hot    
-            else if (value === "Cups (Regular Hot)" && newDrinkAttributePair["CupSize"] === "Cups (XL)"){
-                newExtraCharge[drinkIndex] -= 1;
-                setOrderTotal(prevOrderTotal => parseFloat((prevOrderTotal - 1).toFixed(2)));
-            }
-        }
-
-        if (attribute === "SpecialInstructions") {
-            newSpecialInstruction[drinkIndex] = value;
-            setSpecialInstructions(newSpecialInstruction);
-        }
-
-        // update the drink attribute pair
-        newDrinkAttributePair[attribute] = value;
-
-        newSelectedDrinkAttributes[drinkIndex] = newDrinkAttributePair;
-        setSelectedDrinkAttributes(newSelectedDrinkAttributes);
-        setExtraCharge(newExtraCharge);
-    };
-
-
-    // Functionality when click on remove button
-    const removeDrink = (drinkPrice: number, drinkIndex: number) => {
-            const updatedOrders = [...selectedOrders];  // Create a copy of the selectedOrders array
-            const updateAddOns = [...selectedAddOns];  // Create a copy of the selectedAddOns array
-            const updateDrinkAttributes = [...selectedDrinkAttributes];  // Create a copy of the selectedDrinkAttributes array
-            const updateExtraCharge = [...extraCharge];  // Create a copy of the extraCharge array
-            const updateIsAddOnPopoutOpen = [...isAddOnPopoutOpen];  // Create a copy of the isAddonPopoutOpen array
-            const updateSpecialInstruction = [...specialInstructions];  // Create a copy of the specialInstructions array
-            // Remove the message at the specified index
-            updatedOrders.splice(drinkIndex, 1);
-            // Make sure all the state variables are back to default values
-            updateAddOns[drinkIndex] = AddOnPair;
-            updateDrinkAttributes[drinkIndex] = DrinkAttributePair;
-            updateExtraCharge[drinkIndex] = 0;
-            updateIsAddOnPopoutOpen[drinkIndex] = false;
-            updateSpecialInstruction[drinkIndex] = "None";
-            // Update the state to reflect the removal
-            setOrderTotal(prevOrderTotal => parseFloat((prevOrderTotal - drinkPrice - extraCharge[drinkIndex]).toFixed(2)));
-            setSelectedOrders(updatedOrders);
-            setSelectedAddOns(updateAddOns);
-            setSelectedDrinkAttributes(updateDrinkAttributes);
-            setExtraCharge(updateExtraCharge);
-            setIsAddOnPopoutOpen(updateIsAddOnPopoutOpen);
-            setSpecialInstructions(updateSpecialInstruction);
-    };
-    
-
     const clearCart = () => {
         setSelectedOrders([]);
         setSelectedAddOns([]);
@@ -184,38 +66,6 @@ export default function Home() {
         setOrderTotal(0);
         setUsedSupply([]);
         setSubtractFromInventoryQuery("");
-    };
-
-
-    const loadUsedSupply = () => {
-        const newUsedSupply = [...usedSupply];
-        const orders = [...selectedOrders]
-        // collecting ingredients in each drink in the selectedOrders array
-        for (let i = 0; i < orders.length; i++) {
-            for (let j = 0; j < orders[i].ingredients.length; j++) {
-                const newUsedSupplyName = orders[i].ingredients[j];
-                newUsedSupply.push(newUsedSupplyName);
-            }
-        }
-        //collecting ingredients in selectedAddOns array
-        for (let i = 0; i < selectedAddOns.length; i++) {
-            for (let key in selectedAddOns[i]) {
-                if (selectedAddOns[i][key] === "Added") {
-                    const newUsedSupplyName = key;
-                    newUsedSupply.push(newUsedSupplyName);
-                }
-            }
-        }
-        //collecting ingredients in selectedDrinkAttributes array
-        for (let i = 0; i < selectedDrinkAttributes.length; i++) {
-            if(selectedDrinkAttributes[i]["Dairy Free Alternative"] !== "None"){
-                const newUsedSupplyName = selectedDrinkAttributes[i]["Dairy Free Alternative"];
-                newUsedSupply.push(newUsedSupplyName);
-            }
-            const newUsedSupplyName = selectedDrinkAttributes[i]["Cup Size"];
-            newUsedSupply.push(newUsedSupplyName);
-        }
-        setUsedSupply([...newUsedSupply]);
     };
 
 
