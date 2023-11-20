@@ -1,6 +1,6 @@
 .main {
     padding: 4rem;
-    min-height: 10vh;
+    min-height: 100vh;
     background: #272936;
 }
 
@@ -312,5 +312,6 @@
   padding: 10px;
   margin: 0;
   font-size: 40px;
+  color: white;
+  cursor: pointer;
 }
-
