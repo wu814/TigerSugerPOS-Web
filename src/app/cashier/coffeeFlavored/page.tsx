@@ -198,24 +198,26 @@ export default function Home() {
     <>
       <Navbar/>
       <Cart/>
-      <div className={styles.main}>    
+      <div className={styles.main}>
         <div className={styles.container}>
-            {menuData.map((menuItem, index) => (
-                <div className={styles.imageContainer} key={index}>
-                    {/* Wrap the Image inside a Link so it's clickable */}
-                    <Link href={`http://localhost:3000/cashier`}>
-                        <Image
-                            src="/images/brownsugarimgj.jpg"
-                            alt={`Boba Drink ${index + 1}`}
-                            width={300}
-                            height={300}
-                            className={styles.image}
-                        />
-                    </Link>
-                    <p>Boba Drink {index + 1}</p>
-                    <p>Drink Name: {menuItem.drink_name}</p>
-                    <button onClick={()=>handleOrderSelection(menuItem)}>Add to Order</button>
-                </div>
+          {menuData
+            .filter(menuItem => menuItem.drink_type === 'Coffee Flavored')
+            .map((menuItem, index) => (
+              <div className={styles.imageContainer} key={index}>
+                {/* Wrap the Image inside a Link so it's clickable */}
+                <Link href={`http://localhost:3000/cashier`}>
+                  <Image
+                    src="/images/brownsugarimgj.jpg"
+                    alt={`Boba Drink ${index + 1}`}
+                    width={300}
+                    height={300}
+                    className={styles.image}
+                  />
+                </Link>
+                <p>Boba Drink {index + 1}</p>
+                <p>Drink Name: {menuItem.drink_name}</p>
+                <button onClick={() => handleOrderSelection(menuItem)}>Add to Order</button>
+              </div>
             ))}
         </div>
       </div>
