@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-export default function CoffeeFlavored({ addToCart }) {
-   
+export default function FruityAndRefreshing({ addToCart }: { addToCart: any }) {
+
     const [menuData, setMenuData] = useState<any[]>([]); // for fetching menu data
 
     const fetchMenu = async () => {
@@ -17,9 +17,9 @@ export default function CoffeeFlavored({ addToCart }) {
     // Fetch menu data on page load
     useEffect(() => {
         fetchMenu();
-    },[]);
+    },[]);    
 
-    const handleOrderSelection = (menuItem) => {
+    const handleOrderSelection = (menuItem: { drink_name: any; price: any; }) => {
         // Customize your drink here if needed
         const selectedDrink = {
             drink_name: menuItem.drink_name,
@@ -30,12 +30,13 @@ export default function CoffeeFlavored({ addToCart }) {
         addToCart(selectedDrink);
     };
 
+
     return (
     <>
       <div className={styles.main}>
         <div className={styles.container}>
           {menuData
-            .filter(menuItem => menuItem.drink_type === 'Coffee Flavored')
+            .filter(menuItem => menuItem.drink_type === 'Fruity and Refreshing')
             .map((menuItem, index) => (
               <div className={styles.imageContainer} key={index}>
                 {/* Wrap the Image inside a Link so it's clickable */}

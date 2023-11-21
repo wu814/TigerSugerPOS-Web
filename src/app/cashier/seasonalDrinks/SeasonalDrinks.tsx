@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Cart from '../page'
 
-export default function SweetAndCreamy({ addToCart }) {
+export default function SeasonalDrinks({ addToCart }: { addToCart: any }) {
 
     const [menuData, setMenuData] = useState<any[]>([]); // for fetching menu data
 
@@ -18,17 +18,17 @@ export default function SweetAndCreamy({ addToCart }) {
     // Fetch menu data on page load
     useEffect(() => {
         fetchMenu();
-    },[]);
-
+    },[]);  
+    
     const handleOrderSelection = (menuItem: { drink_name: any; price: any; }) => {
-      // Customize your drink here if needed
-      const selectedDrink = {
-          drink_name: menuItem.drink_name,
-          price: menuItem.price,
-          // Add other properties as needed
-      };
+        // Customize your drink here if needed
+        const selectedDrink = {
+            drink_name: menuItem.drink_name,
+            price: menuItem.price,
+            // Add other properties as needed
+        };
 
-      addToCart(selectedDrink);
+        addToCart(selectedDrink);
     };
 
     return (
@@ -36,7 +36,7 @@ export default function SweetAndCreamy({ addToCart }) {
       <div className={styles.main}>
         <div className={styles.container}>
           {menuData
-            .filter(menuItem => menuItem.drink_type === 'Sweet and Creamy')
+            .filter(menuItem => menuItem.drink_type === 'Seasonal Drinks')
             .map((menuItem, index) => (
               <div className={styles.imageContainer} key={index}>
                 {/* Wrap the Image inside a Link so it's clickable */}

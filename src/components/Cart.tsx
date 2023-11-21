@@ -1,7 +1,7 @@
 import { useState, useEffect, use } from 'react';
 import styles from './Cart.module.css';
 
-export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }) {
+export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }: { cart: any[], setParentCart: any, orderTotal: number, setOrderTotal: any }) {
     const AddOnPair = {
         "Tapioca Pearls (Boba)": "None",
         "Cream Mousse": "None",

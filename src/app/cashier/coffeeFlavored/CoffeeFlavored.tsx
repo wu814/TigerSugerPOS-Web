@@ -3,10 +3,9 @@ import styles from './page.module.css'
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import Cart from '../page'
 
-export default function SeasonalDrinks({ addToCart }) {
-
+export default function CoffeeFlavored({ addToCart }: { addToCart: any }) {
+   
     const [menuData, setMenuData] = useState<any[]>([]); // for fetching menu data
 
     const fetchMenu = async () => {
@@ -18,8 +17,8 @@ export default function SeasonalDrinks({ addToCart }) {
     // Fetch menu data on page load
     useEffect(() => {
         fetchMenu();
-    },[]);  
-    
+    },[]);
+
     const handleOrderSelection = (menuItem: { drink_name: any; price: any; }) => {
         // Customize your drink here if needed
         const selectedDrink = {
@@ -36,7 +35,7 @@ export default function SeasonalDrinks({ addToCart }) {
       <div className={styles.main}>
         <div className={styles.container}>
           {menuData
-            .filter(menuItem => menuItem.drink_type === 'Seasonal Drinks')
+            .filter(menuItem => menuItem.drink_type === 'Coffee Flavored')
             .map((menuItem, index) => (
               <div className={styles.imageContainer} key={index}>
                 {/* Wrap the Image inside a Link so it's clickable */}
