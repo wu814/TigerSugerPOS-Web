@@ -505,7 +505,7 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
             </div>
         ))}
     </div>
-    <button onClick={placeOrder}>Charge</button><br/>
+    <button onClick={loadUsedSupply}>Charge</button><br/>
     <button onClick={clearCart}>Clear Cart</button>
     </div>
     );

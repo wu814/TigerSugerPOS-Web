@@ -14,7 +14,7 @@ export default function Home() {
   // State to manage which component to display
   const [selectedComponent, setSelectedComponent] = useState<string>('fruityAndRefreshing');
 
-  const [cart, setCart] = useState<Drink[]>([]);
+  const [cart, setCart] = useState<any[]>([]);
   const [orderTotal, setOrderTotal] = useState<number>(0);
 
   // Define the type for the Drink
@@ -25,11 +25,9 @@ export default function Home() {
   };
 
   // Function to add a drink to the cart
-  const addToCart = (drink: Drink): void => {
+  const addToCart = (drink: any): void => {
     setCart([...cart, drink]);
     setOrderTotal((prevOrderTotal) => parseFloat((prevOrderTotal + Number(drink.price)).toFixed(2)));
-
-    console.log(cart);
   };
 
   // Function to handle component selection

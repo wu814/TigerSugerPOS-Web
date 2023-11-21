@@ -19,15 +19,8 @@ export default function FruityAndRefreshing({ addToCart }: { addToCart: any }) {
         fetchMenu();
     },[]);    
 
-    const handleOrderSelection = (menuItem: { drink_name: any; price: any; }) => {
-        // Customize your drink here if needed
-        const selectedDrink = {
-            drink_name: menuItem.drink_name,
-            price: menuItem.price,
-            // Add other properties as needed
-        };
-
-        addToCart(selectedDrink);
+    const handleOrderSelection = (menuItem: any) => {
+        addToCart(menuItem);
     };
 
 
