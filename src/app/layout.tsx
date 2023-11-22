@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { getServerSession } from 'next-auth';
+import GoogleTranslateWrapper from '../components/GoogleTranslateWrapper';
 
 import SessionProvider from '../components/SessionProvider';
 
@@ -22,6 +23,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <SessionProvider session={session}>
+            <GoogleTranslateWrapper />
             {children}
         </SessionProvider>
       </body>
