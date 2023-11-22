@@ -4,6 +4,7 @@ import React from 'react';
 import WeatherWidget from './WeatherWidget'; // Import the WeatherWidget component
 import styles from './Navbar.module.css'; // Import the CSS module
 import Image from 'next/image';
+import GoogleTranslateWrapper from './GoogleTranslateWrapper';
 import { useSession } from 'next-auth/react';
 
 function AuthButton() {
@@ -18,7 +19,7 @@ function AuthButton() {
 export default function Navbar() {
   return (
     <>
-          <nav className={styles.navbar}>
+        <nav className={styles.navbar}>
         {/* Container for the top-left widget (WeatherWidget) */}
         <div className={styles.topLeftWidget}>
           {/* Display the WeatherWidget component in the top-left */}
@@ -37,6 +38,7 @@ export default function Navbar() {
             style={{ width: '10vw', height: 'auto' }}
           />
         </div>
+        <GoogleTranslateWrapper />
               <ul className={styles.navList}>
                   <li className={styles.navItem}><Link href="/">Home</Link></li>
                   <li className={styles.navItem}><Link href="/cashier">Cashier</Link></li>
