@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { query } from "../../../utils/database";
+import { query } from "../../../../utils/database";
 
 // this would be used for CREATING things in the API (such as adding a row to a database)
 export async function POST(request: NextRequest) {

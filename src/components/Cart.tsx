@@ -1,5 +1,7 @@
 import { useState, useEffect, use } from 'react';
 import styles from './Cart.module.css';
+import { clear } from 'console';
+import { all } from 'axios';
 
 export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }: { cart: any[], setParentCart: any, orderTotal: number, setOrderTotal: any }) {
     const AddOnPair = {
@@ -20,6 +22,11 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
         "Special Instructions": "None",
     }
     
+    const SupplyStockPair = {
+        supply: "",
+        reaminingStock: 0,
+    }
+
     const [isCartVisible, setCartVisible] = useState(false); // Show the cart if true, hide if false
     const [isAddOnPopoutOpen, setIsAddOnPopoutOpen] = useState<boolean[]>([]);
     const [selectedOrders, setSelectedOrders] = useState<any[]>([]); // for storing selected orders
@@ -27,8 +34,11 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
     const [selectedDrinkAttributes, setSelectedDrinkAttributes] = useState<any[]>([]); // for storing selected drink attributes
     const [specialInstructions, setSpecialInstructions] = useState<string[]>([]);
     const [extraCharge, setExtraCharge] = useState<number[]>([]);
-    const [usedSupply, setUsedSupply] = useState<string[]>([]); // for tracking all the supplies need to be subtracted from inventory
+    const [usedSupply, setUsedSupply] = useState<any[]>([]); // for tracking all the supplies need to be subtracted from inventory
     const [subtractFromInventoryQuery, setSubtractFromInventoryQuery] = useState<string>(""); // for storing the query for subtracting from inventory
+    const [remainingStock, setRemainingStock] = useState<any[]>([]); // for storing the remaining stock of each supply
+    const [insuffientStock, setInsufficientStock] = useState<string[]>([]); // for storing the supplies that are insufficient for placing order in stock
+
 
     useEffect(() => {
         setSelectedOrders(cart); // Add the selected order to the list
@@ -42,20 +52,20 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
     const toggleCart = () => {
         setCartVisible(!isCartVisible);
     };
-
-
+    
+    
     const toggleCustomize = (drinkIndex: number) => {
         const newIsAddOnPopoutOpen = [...isAddOnPopoutOpen];  // Create a copy of the isAddonPopoutOpen array
         newIsAddOnPopoutOpen[drinkIndex] = !newIsAddOnPopoutOpen[drinkIndex];
         setIsAddOnPopoutOpen(newIsAddOnPopoutOpen);
     };
-
-
+    
+    
     const handleAddOnSelection = (drinkIndex: number, addOn: string) => {
         const newSelectedAddOns = [...selectedAddOns];  // Create a copy of the selecteAddons array
         const newAddOnPair = newSelectedAddOns[drinkIndex];
         const newExtraCharge = [...extraCharge];  // Create a copy of the extraCharge array
-
+        
         if (newAddOnPair[addOn] !== "None") {
             newAddOnPair[addOn] = "None";
             newExtraCharge[drinkIndex] -= 0.5; 
@@ -70,88 +80,88 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
         setSelectedAddOns(newSelectedAddOns);
         setExtraCharge(newExtraCharge);
     };
-
-
+    
+    
     const handleAttributeSelection = (drinkIndex: number, attribute: string, value: string) => {
         const newSelectedDrinkAttributes = [...selectedDrinkAttributes];  // Create a copy of the selectedDrinkAttributes array
         const newDrinkAttributePair = newSelectedDrinkAttributes[drinkIndex];  
         const newSpecialInstruction = [...specialInstructions];  // Create a copy of the specialInstructions array
         const newExtraCharge = [...extraCharge];  // Create a copy of the extraCharge array
         // Changing price based on cup size
-        if (attribute === "CupSize"){
+        if (attribute === "Cup Size"){
             // Regular to Regular Hot
-            if (value === "Cups (Regular Hot)" && newDrinkAttributePair["CupSize"] === "Cups (Regular)"){
+            if (value === "Cups (Regular Hot)" && newDrinkAttributePair["Cup Size"] === "Cups (Regular)"){
                 newExtraCharge[drinkIndex] += 1; 
                 setOrderTotal((prevOrderTotal: number) => parseFloat((prevOrderTotal + 1).toFixed(2)));
             }
             // Regular to XL
-            else if (value === "Cups (XL)" && newDrinkAttributePair["CupSize"] === "Cups (Regular)"){
+            else if (value === "Cups (XL)" && newDrinkAttributePair["Cup Size"] === "Cups (Regular)"){
                 newExtraCharge[drinkIndex] += 2;
                 setOrderTotal((prevOrderTotal: number) => parseFloat((prevOrderTotal + 2).toFixed(2)));  
             }
             // Regular Hot to Regular
-            else if (value === "Cups (Regular)" && newDrinkAttributePair["CupSize"] === "Cups (Regular Hot)"){
+            else if (value === "Cups (Regular)" && newDrinkAttributePair["Cup Size"] === "Cups (Regular Hot)"){
                 newExtraCharge[drinkIndex] -= 1; 
                 setOrderTotal((prevOrderTotal: number) => parseFloat((prevOrderTotal - 1).toFixed(2)));
             }
             // Regular Hot to XL
-            else if (value === "Cups (XL)" && newDrinkAttributePair["CupSize"] === "Cups (Regular Hot)"){
+            else if (value === "Cups (XL)" && newDrinkAttributePair["Cup Size"] === "Cups (Regular Hot)"){
                 newExtraCharge[drinkIndex] += 1;
                 setOrderTotal((prevOrderTotal: number) => parseFloat((prevOrderTotal + 1).toFixed(2)));
             }
             // XL to Regular
-            else if (value === "Cups (Regular)" && newDrinkAttributePair["CupSize"] === "Cups (XL)"){
+            else if (value === "Cups (Regular)" && newDrinkAttributePair["Cup Size"] === "Cups (XL)"){
                 newExtraCharge[drinkIndex] -= 2;
                 setOrderTotal((prevOrderTotal: number) => parseFloat((prevOrderTotal - 2).toFixed(2)));
             }
             // XL to Regular Hot    
-            else if (value === "Cups (Regular Hot)" && newDrinkAttributePair["CupSize"] === "Cups (XL)"){
+            else if (value === "Cups (Regular Hot)" && newDrinkAttributePair["Cup Size"] === "Cups (XL)"){
                 newExtraCharge[drinkIndex] -= 1;
                 setOrderTotal((prevOrderTotal: number) => parseFloat((prevOrderTotal - 1).toFixed(2)));
             }
         }
-
+        
         if (attribute === "SpecialInstructions") {
             newSpecialInstruction[drinkIndex] = value;
             setSpecialInstructions(newSpecialInstruction);
         }
-
+        
         // update the drink attribute pair
         newDrinkAttributePair[attribute] = value;
-
+        
         newSelectedDrinkAttributes[drinkIndex] = newDrinkAttributePair;
         setSelectedDrinkAttributes(newSelectedDrinkAttributes);
         setExtraCharge(newExtraCharge);
     };
-
-
+    
+    
     // Functionality when click on remove button
     const removeDrink = (drinkPrice: number, drinkIndex: number) => {
-            const updatedOrders = [...selectedOrders];  // Create a copy of the selectedOrders array
-            const updateAddOns = [...selectedAddOns];  // Create a copy of the selectedAddOns array
-            const updateDrinkAttributes = [...selectedDrinkAttributes];  // Create a copy of the selectedDrinkAttributes array
-            const updateExtraCharge = [...extraCharge];  // Create a copy of the extraCharge array
-            const updateIsAddOnPopoutOpen = [...isAddOnPopoutOpen];  // Create a copy of the isAddonPopoutOpen array
-            const updateSpecialInstruction = [...specialInstructions];  // Create a copy of the specialInstructions array
-            // Remove the message at the specified index
-            updatedOrders.splice(drinkIndex, 1);
-            // Make sure all the state variables are back to default values
-            updateAddOns[drinkIndex] = AddOnPair;
-            updateDrinkAttributes[drinkIndex] = DrinkAttributePair;
-            updateExtraCharge[drinkIndex] = 0;
-            updateIsAddOnPopoutOpen[drinkIndex] = false;
-            updateSpecialInstruction[drinkIndex] = "None";
-            // Update the state to reflect the removal
-            setOrderTotal((prevOrderTotal: number) => parseFloat((prevOrderTotal - drinkPrice - extraCharge[drinkIndex]).toFixed(2)));
-            setParentCart(updatedOrders);
-            setSelectedAddOns(updateAddOns);
-            setSelectedDrinkAttributes(updateDrinkAttributes);
-            setExtraCharge(updateExtraCharge);
-            setIsAddOnPopoutOpen(updateIsAddOnPopoutOpen);
-            setSpecialInstructions(updateSpecialInstruction);
+        const updatedOrders = [...selectedOrders];  // Create a copy of the selectedOrders array
+        const updateAddOns = [...selectedAddOns];  // Create a copy of the selectedAddOns array
+        const updateDrinkAttributes = [...selectedDrinkAttributes];  // Create a copy of the selectedDrinkAttributes array
+        const updateExtraCharge = [...extraCharge];  // Create a copy of the extraCharge array
+        const updateIsAddOnPopoutOpen = [...isAddOnPopoutOpen];  // Create a copy of the isAddonPopoutOpen array
+        const updateSpecialInstruction = [...specialInstructions];  // Create a copy of the specialInstructions array
+        // Remove the message at the specified index
+        updatedOrders.splice(drinkIndex, 1);
+        // Make sure all the state variables are back to default values
+        updateAddOns[drinkIndex] = AddOnPair;
+        updateDrinkAttributes[drinkIndex] = DrinkAttributePair;
+        updateExtraCharge[drinkIndex] = 0;
+        updateIsAddOnPopoutOpen[drinkIndex] = false;
+        updateSpecialInstruction[drinkIndex] = "None";
+        // Update the state to reflect the removal
+        setOrderTotal((prevOrderTotal: number) => parseFloat((prevOrderTotal - drinkPrice - extraCharge[drinkIndex]).toFixed(2)));
+        setParentCart(updatedOrders);
+        setSelectedAddOns(updateAddOns);
+        setSelectedDrinkAttributes(updateDrinkAttributes);
+        setExtraCharge(updateExtraCharge);
+        setIsAddOnPopoutOpen(updateIsAddOnPopoutOpen);
+        setSpecialInstructions(updateSpecialInstruction);
     };
     
-
+    
     const clearCart = () => {
         setParentCart([]);
         setSelectedAddOns([]);
@@ -162,53 +172,139 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
         setOrderTotal(0);
         setUsedSupply([]);
         setSubtractFromInventoryQuery("");
+        setInsufficientStock([]);
     };
-
-
+    
+    
     const loadUsedSupply = () => {
         const newUsedSupply = [...usedSupply];
-        const orders = [...cart]
-        // collecting ingredients in each drink in the selectedOrders array
+        const orders = [...cart];
+        
+        // Function to find index of supply in newUsedSupply to prevent duplicate used supply
+        const findSupplyIndex = (supply: string) => {
+            return newUsedSupply.findIndex(item => item.supply === supply);
+        };
+        
+        
         for (let i = 0; i < orders.length; i++) {
             for (let j = 0; j < orders[i].ingredients.length; j++) {
-                const newUsedSupplyName = orders[i].ingredients[j];
-                newUsedSupply.push(newUsedSupplyName);
-            }
-        }
-        //collecting ingredients in selectedAddOns array
-        for (let i = 0; i < selectedAddOns.length; i++) {
-            for (let key in selectedAddOns[i]) {
-                if (selectedAddOns[i][key] === "Added") {
-                    const newUsedSupplyName = key;
-                    newUsedSupply.push(newUsedSupplyName);
+                const supply = orders[i].ingredients[j];
+                const supplyIndex = findSupplyIndex(supply);
+                
+                if (supplyIndex !== -1) {
+                    newUsedSupply[supplyIndex].amount += 1;
+                } else {
+                    const newUsedSupplyPair = { supply: supply, amount: 1 };
+                    newUsedSupply.push(newUsedSupplyPair);
                 }
             }
         }
-        //collecting ingredients in selectedDrinkAttributes array
-        for (let i = 0; i < selectedDrinkAttributes.length; i++) {
-            if(selectedDrinkAttributes[i]["Dairy Free Alternative"] !== "None"){
-                const newUsedSupplyName = selectedDrinkAttributes[i]["Dairy Free Alternative"];
-                newUsedSupply.push(newUsedSupplyName);
+        // It only loop to lentgh-1 because the last element is created whenever selectedAddOns is initialized
+        for (let i = 0; i < (selectedAddOns.length)-1; i++) {
+            for (let key in selectedAddOns[i]) {
+                if (selectedAddOns[i][key] === "Added") {
+                    const supplyIndex = findSupplyIndex(key);
+                    
+                    if (supplyIndex !== -1) {
+                        newUsedSupply[supplyIndex].amount += 1;
+                    } else {
+                        const newUsedSupplyPair = { supply: key, amount: 1 };
+                        newUsedSupply.push(newUsedSupplyPair);
+                    }
+                }
             }
-            const newUsedSupplyName = selectedDrinkAttributes[i]["Cup Size"];
-            newUsedSupply.push(newUsedSupplyName);
+        }
+        // It only loop to lentgh-1 because the last element is created whenever selectedAddOns is initialized
+        for (let i = 0; i < (selectedDrinkAttributes.length)-1; i++) {
+            if (selectedDrinkAttributes[i]["Dairy Free Alternative"] !== "None") {
+                const supply = selectedDrinkAttributes[i]["Dairy Free Alternative"];
+                const supplyIndex = findSupplyIndex(supply);
+                
+                if (supplyIndex !== -1) {
+                    newUsedSupply[supplyIndex].amount += 1;
+                } else {
+                    const newUsedSupplyPair = { supply: supply, amount: 1 };
+                    newUsedSupply.push(newUsedSupplyPair);
+                }
+            }
+            
+            const cupSize = selectedDrinkAttributes[i]["Cup Size"];
+            const cupSizeIndex = findSupplyIndex(cupSize);
+            
+            if (cupSizeIndex !== -1) {
+                newUsedSupply[cupSizeIndex].amount += 1;
+            } else {
+                const newUsedSupplyPair = { supply: cupSize, amount: 1 };
+                newUsedSupply.push(newUsedSupplyPair);
+            }
         }
         setUsedSupply([...newUsedSupply]);
     };
+    
+
+    const loadRemainingStock = async () => {
+        try{
+            const response = await fetch("/api/cashier/remainingStock");
+            
+            if (response.ok) {
+                const data = await response.json();
+                setRemainingStock(data.message);
+            } else {
+                const errorData = await response.json();
+                console.error("Error from API:", errorData);
+                alert(`Error: ${errorData.error}`);
+            }
+        }catch(error){
+            console.error('Error fetching API:', error);
+        }
+    }
+
+
+    // Check if there is sufficient stock for placing order
+    const sufficientStock = () => {
+        let enough = true;
+        const newInsufficientStock = [...insuffientStock];
+        for (let i = 0; i < usedSupply.length; i++) {
+            // comparing usedSupply array with the inventory data stored in remaining Stock
+            for (let j = 0; j < remainingStock.length; j++) {
+                if (usedSupply[i].supply === remainingStock[j].supply) {
+                    if (usedSupply[i].amount > remainingStock[j].stock_remaining) {
+                        newInsufficientStock.push("Remaining " + usedSupply[i].supply + ": " + remainingStock[j].stock_remaining + ", Ordered: " + usedSupply[i].amount);
+                        enough = false;
+                    }
+                }
+            }
+        }
+        setInsufficientStock(newInsufficientStock);
+        return enough;
+    }
+
+
+    const printInsufficientStock = () => {
+        let allMessage = "Insufficient Stock: \n";
+        for(let i = 0; i < insuffientStock.length; i++){
+            allMessage += insuffientStock[i] + "\n";
+        }
+        alert(allMessage);
+        clearCart();
+    }
 
 
     const loadSubtractFromInventoryQuery = () => {
+        if (!sufficientStock()) {
+            return;
+        }
         try{
             let newSubtractFromInventoryQuery = '';
             for (let i = 0; i < usedSupply.length; i++) {
-                newSubtractFromInventoryQuery += `UPDATE inventory SET stock_remaining = stock_remaining - 1 WHERE supply = '${usedSupply[i]}';`;
+                newSubtractFromInventoryQuery += `UPDATE inventory SET stock_remaining = stock_remaining - ${usedSupply[i].amount} WHERE supply = '${usedSupply[i].supply}';`;
             }
             setSubtractFromInventoryQuery(newSubtractFromInventoryQuery);
         }catch(error){
             console.error('Error in loadSubtractFromInventoryQuery:', error);
         }
     }
-
+        
 
     const getCurrentTimestamp = () => {
         const currentDate = new Date();
@@ -221,7 +317,7 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
       
         return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
       };
-
+    
 
     // Functionality when click on place order button
     const placeOrder = async () => {
@@ -252,7 +348,7 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
         
         // writing new order to orders table
         try{
-            const response = await fetch("/api/placeOrder", {
+            const response = await fetch("/api/cashier/placeOrder", {
                 method: "POST",
                 headers: {
                 "Content-Type": "application/json",
@@ -275,7 +371,7 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
 
         // subtracting corresponding add ons and drink ingredients from inventory
         try{
-            const response = await fetch("/api/subtractFromInventory", {
+            const response = await fetch("/api/cashier/subtractFromInventory", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -296,12 +392,29 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
         clearCart(); 
     }    
 
-    // loadSubtractFromInventoryQuery will be called after usedSupply is updated
+
+    // loadRemainingStock will be called after usedSupply is updated
     useEffect(() => {
         if (usedSupply.length > 0) {
-            loadSubtractFromInventoryQuery();
+            loadRemainingStock();
         }
     }, [usedSupply]);
+
+
+    // printInsufficientStock will be called after insuffientStock is updated (there is insuffient stock)
+    useEffect(() => {
+        if (insuffientStock.length > 0) {
+            printInsufficientStock();
+        }
+    }, [insuffientStock]);
+
+
+    // loadSubtractFromInventoryQuery will be called after remainingStock is updated
+    useEffect(() => {
+        if (remainingStock.length > 0) {
+            loadSubtractFromInventoryQuery();
+        }
+    },[remainingStock]);
 
 
     // placeOrder will be called after subtractFromInventoryQuery is updated

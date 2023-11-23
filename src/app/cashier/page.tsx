@@ -64,7 +64,7 @@ export default function Home() {
             </button>
             <button className={styles.pItem} onClick={() => handleComponentSelect('sweetAndCreamy')}>
               Sweet and Creamy
-            </button>/
+            </button>
             <button className={styles.pItem} onClick={() => handleComponentSelect('coffeeFlavored')}>
               Coffee Flavored
             </button>
