@@ -314,3 +314,7 @@
   color: white;
   cursor: pointer;
 }
+
+.pItem:hover {
+  color: #f4f186;
+}
