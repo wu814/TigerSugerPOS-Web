@@ -57,22 +57,28 @@ export default function Home() {
       <div className={styles.main}>
         <h1>Cashier Page</h1>
         <Cart cart={cart} setParentCart={setCart} orderTotal={orderTotal} setOrderTotal={setOrderTotal} />
-        <div className={styles.container}>
-          <div className={styles.pContainer}>
+        <ul className={styles.container}>
+          <li className={styles.pContainer}>
             <button className={styles.pItem} onClick={() => handleComponentSelect('fruityAndRefreshing')}>
               Fruity and Refreshing
             </button>
+          </li>
+          <li className={styles.pContainer}>
             <button className={styles.pItem} onClick={() => handleComponentSelect('sweetAndCreamy')}>
               Sweet and Creamy
             </button>
+          </li>
+          <li className={styles.pContainer}>
             <button className={styles.pItem} onClick={() => handleComponentSelect('coffeeFlavored')}>
               Coffee Flavored
             </button>
+          </li>
+          <li className={styles.pContainer}>
             <button className={styles.pItem} onClick={() => handleComponentSelect('seasonalDrinks')}>
               Seasonal Drinks
             </button>
-          </div>
-        </div>
+          </li>
+        </ul>
         {renderSelectedComponent()}
       </div>
       <Footer />
