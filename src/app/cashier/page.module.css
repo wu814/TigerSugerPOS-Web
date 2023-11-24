@@ -296,22 +296,21 @@
 
 .container {
   display: flex;
-  flex-wrap: wrap;
-  margin: 0 auto;
+  flex-direction: row;
+  justify-content: space-evenly;
+  background-color: #000;
+
 }
 
 .pContainer {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 3vh;
+  list-style-type: none;
 }
 
 .pItem {
-  border: 10px solid #f4f186;
+  border: 20px solid #000000;
   background-color: #000;
-  padding: 10px;
-  margin: 0;
-  font-size: 40px;
+  padding: 10px 22.2px;
+  font-size: 30px;
   color: white;
   cursor: pointer;
 }
