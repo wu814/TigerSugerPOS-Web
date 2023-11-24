@@ -238,7 +238,7 @@
 }
 
 .cartButton.open {
-  max-height: 500px; /* Set the max-height to expand when open */
+  max-height: 200px; /* Set the max-height to expand when open */
   overflow: auto;
 }
 
@@ -268,7 +268,7 @@
 }
 
 .open .cartDropdownContent {
-  max-height: 500px;
+  max-height: 300px;
   width: 100%;
   top: 100%;
   left: 0;
@@ -296,25 +296,20 @@
 
 .container {
   display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  background-color: #000;
-
+  flex-wrap: wrap;
+  margin: 0 auto;
 }
 
 .pContainer {
-  list-style-type: none;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 3vh;
 }
 
 .pItem {
-  border: 20px solid #000000;
+  border: 10px solid #f4f186;
   background-color: #000;
-  padding: 0px 70px;
-  font-size: 30px;
-  color: white;
-  cursor: pointer;
-}
-
-.pItem:hover {
-  color: #f4f186;
+  padding: 10px;
+  margin: 0;
+  font-size: 40px;
 }
