@@ -618,8 +618,11 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
             </div>
         ))}
     </div>
-    <button onClick={loadUsedSupply}>Charge</button><br/>
+    <center>
+    <button onClick={loadUsedSupply}>Charge</button>
+    <span style={{ marginLeft: '10px' }}></span>
     <button onClick={clearCart}>Clear Cart</button>
+    </center>
     </div>
     );
 }

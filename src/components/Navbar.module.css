@@ -13,6 +13,7 @@
 
 .navItem {
     list-style-type: none;
+    font-size: 20px;
 }
 
 .navItem:hover {
