@@ -1,22 +1,28 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './page.module.css';
 import Navbar from '../../../components/Navbar';
 import Link from 'next/link';
+
+interface SalesReportItem {
+    order_id: number;
+    order_timestamp: string;
+    order_items: string[];
+    order_total: number;
+}
 
 export default function Home() {
     // State variables for start and end timestamps
     const [startTimestamp, setStartTimestamp] = useState('2023-06-05');
     const [endTimestamp, setEndTimestamp] = useState('2023-06-06');
-    const [salesReport, setSalesReport] = useState([]);
+    const [drink, setDrink] = useState('');
+    const [salesReport, setSalesReport] = useState<any[]>([]);
     const [loading, setLoading] = useState(false); // Loading state
 
     // Function to handle form submission (you can modify this according to your needs)
     const handleSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         // Perform actions with startTimestamp and endTimestamp
-        console.log('Start Timestamp:', startTimestamp);
-        console.log('End Timestamp:', endTimestamp);
 
         // Fetch sales report
         fetchSalesReport();
@@ -24,18 +30,37 @@ export default function Home() {
 
     const fetchSalesReport = async () => {
         setLoading(true);
-        const response = await fetch('/api/manager/reportSales', {
+        const response = await fetch('/api/manager/reportSales2', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({start: startTimestamp, end: endTimestamp}),
+            body: JSON.stringify({start: startTimestamp, end: endTimestamp, drink: drink}),
         });
         const data = await response.json();
         setLoading(false);
         setSalesReport(data.message);
     }
 
+    const formatTimestamp = (timestamp: string | number | Date) => {
+        const date = new Date(timestamp);
+        // Adjust the format according to your preference
+        const formattedDate = date.toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            timeZoneName: 'short',
+        });
+        return formattedDate;
+    };
+
+    useEffect(() => {
+        console.log(salesReport);
+    }, [salesReport]);
+    
     return (
         <>
             <Navbar />
@@ -68,6 +93,14 @@ export default function Home() {
                         min="1000-01-01"
                         max="9999-12-31"
                     />
+                    <label>
+                        Drink Name:
+                    </label>
+                    <input
+                        type="text"
+                        value={drink}
+                        onChange={(e) => setDrink(e.target.value)}
+                    />
 
                     <button className={styles.submitButton} type="submit">Submit</button>
                 </form>
@@ -78,21 +111,22 @@ export default function Home() {
                 <table className={styles.salesReportTable}>
                     <thead>
                         <tr>
-                            <th>Drink Name</th>
-                            <th>Units Sold</th>
-                            <th>Sales</th>
+                            <th>Order Timestamp</th>
+                            <th>Drinks</th>
+                            <th>Order Total</th>
+
                         </tr>
                     </thead>
                     <tbody>
-                        {salesReport.map((row, index) => (
-                            <tr key={index}>
-                                <td>{row[0]}</td>
-                                <td>{row[1]}</td>
-                                <td>{parseFloat(row[2]).toFixed(2)}</td>
-                            </tr>
-                        ))}
+                    {salesReport.map((item) => (
+                        <tr key={item.order_id}>
+                            <td>{formatTimestamp(item.order_timestamp)}</td>
+                            <td>{item.order_items.join(', ')}</td>
+                            <td>{item.order_total}</td>
+                        </tr>
+                    ))}
                     </tbody>
-                </table>
+                    </table>
                 )}
                 
             </div>
