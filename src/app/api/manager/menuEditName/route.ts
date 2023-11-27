@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { query } from "../../../../utils/database";
 
-//edit the ingredients of a menu item
+//edit the name of a menu item
 export async function POST(request: NextRequest) {
     try{
         const data = await request.json();
