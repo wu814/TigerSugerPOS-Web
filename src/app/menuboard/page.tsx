@@ -104,15 +104,16 @@ export default function Home() {
                     {/* Wrap the Image inside a Link so it's clickable */}
                     <Link href={`http://localhost:3000/cashier`}>
                         <Image
-                            src="/images/brownsugarimgj.jpg"
+                            src={`/images/${menuItem.image_url}`}
                             alt={`Boba Drink ${index + 1}`}
                             width={300}
                             height={300}
                             className={styles.image}
                         />
                     </Link>
-                    <p>Drink Name: {menuItem.drink_name}</p>
-                    <p>Drink Price: ${menuItem.price}</p>
+                    <p className={styles.drinkName}>{menuItem.drink_name}</p>
+                    <p className={styles.drinkPrice}>${menuItem.price}</p>
+                    <p className={styles.drinkDescription}>{menuItem.description}</p>
                     {/* <button onClick={() => handleOrderSelection(menuItem.drink_name)}>Add to Order</button> */}
                 </div>
             ))}
