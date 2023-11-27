@@ -104,7 +104,7 @@ export default function Home() {
                     {/* Wrap the Image inside a Link so it's clickable */}
                     <Link href={`http://localhost:3000/cashier`}>
                         <Image
-                            src="/images/brownsugarimgj.jpg"
+                            src={`/images/${menuItem.image_url}`}
                             alt={`Boba Drink ${index + 1}`}
                             width={300}
                             height={300}
