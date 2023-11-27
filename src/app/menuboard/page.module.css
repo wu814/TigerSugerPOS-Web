@@ -288,10 +288,10 @@
   height: auto; /* Maintain the image's aspect ratio */
 }
 
-.imageContainer {
+.drinkContainer {
   width: 33%;
-  text-align: center; /* Center align the content within each grid item */
   margin-bottom: 3vh;
+  padding: 15px;
 }
 
 .container {

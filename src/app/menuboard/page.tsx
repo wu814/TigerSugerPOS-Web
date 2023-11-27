@@ -100,17 +100,14 @@ export default function Home() {
         </div> */}
         <div className={styles.container}>
             {menuData.map((menuItem, index) => (
-                <div className={styles.imageContainer} key={index}>
-                    {/* Wrap the Image inside a Link so it's clickable */}
-                    <Link href={`http://localhost:3000/cashier`}>
-                        <Image
-                            src={`/images/${menuItem.image_url}`}
-                            alt={`Boba Drink ${index + 1}`}
-                            width={300}
-                            height={300}
-                            className={styles.image}
-                        />
-                    </Link>
+                <div className={styles.drinkContainer} key={index}>
+                    <Image
+                        src={`/images/${menuItem.image_url}`}
+                        alt={`Boba Drink ${index + 1}`}
+                        width={300}
+                        height={300}
+                        className={styles.image}
+                    />
                     <p className={styles.drinkName}>{menuItem.drink_name}</p>
                     <p className={styles.drinkPrice}>${menuItem.price}</p>
                     <p className={styles.drinkDescription}>{menuItem.description}</p>
