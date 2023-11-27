@@ -1,16 +1,23 @@
 .main {
-    padding: 4rem;
+    padding: 6rem;
     min-height: 100vh;
     background: #272936;
 }
 
 .mainHeading {
-    padding: 1rem;
+    text-transform: uppercase;
     color: #EED484;
+    font-family: 'Spartan', sans-serif;
+    letter-spacing: -0.075rem;
+    width: 100%;
+    font-size: 2.375em;
+    line-height: 1.25;
+    font-weight: 900;
+    padding: 10px;
 }
 
-.subHeading {
-    margin: 1rem;
+.inventoryData {
+    padding: 10px
 }
 
 .verticalContainer {
@@ -21,27 +28,6 @@
 .horizontalContainer {
     display: flex;
     flex-direction: row;
-}
-
-.inventoryTable {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1rem;
-}
-  
-.inventoryTable th,
-.inventoryTable td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-}
-
-.inventoryTable th {
-    background-color: #EED484;
-}
-
-.inventoryTable tr:hover {
-    background-color: #1f6d76;
 }
 
 .actions {
@@ -78,21 +64,73 @@
     background-color: #45a049;
 }
 
-.backButton {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50%;
-    margin: 1rem;
-    color: black;
-    background: #EED484;
-    font-weight: bold;
-    font-size: 3rem;
-    cursor: pointer;
+.inventoryTable {
     width: 100%;
+    border-collapse: collapse;
+}
+  
+.inventoryTable th,
+.inventoryTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+  
+.inventoryTable th {
+    background-color: #EED484;
+}
+  
+.inventoryTable tr:hover {
+    background-color: #1f6d76;
+}
+
+.ingredientsContainer {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.ingredientBox {
+    border: 1px solid #ccc;
+    padding: 8px;
+    margin: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.selected {
+    background-color: #3498db; /* Change to your desired selected color */
+    color: #fff; /* Change to your desired text color for selected items */
+}
+
+.backButton {
+    color: #EED484;
+    border: solid 3px #EED484;
+    display: inline-flex;
+    width: auto;
+    height: 50%;
+    line-height: 2.75rem;
+    padding: 0 1.375rem;
+    vertical-align: middle;
+    text-transform: uppercase;
+    font-family: 'Source Sans Pro', sans-serif;
+    letter-spacing: 0.125rem;
+    padding-left: calc(0.125rem + 1.375rem);
+    font-size: 0.75em;
+    font-weight: 400;
+    border-radius: 1rem;
+    transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    white-space: nowrap;
+    margin-bottom: 10px;
 }
 
 .backButton:hover {
-    background: #f4bd18;
-    font-size: 3.5rem; /* Adjust the font size as needed */
+    /* background: #f4bd18; */
+    border-color: #00FFD1 !important;
+    color: #00FFD1 !important;
 }

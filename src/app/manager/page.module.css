@@ -5,9 +5,15 @@
 }
 
 .mainHeading {
+    text-transform: uppercase;
     color: #EED484;
-    margin-left: 1rem;
-    margin-bottom: 1rem;
+    font-family: 'Spartan', sans-serif;
+    letter-spacing: -0.075rem;
+    width: 100%;
+    font-size: 2.375em;
+    line-height: 1.25;
+    font-weight: 900;
+    padding: 10px;
 }
 
 .verticalContainer {
@@ -22,6 +28,8 @@
 
 .buttonContainer {
     width: 50%;
+    height: 75vh;
+    padding: 10px;
 }
 
 .button {
@@ -29,7 +37,7 @@
     border: solid 3px #EED484;
     display: inline-flex;
     width: auto;
-    height: 2.75rem;
+    height: 50%;
     line-height: 2.75rem;
     padding: 0 1.375rem;
     vertical-align: middle;
@@ -48,6 +56,7 @@
     text-decoration: none;
     vertical-align: middle;
     white-space: nowrap;
+    margin-bottom: 10px;
 }
 
 .button:hover {

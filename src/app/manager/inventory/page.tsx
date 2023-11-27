@@ -75,7 +75,7 @@ export default function Home() {
                     Back
                 </Link>
                 <h1 className={styles.mainHeading}>Manager View (Inventory)</h1>
-                <div>
+                <div className={styles.inventoryData}>
                     <h2 className={styles.subHeading}>Inventory Data:</h2>
                     <table className={styles.inventoryTable}>
                         <thead>

@@ -110,7 +110,7 @@ export default function Home() {
                     Back
                 </Link>
                 <h1 className={styles.mainHeading}>Manager View (Menu)</h1>
-                <div>
+                <div className={styles.menuData}>
                     <h2 className={styles.subHeading}>Menu Data:</h2>
                     <table className={styles.inventoryTable}>
                         <thead>
