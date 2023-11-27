@@ -313,3 +313,18 @@
   margin: 0;
   font-size: 40px;
 }
+
+.drinkName {
+  font-size: x-large;
+  font-weight: bold;
+}
+
+.drinkPrice {
+  font-size: large;
+  font-weight: 500;
+}
+
+.drinkDescription {
+  font-size: medium;
+  font-weight: 300;
+}
