@@ -5,6 +5,7 @@
   cursor: pointer; /* Change the cursor on hover */
   transition: max-height 0.3s ease-in-out; /* Add a smooth transition for max-height */
   max-height: 5vh; /* Set the initial max-height (collapsed) */
+  overflow: hidden;
 }
 
 .cartButton.open {

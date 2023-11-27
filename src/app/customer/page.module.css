@@ -225,55 +225,6 @@
   }
 }
 
-/* Button CSS */
-/* page.module.css */
-
-.cartButton {
-  background-color: #FFD700; /* Set the background color */
-  color: #000; /* Set the text color */
-  border: none; /* Remove the button border */
-  cursor: pointer; /* Change the cursor on hover */
-  transition: max-height 0.3s ease-in-out; /* Add a smooth transition for max-height */
-  max-height: 5vh; /* Set the initial max-height (collapsed) */
-}
-
-.cartButton.open {
-  max-height: 500px; /* Set the max-height to expand when open */
-  overflow: auto;
-}
-
-.cartButtonContent {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  box-sizing: content-box;
-}
-
-.cartDropdownButton {
-  background-color: #FFA500; /* Set the background color of the dropdown button */
-  color: #fff; /* Set the text color of the dropdown button */
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
-.cartDropdownContent {
-  background-color: #FFD700; /* Set the background color of the dropdown content */
-  padding: 10px;
-  width: 100%;
-  height: auto;
-  max-height: 5vh;
-  overflow-y: auto;
-}
-
-.open .cartDropdownContent {
-  max-height: 500px;
-  width: 100%;
-  top: 100%;
-  left: 0;
-}
-
 /*Table Organization*/
 .gridContainer {
   display: grid;
@@ -309,7 +260,6 @@
 .pItem {
   border: 20px solid #000000;
   background-color: #000;
-  padding: 0px 70px;
   font-size: 30px;
   color: white;
   cursor: pointer;
