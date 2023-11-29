@@ -22,9 +22,185 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
         "Special Instructions": "None",
     }
     
-    const SupplyStockPair = {
-        supply: "",
-        reaminingStock: 0,
+    const PopOutWindow = ({index, drinkName}: {index:number, drinkName:string}) => {
+        return (
+            <div className={styles.popOutWindow}>
+                <div className={styles.addOnPopout}>
+                            <p className={styles.attributeName}>Select your add ons:</p>
+                            <label className="checkbox-label">
+                                <input type="checkbox" name="extraBoba" value="Boba" 
+                                    onChange={()=> handleAddOnSelection(index, "Tapioca Pearls (Boba)")}
+                                    checked={selectedAddOns[index]["Tapioca Pearls (Boba)"] === "Added"}
+                                />
+                                Tapioca Pearls (Boba) ($0.50)
+                            </label>
+                            <span style={{ marginLeft: '10px' }}></span>
+                            <label className="checkbox-label">
+                                <input type="checkbox" name="extraCreamMousse" value="Cream Mousse" 
+                                    onChange={()=> handleAddOnSelection(index, "Cream Mousse")}
+                                    checked={selectedAddOns[index]["Cream Mousse"] === "Added"}
+                                />
+                                Cream Mousse ($0.50)
+                            </label>
+                            <span style={{ marginLeft: '10px' }}></span>
+                            <label className="checkbox-label">
+                                <input type="checkbox" name="extraRedBean" value="Red Beans" 
+                                    onChange={()=> handleAddOnSelection(index, "Red Beans")}
+                                    checked={selectedAddOns[index]["Red Beans"] === "Added"}
+                                />
+                                Red Beans ($0.50)
+                            </label>
+                            <span style={{ marginLeft: '10px' }}></span>
+                            <label className="checkbox-label">
+                                <input type="checkbox" name="extraMochi" value="Mochi" 
+                                    onChange={()=> handleAddOnSelection(index, "Mochi")}
+                                    checked={selectedAddOns[index]["Mochi"] === "Added"}
+                                />
+                                Mochi  ($0.50)
+                            </label>
+                            <span style={{ marginLeft: '10px' }}></span>
+                            <label className="checkbox-label">
+                                <input type="checkbox" name="extraTigerPearls" value="Tiger Pearls" 
+                                    onChange={()=> handleAddOnSelection(index, "Tiger Pearls")}
+                                    checked={selectedAddOns[index]["Tiger Pearls"] === "Added"}
+                                />
+                                Tiger Pearls ($0.50)
+                            </label>
+                            <span style={{ marginLeft: '10px' }}></span>
+                            <label className="checkbox-label">
+                                <input type="checkbox" name="extraTaro" value="Taro" 
+                                    onChange={()=> handleAddOnSelection(index, "Taro")}
+                                    checked={selectedAddOns[index]["Taro"] === "Added"}
+                                />
+                                Taro ($0.50)
+                            </label>
+                            <span style={{ marginLeft: '10px' }}></span>
+                            <label className="checkbox-label">
+                                <input type="checkbox" name="extraPudding" value="Pudding" 
+                                    onChange={()=> handleAddOnSelection(index, "Pudding")}
+                                    checked={selectedAddOns[index]["Pudding"] === "Added"}
+                                />
+                                Pudding ($0.50)
+                            </label>
+                            <br/>
+                            <br/>
+                            <p className={styles.attributeName}>Dairy Free Alternatives</p>
+                            <label>
+                                <input type="radio" name={`dairyFree-${index}`} value="None" defaultChecked 
+                                    onChange={()=> handleAttributeSelection(index, "Dairy Free Alternative", "None")}
+                                    checked={selectedDrinkAttributes[index]["Dairy Free Alternative"] === "None"}
+                                /> 
+                                None
+                            </label>
+                            <span style={{ marginLeft: '10px' }}></span>
+                            <label>
+                                <input type="radio" name={`dairyFree-${index}`} value="Oat Milk" 
+                                    onChange={()=> handleAttributeSelection(index, "Dairy Free Alternative", "Oat Milk")}
+                                    checked={selectedDrinkAttributes[index]["Dairy Free Alternative"] === "Oat Milk"}
+                                />
+                                Oat Milk
+                            </label>
+                            <span style={{ marginLeft: '10px' }}></span>
+                            <label>
+                                <input type="radio" name={`dairyFree-${index}`} value="Soy Milk" 
+                                    onChange={()=> handleAttributeSelection(index, "Dairy Free Alternative", "Soy Milk")}
+                                    checked={selectedDrinkAttributes[index]["Dairy Free Alternative"] === "Soy Milk"}
+                                /> 
+                                Soy Milk
+                            </label>
+                            <span style={{ marginLeft: '10px' }}></span>
+                            <label>
+                                <input type="radio" name={`dairyFree-${index}`} value="Lactose Free Milk" 
+                                    onChange={()=> handleAttributeSelection(index, "Dairy Free Alternative", "Lactose Free Milk")}
+                                    checked={selectedDrinkAttributes[index]["Dairy Free Alternative"] === "Lactose Free Milk"}
+                                /> 
+                                Lactose Free Milk
+                            </label>
+                            <br/>
+                            <br/>
+                            <p className={styles.attributeName}>Sweetness Level</p>
+                            <label>
+                                <input type="radio" name={`sweetnessLevel-${index}`} value="100%" defaultChecked 
+                                    onChange={()=> handleAttributeSelection(index, "Sweetness Level", "100%")}
+                                    checked={selectedDrinkAttributes[index]["Sweetness Level"] === "100%"}
+                                /> 
+                                100%
+                            </label>
+                            <span style={{ marginLeft: '10px' }}></span>
+                            <label>
+                                <input type="radio" name={`sweetnessLevel-${index}`} value="50%" 
+                                    onChange={()=> handleAttributeSelection(index, "Sweetness Level", "50%")}
+                                    checked={selectedDrinkAttributes[index]["Sweetness Level"] === "50%"}
+                                /> 
+                                50%
+                            </label>
+                            <br/>
+                            <br/>
+                            <p className={styles.attributeName}>Ice Level</p>
+                            <label>
+                                <input type="radio" name={`iceLevel-${index}`} value="Normal" defaultChecked 
+                                    onChange={()=> handleAttributeSelection(index, "Ice Level", "Normal")}
+                                    checked={selectedDrinkAttributes[index]["Ice Level"] === "Normal"}
+                                /> 
+                                Normal
+                            </label>
+                            <span style={{ marginLeft: '10px' }}></span>
+                            <label>
+                                <input type="radio" name={`iceLevel-${index}`} value="Less Ice" 
+                                    onChange={()=> handleAttributeSelection(index, "Ice Level", "Less Ice")}
+                                    checked={selectedDrinkAttributes[index]["Ice Level"] === "Less Ice"}
+                                /> 
+                                Less Ice
+                            </label>
+                            <span style={{ marginLeft: '10px' }}></span>
+                            <label>
+                                <input type="radio" name={`iceLevel-${index}`} value="None" 
+                                    onChange={()=> handleAttributeSelection(index, "Ice Level", "None")}
+                                    checked={selectedDrinkAttributes[index]["Ice Level"] === "None"}
+                                />
+                                None
+                            </label>
+                            <br/>
+                            <br/>
+                            <p className={styles.attributeName}>Cup Size</p>
+                            <label>
+                                <input type="radio" name={`cupSize-${index}`} value="Cups (Regular)" defaultChecked 
+                                    onChange={()=> handleAttributeSelection(index, "Cup Size", "Cups (Regular)")}
+                                    checked={selectedDrinkAttributes[index]["Cup Size"] === "Cups (Regular)"}
+                                /> 
+                                Regular
+                            </label>
+                            <span style={{ marginLeft: '10px' }}></span>
+                            <label>
+                                <input type="radio" name={`cupSize-${index}`} value="Cups (Regular Hot)" 
+                                    onChange={()=> handleAttributeSelection(index, "Cup Size", "Cups (Regular Hot)")}
+                                    checked={selectedDrinkAttributes[index]["Cup Size"] === "Cups (Regular Hot)"}
+                                /> 
+                                Regular Hot ($1.00)
+                            </label>
+                            <span style={{ marginLeft: '10px' }}></span>
+                            <label>
+                                <input type="radio" name={`cupSize-${index}`} value="Cups (XL)" 
+                                    onChange={()=> handleAttributeSelection(index, "Cup Size", "Cups (XL)")}
+                                    checked={selectedDrinkAttributes[index]["Cup Size"] === "Cups (XL)"}
+                                /> 
+                                XL ($2.00)
+                            </label>
+                            <br/>
+                            <br/>
+                            <p className={styles.attributeName}>Special Instructions</p>
+                            <label>
+                                <input type="text" name={`specialInstruction-${index}`} placeholder="Add special instructions" value={specialInstructions[index]}
+                                    onChange={(event)=> handleAttributeSelection(index, "Special Instructions", event.target.value)}
+                                />
+                            </label>
+                            <br />
+                            <div className={styles.saveChangeButton}>
+                                <button onClick={()=>toggleCustomize(index)}>Save Changes</button>
+                            </div>
+                        </div> 
+                    </div>
+        )
     }
 
     const [isCartVisible, setCartVisible] = useState(false); // Show the cart if true, hide if false
@@ -436,185 +612,13 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
     <div className={`${styles.cartDropdownContent} ${isCartVisible ? styles.open : ''}`}>
         {selectedOrders.map((item, index) => (
             <div key={index}>
-                <p>{item.drink_name} ${(Number(item.price)+extraCharge[index]).toFixed(2)} <br/>
+                <span>{item.drink_name} ${(Number(item.price)+extraCharge[index]).toFixed(2)} <br/>
                 <button onClick={() => toggleCustomize(index)}>Customize</button>
                 {isAddOnPopoutOpen[index] && (
-                    <div className={styles.addOnPopout}>
-                        <p>Select your add ons:</p>
-                        <label className="checkbox-label">
-                            <input type="checkbox" name="extraBoba" value="Boba" 
-                                onChange={()=> handleAddOnSelection(index, "Tapioca Pearls (Boba)")}
-                                checked={selectedAddOns[index]["Tapioca Pearls (Boba)"] === "Added"}
-                            />
-                            Tapioca Pearls (Boba) ($0.50)
-                        </label>
-                        <span style={{ marginLeft: '10px' }}></span>
-                        <label className="checkbox-label">
-                            <input type="checkbox" name="extraCreamMousse" value="Cream Mousse" 
-                                onChange={()=> handleAddOnSelection(index, "Cream Mousse")}
-                                checked={selectedAddOns[index]["Cream Mousse"] === "Added"}
-                            />
-                            Cream Mousse ($0.50)
-                        </label>
-                        <span style={{ marginLeft: '10px' }}></span>
-                        <label className="checkbox-label">
-                            <input type="checkbox" name="extraRedBean" value="Red Beans" 
-                                onChange={()=> handleAddOnSelection(index, "Red Beans")}
-                                checked={selectedAddOns[index]["Red Beans"] === "Added"}
-                            />
-                            Red Beans ($0.50)
-                        </label>
-                        <span style={{ marginLeft: '10px' }}></span>
-                        <label className="checkbox-label">
-                            <input type="checkbox" name="extraMochi" value="Mochi" 
-                                onChange={()=> handleAddOnSelection(index, "Mochi")}
-                                checked={selectedAddOns[index]["Mochi"] === "Added"}
-                            />
-                            Mochi  ($0.50)
-                        </label>
-                        <span style={{ marginLeft: '10px' }}></span>
-                        <label className="checkbox-label">
-                            <input type="checkbox" name="extraTigerPearls" value="Tiger Pearls" 
-                                onChange={()=> handleAddOnSelection(index, "Tiger Pearls")}
-                                checked={selectedAddOns[index]["Tiger Pearls"] === "Added"}
-                            />
-                            Tiger Pearls ($0.50)
-                        </label>
-                        <span style={{ marginLeft: '10px' }}></span>
-                        <label className="checkbox-label">
-                            <input type="checkbox" name="extraTaro" value="Taro" 
-                                onChange={()=> handleAddOnSelection(index, "Taro")}
-                                checked={selectedAddOns[index]["Taro"] === "Added"}
-                            />
-                            Taro ($0.50)
-                        </label>
-                        <span style={{ marginLeft: '10px' }}></span>
-                        <label className="checkbox-label">
-                            <input type="checkbox" name="extraPudding" value="Pudding" 
-                                onChange={()=> handleAddOnSelection(index, "Pudding")}
-                                checked={selectedAddOns[index]["Pudding"] === "Added"}
-                            />
-                            Pudding ($0.50)
-                        </label>
-                        <br/>
-                        <br/>
-                        Dairy Free Alternatives
-                        <br/>
-                        <label>
-                            <input type="radio" name={`dairyFree-${index}`} value="None" defaultChecked 
-                                onChange={()=> handleAttributeSelection(index, "Dairy Free Alternative", "None")}
-                                checked={selectedDrinkAttributes[index]["Dairy Free Alternative"] === "None"}
-                            /> 
-                            None
-                        </label>
-                        <span style={{ marginLeft: '10px' }}></span>
-                        <label>
-                            <input type="radio" name={`dairyFree-${index}`} value="Oat Milk" 
-                                onChange={()=> handleAttributeSelection(index, "Dairy Free Alternative", "Oat Milk")}
-                                checked={selectedDrinkAttributes[index]["Dairy Free Alternative"] === "Oat Milk"}
-                            />
-                            Oat Milk
-                        </label>
-                        <span style={{ marginLeft: '10px' }}></span>
-                        <label>
-                            <input type="radio" name={`dairyFree-${index}`} value="Soy Milk" 
-                                onChange={()=> handleAttributeSelection(index, "Dairy Free Alternative", "Soy Milk")}
-                                checked={selectedDrinkAttributes[index]["Dairy Free Alternative"] === "Soy Milk"}
-                            /> 
-                            Soy Milk
-                        </label>
-                        <span style={{ marginLeft: '10px' }}></span>
-                        <label>
-                            <input type="radio" name={`dairyFree-${index}`} value="Lactose Free Milk" 
-                                onChange={()=> handleAttributeSelection(index, "Dairy Free Alternative", "Lactose Free Milk")}
-                                checked={selectedDrinkAttributes[index]["Dairy Free Alternative"] === "Lactose Free Milk"}
-                            /> 
-                            Lactose Free Milk
-                        </label>
-                        <br/>
-                        <br/>
-                        Sweetness Level
-                        <br/>
-                        <label>
-                            <input type="radio" name={`sweetnessLevel-${index}`} value="100%" defaultChecked 
-                                onChange={()=> handleAttributeSelection(index, "Sweetness Level", "100%")}
-                                checked={selectedDrinkAttributes[index]["Sweetness Level"] === "100%"}
-                            /> 
-                            100%
-                        </label>
-                        <span style={{ marginLeft: '10px' }}></span>
-                        <label>
-                            <input type="radio" name={`sweetnessLevel-${index}`} value="50%" 
-                                onChange={()=> handleAttributeSelection(index, "Sweetness Level", "50%")}
-                                checked={selectedDrinkAttributes[index]["Sweetness Level"] === "50%"}
-                            /> 
-                            50%
-                        </label>
-                        <br/>
-                        <br/>
-                        Ice Level
-                        <br/>
-                        <label>
-                            <input type="radio" name={`iceLevel-${index}`} value="Normal" defaultChecked 
-                                onChange={()=> handleAttributeSelection(index, "Ice Level", "Normal")}
-                                checked={selectedDrinkAttributes[index]["Ice Level"] === "Normal"}
-                            /> 
-                            Normal
-                        </label>
-                        <span style={{ marginLeft: '10px' }}></span>
-                        <label>
-                            <input type="radio" name={`iceLevel-${index}`} value="Less Ice" 
-                                onChange={()=> handleAttributeSelection(index, "Ice Level", "Less Ice")}
-                                checked={selectedDrinkAttributes[index]["Ice Level"] === "Less Ice"}
-                            /> 
-                            Less Ice
-                        </label>
-                        <span style={{ marginLeft: '10px' }}></span>
-                        <label>
-                            <input type="radio" name={`iceLevel-${index}`} value="None" 
-                                onChange={()=> handleAttributeSelection(index, "Ice Level", "None")}
-                                checked={selectedDrinkAttributes[index]["Ice Level"] === "None"}
-                            />
-                            None
-                        </label>
-                        <br/>
-                        <br/>
-                        Cup Size
-                        <br/>
-                        <label>
-                            <input type="radio" name={`cupSize-${index}`} value="Cups (Regular)" defaultChecked 
-                                onChange={()=> handleAttributeSelection(index, "Cup Size", "Cups (Regular)")}
-                                checked={selectedDrinkAttributes[index]["Cup Size"] === "Cups (Regular)"}
-                            /> 
-                            Regular
-                        </label>
-                        <span style={{ marginLeft: '10px' }}></span>
-                        <label>
-                            <input type="radio" name={`cupSize-${index}`} value="Cups (Regular Hot)" 
-                                onChange={()=> handleAttributeSelection(index, "Cup Size", "Cups (Regular Hot)")}
-                                checked={selectedDrinkAttributes[index]["Cup Size"] === "Cups (Regular Hot)"}
-                            /> 
-                            Regular Hot ($1.00)
-                        </label>
-                        <span style={{ marginLeft: '10px' }}></span>
-                        <label>
-                            <input type="radio" name={`cupSize-${index}`} value="Cups (XL)" 
-                                onChange={()=> handleAttributeSelection(index, "Cup Size", "Cups (XL)")}
-                                checked={selectedDrinkAttributes[index]["Cup Size"] === "Cups (XL)"}
-                            /> 
-                            XL ($2.00)
-                        </label>
-                        <br/>
-                        <br/>
-                        <label>
-                            <input type="text" name={`specialInstruction-${index}`} placeholder="Add special instructions" value={specialInstructions[index]}
-                                onChange={(event)=> handleAttributeSelection(index, "Special Instructions", event.target.value)}
-                            />
-                        </label>
-                    </div>  
+                    <PopOutWindow index={index} drinkName={item.drink_name}/>
                 )}
                 {" "}<button id={'button${drinkIndex}' } onClick={() => removeDrink(item.price, index)}>remove</button>
-                </p>
+                </span>
             </div>
         ))}
     </div>

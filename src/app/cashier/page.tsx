@@ -18,12 +18,6 @@ export default function Home() {
   const [cart, setCart] = useState<any[]>([]);
   const [orderTotal, setOrderTotal] = useState<number>(0);
 
-  // Define the type for the Drink
-  type Drink = {
-    drink_name: string;
-    price: number;
-    // Add other properties as needed
-  };
 
   // Function to add a drink to the cart
   const addToCart = (drink: any): void => {
