@@ -46,6 +46,8 @@ export default function FruityAndRefreshing({ addToCart }: { addToCart: any }) {
               </div>
             ))}
         </div>
+        <div className={styles.orderList}>        {/* <Cart cart={cart} setParentCart={setCart} orderTotal={orderTotal} setOrderTotal={setOrderTotal} /> */}
+</div>
       </div>
     </>
   );

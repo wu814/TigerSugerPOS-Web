@@ -44,3 +44,34 @@
   top: 100%;
   left: 0;
 }
+
+.popOutWindow{
+    position: fixed;
+    top: 15%;
+    right: 25%;
+    width: 45%;
+    height: 55%;
+    background-color: rgba(215, 215, 79, 0.95); /* semi-transparent black overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-color: black;
+    border-style: solid;
+}
+
+.addOnPopout{
+  margin-left: 2vw;
+}
+
+.attributeName{
+  font-size: 1.2vw;
+  font-weight: bold;
+  margin-bottom: 0.5vh;
+}
+
+.saveChangeButton{
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  margin-right: 1vw;
+}
