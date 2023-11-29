@@ -8,11 +8,12 @@ import CoffeeFlavored from './coffeeFlavored/CoffeeFlavored';
 import FruityAndRefreshing from './fruityAndRefreshing/FruityAndRefreshing';
 import SweetAndCreamy from './sweetAndCreamy/SweetAndCreamy';
 import SeasonalDrinks from './seasonalDrinks/SeasonalDrinks';
+import AllDrinks from './allDrinks/AllDrinks';
 import styles from './page.module.css';
 
 export default function Home() {
   // State to manage which component to display
-  const [selectedComponent, setSelectedComponent] = useState<string>('fruityAndRefreshing');
+  const [selectedComponent, setSelectedComponent] = useState<string>('allDrinks');
 
   const [cart, setCart] = useState<any[]>([]);
   const [orderTotal, setOrderTotal] = useState<number>(0);
@@ -46,6 +47,8 @@ export default function Home() {
         return <CoffeeFlavored addToCart={addToCart} />;
       case 'seasonalDrinks':
         return <SeasonalDrinks addToCart={addToCart} />;
+      case 'allDrinks':
+        return <AllDrinks addToCart={addToCart} />;
       default:
         return null;
     }
@@ -55,7 +58,7 @@ export default function Home() {
     <>
       <Navbar />
       <div className={styles.main}>
-        <h1>Customer Page</h1>
+        <h1>Cashier Page</h1>
         <Cart cart={cart} setParentCart={setCart} orderTotal={orderTotal} setOrderTotal={setOrderTotal} />
         <ul className={styles.container}>
           <li className={styles.pContainer}>
@@ -76,6 +79,11 @@ export default function Home() {
           <li className={styles.pContainer}>
             <button className={styles.pItem} onClick={() => handleComponentSelect('seasonalDrinks')}>
               Seasonal Drinks
+            </button>
+          </li>
+          <li className={styles.pContainer}>
+            <button className={styles.pItem} onClick={() => handleComponentSelect('allDrinks')}>
+              All Drinks
             </button>
           </li>
         </ul>
