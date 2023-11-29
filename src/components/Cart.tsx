@@ -564,7 +564,7 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
                         <span style={{ marginLeft: '10px' }}></span>
                         <label>
                             <input type="radio" name={`iceLevel-${index}`} value="Less Ice" 
-                                onChange={()=> handleAttributeSelection(index, "IceLevel", "Less Ice")}
+                                onChange={()=> handleAttributeSelection(index, "Ice Level", "Less Ice")}
                                 checked={selectedDrinkAttributes[index]["Ice Level"] === "Less Ice"}
                             /> 
                             Less Ice
