@@ -86,7 +86,7 @@ body {
 }
 
 body {
-  color: white;
+  color: white !important;
   background: linear-gradient(
       to bottom,
       transparent,

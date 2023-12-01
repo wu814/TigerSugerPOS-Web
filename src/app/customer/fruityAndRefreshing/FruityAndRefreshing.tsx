@@ -1,11 +1,11 @@
 "use client"; // necessary for useState to work
-import styles from './page.module.css'
+import styles from '../page.module.css'
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-export default function FruityAndRefreshing({ addToCart }: { addToCart: any }) {
-
+export default function CoffeeFlavored({ addToCart }: { addToCart: any }) {
+   
     const [menuData, setMenuData] = useState<any[]>([]); // for fetching menu data
 
     const fetchMenu = async () => {
@@ -17,32 +17,32 @@ export default function FruityAndRefreshing({ addToCart }: { addToCart: any }) {
     // Fetch menu data on page load
     useEffect(() => {
         fetchMenu();
-    },[]);    
+    },[]);
 
     const handleOrderSelection = (menuItem: any) => {
         addToCart(menuItem);
     };
 
-
     return (
     <>
       <div className={styles.main}>
-        <div className={styles.container}>
+        <div className={styles.drinksContainer}>
           {menuData
             .filter(menuItem => menuItem.drink_type === 'Fruity and Refreshing')
             .map((menuItem, index) => (
-              <div className={styles.imageContainer} key={index}>
+                <div className={styles.imageContainer} key={index} role='button' onClick={() => handleOrderSelection(menuItem)}>
                 {/* Wrap the Image inside a Link so it's clickable */}
                 <Image
                     src={`/images/${menuItem.image_url}`}
-                    alt={`Boba Drink ${index + 1}`}
+                    alt={`${menuItem.drink_name}`}
                     width={300}
                     height={300}
                     className={styles.image}
                 />
-                <p className={styles.drinkName}>{menuItem.drink_name}</p>
-                <p className={styles.drinkPrice}>${menuItem.price}</p>
-                <button onClick={() => handleOrderSelection(menuItem)}>Add to Order</button>
+                <div className={styles.drinkDescription}>
+                    <p className={styles.drinkName}>{menuItem.drink_name}</p>
+                    <p className={styles.drinkPrice}>${menuItem.price}</p>
+                </div>
               </div>
             ))}
         </div>

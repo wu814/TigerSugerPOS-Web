@@ -35,7 +35,7 @@
   width: 100%;
   height: auto;
   max-height: 5vh;
-  overflow-y: auto;
+  overflow-y: hidden;
 }
 
 .open .cartDropdownContent {
@@ -47,20 +47,31 @@
 
 .popOutWindow{
     position: fixed;
-    top: 15%;
-    right: 25%;
-    width: 45%;
-    height: 55%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  
     background-color: rgba(215, 215, 79, 0.95); /* semi-transparent black overlay */
     display: flex;
-    justify-content: center;
-    align-items: center;
     border-color: black;
     border-style: solid;
+    width: 80%;
+    border-radius: 25px;
 }
 
 .addOnPopout{
-  margin-left: 2vw;
+    padding: 2vw;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    opacity: 0.5;
+    cursor: auto;
 }
 
 .attributeName{
@@ -69,9 +80,26 @@
   margin-bottom: 0.5vh;
 }
 
-.saveChangeButton{
-  display: flex;
-  flex-direction: column;
-  align-items: end;
-  margin-right: 1vw;
+.closeButton {
+    position: absolute;
+    top: 10px; /* Adjust the top position as needed */
+    right: 10px; /* Adjust the right position as needed */
+}
+
+.closeButton button {
+    background-color: #000000; /* Red background color for the button */
+    color: #ffffff; /* White text color */
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.closeButton button:hover {
+    background-color: #cc0000; /* Darker red on hover */
+}
+
+.addOns {
+    display: flex;
+    flex-direction: column;
 }

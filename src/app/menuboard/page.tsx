@@ -100,7 +100,7 @@ export default function Home() {
         </div> */}
         <div className={styles.container}>
             {menuData.map((menuItem, index) => (
-                <div className={styles.drinkContainer} key={index}>
+                <div className={styles.drinksContainer} key={index}>
                     <Image
                         src={`/images/${menuItem.image_url}`}
                         alt={`Boba Drink ${index + 1}`}

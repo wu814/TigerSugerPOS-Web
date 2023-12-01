@@ -285,10 +285,9 @@
 
 .image {
   max-width: 100%; /* Make sure the image fits within the container */
-  height: auto; /* Maintain the image's aspect ratio */
 }
 
-.drinkContainer {
+.drinksContainer {
   width: 33%;
   margin-bottom: 3vh;
   padding: 15px;
