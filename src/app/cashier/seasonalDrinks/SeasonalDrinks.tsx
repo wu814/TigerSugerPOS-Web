@@ -25,7 +25,6 @@ export default function CoffeeFlavored({ addToCart }: { addToCart: any }) {
 
     return (
     <>
-      <div className={styles.main}>
         <div className={styles.drinksContainer}>
           {menuData
             .filter(menuItem => menuItem.drink_type === 'Seasonal Drinks')
@@ -46,7 +45,6 @@ export default function CoffeeFlavored({ addToCart }: { addToCart: any }) {
               </div>
             ))}
         </div>
-      </div>
     </>
   );
 }

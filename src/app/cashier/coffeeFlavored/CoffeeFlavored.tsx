@@ -25,28 +25,26 @@ export default function CoffeeFlavored({ addToCart }: { addToCart: any }) {
 
     return (
     <>
-      <div className={styles.main}>
-        <div className={styles.drinksContainer}>
-          {menuData
-            .filter(menuItem => menuItem.drink_type === 'Coffee Flavored')
-            .map((menuItem, index) => (
-                <div className={styles.imageContainer} key={index} role='button' onClick={() => handleOrderSelection(menuItem)}>
-                {/* Wrap the Image inside a Link so it's clickable */}
-                <Image
-                    src={`/images/${menuItem.image_url}`}
-                    alt={`${menuItem.drink_name}`}
-                    width={300}
-                    height={300}
-                    className={styles.image}
-                />
-                <div className={styles.drinkDescription}>
-                    <p className={styles.drinkName}>{menuItem.drink_name}</p>
-                    <p className={styles.drinkPrice}>${menuItem.price}</p>
-                </div>
-              </div>
-            ))}
-        </div>
-      </div>
+    <div className={styles.drinksContainer}>
+        {menuData
+        .filter(menuItem => menuItem.drink_type === 'Coffee Flavored')
+        .map((menuItem, index) => (
+            <div className={styles.imageContainer} key={index} role='button' onClick={() => handleOrderSelection(menuItem)}>
+            {/* Wrap the Image inside a Link so it's clickable */}
+            <Image
+                src={`/images/${menuItem.image_url}`}
+                alt={`${menuItem.drink_name}`}
+                width={300}
+                height={300}
+                className={styles.image}
+            />
+            <div className={styles.drinkDescription}>
+                <p className={styles.drinkName}>{menuItem.drink_name}</p>
+                <p className={styles.drinkPrice}>${menuItem.price}</p>
+            </div>
+            </div>
+        ))}
+    </div>
     </>
   );
 }

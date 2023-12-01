@@ -288,15 +288,16 @@
 }
 
 .drinksContainer {
-  width: 33%;
   margin-bottom: 3vh;
   padding: 15px;
+  width: 300px;
 }
 
 .container {
   display: flex;
   flex-wrap: wrap;
   margin: 0 auto;
+  justify-content: center;
 }
 
 .pContainer {

@@ -251,15 +251,16 @@
     display: flex;
     flex-wrap: wrap;
     margin: 0 auto;
+    justify-content: center;
 }
 
 .imageContainer {
     text-align: center; /* Center align the content within each grid item */
     /* margin-bottom: 3vh; */
-    width: 31%;
+    width: 300px;
     margin: 10px;
     transition: color 0.5s; /* Add a transition for a smooth effect */
-    padding: 10px;
+    padding: 15px;
 }
 
 .imageContainer:hover {
@@ -287,4 +288,9 @@
 
 .pItem:hover {
   color: #f4f186;
+}
+
+.activeDrinkType {
+    color: #f4f186;
+    font-weight: bold;
 }
