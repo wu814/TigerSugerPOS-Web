@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
-import Cart from '../../components/Cart';
+import OrderList from '../../components/OrderList';
 import CoffeeFlavored from './coffeeFlavored/CoffeeFlavored';
 import FruityAndRefreshing from './fruityAndRefreshing/FruityAndRefreshing';
 import SweetAndCreamy from './sweetAndCreamy/SweetAndCreamy';
@@ -78,8 +78,8 @@ export default function Home() {
       <Navbar />
       <div className={styles.main}>
         <h1>Cashier Page</h1>
-        <Cart cart={cart} setParentCart={setCart} orderTotal={orderTotal} setOrderTotal={setOrderTotal} />
         {renderButtons()}
+        <OrderList orderList={cart} setParentOrderList={setCart} orderTotal={orderTotal} setOrderTotal={setOrderTotal} />
         {renderSelectedComponent()}
       </div>
       <Footer />
