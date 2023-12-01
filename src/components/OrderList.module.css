@@ -1,0 +1,99 @@
+.main{
+  position: relative;
+}
+
+.orderList {
+  background-color: #FFD700; /* Set the background color */
+  color: #000; /* Set the text color */
+  position: absolute;
+  margin-top: 3vh;
+  right: 0;
+  width: 23%;
+  max-height: 530px; /* Set the max-height to expand when open */
+  overflow: scroll;
+}
+
+.orderListTitles {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;
+  box-sizing: content-box;
+  font-size: 1.3em;
+}
+
+.orderListContent {
+  position: relative;
+  width: 100%;
+  top: 100%;
+  left: 0;
+}
+
+.orderListContent div{
+  margin-top: 1.5vh;
+  margin-left: 1.2vw;
+}
+
+.chargeAndClear{
+  text-align: center;
+  margin: 1vh 0;
+}
+
+.popOutWindow{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  
+    background-color: rgba(215, 215, 79, 0.95); /* semi-transparent black overlay */
+    display: flex;
+    border-color: black;
+    border-style: solid;
+    width: 80%;
+    border-radius: 25px;
+}
+
+.addOnPopout{
+    padding: 2vw;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    opacity: 0.5;
+    cursor: auto;
+}
+
+.attributeName{
+  font-size: 1.2vw;
+  font-weight: bold;
+  margin-bottom: 0.5vh;
+}
+
+.closeButton {
+    position: absolute;
+    top: 10px; /* Adjust the top position as needed */
+    right: 10px; /* Adjust the right position as needed */
+}
+
+.closeButton button {
+    background-color: #000000; /* Red background color for the button */
+    color: #ffffff; /* White text color */
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.closeButton button:hover {
+    background-color: #cc0000; /* Darker red on hover */
+}
+
+.addOns {
+    display: flex;
+    flex-direction: column;
+}
