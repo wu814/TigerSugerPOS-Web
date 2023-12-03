@@ -295,3 +295,8 @@
     color: #f4f186;
     font-weight: bold;
 }
+
+.scrollContainer {
+  max-height: 800px;
+  overflow-y: auto;
+}
