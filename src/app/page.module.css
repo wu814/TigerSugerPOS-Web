@@ -1,11 +1,22 @@
 .main {
     padding: 4rem;
+    padding-left: 20%;
+    padding-right: 20%;
     min-height: 100vh;
-    background: #272936;
+    background-image: url('../../public/images/home.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
     text-align: center;
 }
 
 .user {
-    background: #272936;
     text-align: center;
+}
+
+.content{
+    background: black;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    line-height: 50px;
+
 }

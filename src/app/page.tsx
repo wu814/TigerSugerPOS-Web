@@ -13,9 +13,13 @@ export default function Home() {
     return (
         <>
             <Navbar/>
-            {session && <h1 className={styles.user}>Welcome, {session?.user?.name}!</h1>}
+            
             <div className={styles.main}>
+                <div className = {styles.content}>
+                {session && <h1 className={styles.user}>Welcome, {session?.user?.name}!</h1>}
                 Welcome to Tiger Sugar! Click on one of the links above to get started.
+                <br></br>
+                </div>
             </div>
             <Footer/>
         </>
