@@ -249,11 +249,13 @@
 
 
 .drinksContainer {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end; /* Move drinks to the right */
+  width: 80%;
+  margin-left: auto; /* Additional adjustment to move drinks to the right */
 }
+
 
 .imageContainer {
     text-align: center; /* Center align the content within each grid item */
@@ -292,6 +294,10 @@
 }
 
 .activeDrinkType {
-    color: #f4f186;
-    font-weight: bold;
+    color: #FFD700;
+}
+
+.scrollContainer {
+  max-height: 800px;
+  overflow-y: auto;
 }

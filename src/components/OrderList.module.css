@@ -6,10 +6,10 @@
   background-color: #FFD700; /* Set the background color */
   color: #000; /* Set the text color */
   position: absolute;
-  margin-top: 3vh;
-  right: 0;
+  margin-top: 0vh;
+  left: 0;
   width: 23%;
-  max-height: 530px; /* Set the max-height to expand when open */
+  max-height: 800px; /* Set the max-height to expand when open */
   overflow: scroll;
 }
 
