@@ -24,6 +24,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    scale: 2;
+    margin-bottom: 40px;
 }
 
 /*weather stuff*/

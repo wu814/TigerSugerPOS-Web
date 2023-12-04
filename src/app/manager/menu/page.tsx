@@ -3,6 +3,8 @@ import styles from './page.module.css'
 import Navbar from '../../../components/Navbar'
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { Paper, TextField, Typography, Modal, Button } from '@mui/material';
+
 
 export default function Home() {
     const [menuData, setMenuData] = useState<any[]>([]);
@@ -23,6 +25,9 @@ export default function Home() {
         const json = await response.json();
         setMenuData(json.message);
     }
+
+    const sortedMenuData = menuData.slice().sort((a, b) => a.drink_name.localeCompare(b.drink_name));
+    const sortedIngredientList = ingredientList.slice().sort((a, b) => a.localeCompare(b));
 
     // TODO: Add validation for the new item (and success/error messages frontend)
     const handleAddItem = async () => {
@@ -47,30 +52,36 @@ export default function Home() {
 
     // TODO: Add validation for the remove item (and success/error messages frontend)
     const handleRemoveItem = async (drink_name: string) => {
-        const response = await fetch('/api/manager/menuRemove', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({drink_name: drink_name}),
-        });
+        const isConfirmed = window.confirm('Are you sure you want to delete this drink?');
 
-        const json = await response.json();
-        // Refresh the inventory data after removing an item
+        if(isConfirmed) {
+            const response = await fetch('/api/manager/menuRemove', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({drink_name: drink_name}),
+            });
 
-        if (response.status == 500) {
-            alert(json.error);
-        } else {
-            alert(json.message);
+            const json = await response.json();
+            // Refresh the inventory data after removing an item
+
+            if (response.status == 500) {
+                alert(json.error);
+            } else {
+                alert(json.message);
+            }
+
+            await fetchMenu();
+
+            // Close the modal after removing
+            setOpenModal(false);
         }
-
-        await fetchMenu();
     };
 
     const fetchIngredients = async () => {
         const response = await fetch('/api/manager/inventoryDisplay');
         const json = await response.json();
-
         const suppliesArray = json.message.map((item: { supply: string; }) => item.supply);
         setIngredientList(suppliesArray);
     };
@@ -84,6 +95,113 @@ export default function Home() {
         });
         setDrinkTypes(uniqueDrinkTypes);
     }
+
+    const [openModal, setOpenModal] = useState(false);
+    const [selectedItem, setSelectedItem] = useState({
+        drink_name: '',
+        price: '',
+        ingredients: [] as string[],
+        drink_type: '',
+    });
+    const [editedItem, setEditedItem] = useState({
+        drink_name: '',
+        price: '',
+        ingredients: [] as string[],
+        drink_type: '',
+    });
+    // Function to open the modal and set the selected item
+    const handleOpenModal = (item: any) => {
+        setSelectedItem(item);
+    
+        // Set the edited item with the current attributes of the selected drink
+        setEditedItem({
+            drink_name: item.drink_name,
+            price: item.price,
+            ingredients: item.ingredients,
+            drink_type: item.drink_type,
+        });
+    
+        setOpenModal(true);
+    };
+
+    // Function to close the modal
+    const handleCloseModal = () => {
+        setOpenModal(false);
+    };
+
+    // Function to handle changes in the edited item
+    const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setEditedItem((editedItem) => ({
+            ...editedItem,
+            [name]: value,
+        }));
+    };
+
+    const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
+    const [openIngredientModal, setOpenIngredientModal] = useState(false);
+
+    const handleOpenIngredientModal = () => {
+      setOpenIngredientModal(true);
+    };
+    
+    const handleIngredientSelection = (ingredient: string) => {
+        setSelectedIngredients((prevIngredients) => [...prevIngredients, ingredient]);
+      };
+      
+      const handleRemoveIngredient = (ingredient: string) => {
+        setSelectedIngredients((prevIngredients) =>
+          prevIngredients.filter((item) => item !== ingredient)
+        );
+    };
+
+
+    // Function to handle saving the edited item
+    const handleSaveEdit = async () => {
+        const editIngredients = await fetch('/api/manager/menuEditIngredients', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({drink: selectedItem.drink_name, ing: editedItem.ingredients}),
+        });
+
+        const editPrice = await fetch('/api/manager/menuEditPrice', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({drink: selectedItem.drink_name, price: editedItem.price}),
+        });
+        
+        const editType = await fetch('/api/manager/menuEditType', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({drink: selectedItem.drink_name, type: editedItem.drink_type}),
+        });
+        
+        const editName = await fetch('/api/manager/menuEditName', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({drink: selectedItem.drink_name, newdrink: editedItem.drink_name}),
+        });
+        // Close the modal after saving
+        setOpenModal(false);
+        fetchMenu();
+    };
+
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const filteredMenuData = sortedMenuData.filter(item =>
+        item.drink_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.drink_type.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.ingredients.join(', ').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.price.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     useEffect(() => {
         const fetchData = async () => {
@@ -110,31 +228,153 @@ export default function Home() {
                     Back
                 </Link>
                 <h1 className={styles.mainHeading}>Manager View (Menu)</h1>
+
+                <div className={styles.actions}>
+                    <h2>
+                        Search for an menu item:
+                    </h2>
+                    <input
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                </div>
+
                 <div className={styles.menuData}>
-                    <h2 className={styles.subHeading}>Menu Data:</h2>
                     <table className={styles.inventoryTable}>
                         <thead>
                             <tr>
-                                {/* <th>Inventory ID</th> */}
                                 <th>Name</th>
                                 <th>Price</th>
                                 <th>Ingredients</th>
                                 <th>Drink Type</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {menuData.map((item) => (
+                            {filteredMenuData.map((item) => (
                                 <tr key={item.product_id}>
-                                    {/* <td>{item.product_id}</td> */}
                                     <td>{item.drink_name}</td>
                                     <td>${item.price}</td>
                                     <td>{item.ingredients.join(', ')}</td>
                                     <td>{item.drink_type}</td>
+                                    <td>
+                                        <Button onClick={() => handleOpenModal(item)}>Edit</Button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
+                <Modal
+                open={openModal}
+                onClose={handleCloseModal}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                disableScrollLock={true}
+                >
+                <Paper className={styles.modalContent}>
+                    <div>
+                        <Typography id="modal-modal-title" variant="h6" component="h2">
+                            Edit Menu Item
+                        </Typography>
+                        <div className={styles.removeDrinkButton}>
+                            <Button onClick={() => handleRemoveItem(selectedItem.drink_name)}>Delete Drink</Button>
+                        </div>
+                    </div>
+                    <div className={styles.modalBody}>
+                        <TextField
+                            label="Drink Name"
+                            value={editedItem.drink_name}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEditChange(e)}
+                            name="drink_name"
+                            className={styles.textField}
+                        />
+                        <div>
+                        <TextField
+                            label="Drink Price"
+                            value={editedItem.price}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEditChange(e)}
+                            name="drink_price"
+                            className={styles.textField}
+                        />
+                        </div>
+                        <div>
+                        <TextField
+                            label="Drink Type"
+                            value={editedItem.drink_type}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEditChange(e)}
+                            name="drink_type"
+                            className={styles.textField}
+                        />
+                        </div>
+                        <div>
+                            <div className={styles.ingredientsContainer}>
+                                {selectedIngredients.map((ingredient) => (
+                                    <div
+                                        key={ingredient}
+                                        className={`${styles.ingredientBox} ${styles.selected}`}
+                                        onClick={() => handleRemoveIngredient(ingredient)}
+                                    >
+                                        {ingredient}
+                                    </div>
+                                ))}
+                                <div className={styles.modalActions}>
+                                    <div className={styles.editIngredientsButton}>
+                                        <Button onClick={handleOpenIngredientModal}>Edit Ingredients</Button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className={styles.modalActions}>
+                        <div className={styles.applyChangesButton}>
+                            <Button onClick={handleSaveEdit}>Apply Changes</Button>
+                        </div>
+                        <div className={styles.closeButton}>
+                            <Button className={styles.closeButton} onClick={handleCloseModal}>Close</Button>
+                        </div>
+                    </div>
+                </Paper>
+            </Modal>
+            <Modal
+            open={openIngredientModal}
+            onClose={() => setOpenIngredientModal(false)}
+            aria-labelledby="ingredient-modal-title"
+            aria-describedby="ingredient-modal-description"
+            >
+            <Paper className={styles.modalContent}>
+                <Typography id="ingredient-modal-title" variant="h6" component="h2">
+                Select Ingredients
+                </Typography>
+                <div className={styles.modalBody}>
+                <div>
+                    <label>Ingredients:</label>
+                    <div className={styles.ingredientsContainer}>
+                        {sortedIngredientList.map((ingredient) => (
+                            <div
+                                key={ingredient}
+                                className={`${styles.ingredientBox} ${editedItem.ingredients.includes(ingredient) ? styles.selected : ''}`}
+                                onClick={() => {
+                                    setEditedItem((editedItem) => {
+                                        if (editedItem.ingredients.includes(ingredient)) {
+                                            return { ...editedItem, ingredients: editedItem.ingredients.filter((item) => item !== ingredient) };
+                                        } else {
+                                            return { ...editedItem, ingredients: [...editedItem.ingredients, ingredient] };
+                                        }
+                                    });
+                                }}
+                            >
+                                {ingredient}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                </div>
+                <Button onClick={() => setOpenIngredientModal(false)}>Close</Button>
+            </Paper>
+            </Modal>
+
                 <div className={styles.actions}>
                     <h2>Add New Item:</h2>
                     <div>
@@ -158,16 +398,16 @@ export default function Home() {
                     <div>
                         <label>Ingredients:</label>
                         <div className={styles.ingredientsContainer}>
-                            {ingredientList.map((ingredient) => (
+                            {sortedIngredientList.map((ingredient) => (
                                 <div
                                     key={ingredient}
                                     className={`${styles.ingredientBox} ${newItem.ingredients.includes(ingredient) ? styles.selected : ''}`}
                                     onClick={() => {
-                                        setNewItem((prevItem) => {
-                                            if (prevItem.ingredients.includes(ingredient)) {
-                                                return { ...prevItem, ingredients: prevItem.ingredients.filter((item) => item !== ingredient) };
+                                        setNewItem((newItem) => {
+                                            if (newItem.ingredients.includes(ingredient)) {
+                                                return { ...newItem, ingredients: newItem.ingredients.filter((item) => item !== ingredient) };
                                             } else {
-                                                return { ...prevItem, ingredients: [...prevItem.ingredients, ingredient] };
+                                                return { ...newItem, ingredients: [...newItem.ingredients, ingredient] };
                                             }
                                         });
                                     }}
@@ -180,35 +420,15 @@ export default function Home() {
 
                     <div>
                         <label htmlFor="drink_type">Drink Type:</label>
-                        <select
+                        <input
+                            type="text"
                             id="drink_type"
                             value={newItem.drink_type}
                             onChange={(e) => setNewItem({ ...newItem, drink_type: e.target.value })}
-                        >
-                            <option value="">Select Drink Type</option>
-                            {drinkTypes.map((type) => (
-                                <option key={type} value={type}>
-                                    {type}
-                                </option>
-                            ))}
-                        </select>
+                        />
                     </div>
 
                     <button onClick={handleAddItem}>Add Item</button>
-                </div>
-                <div className={styles.actions}>
-                    <h2>Remove Item:</h2>
-                    <label htmlFor="removeItemId">Menu Item Name:</label>
-                    <input
-                        type="text"
-                        id="removeItemId"
-                        onChange={(e) => {
-                            // You can add additional validation if needed
-                            const menuName = e.target.value;
-                            setRemoveItemName(menuName);
-                        }}
-                    />
-                    <button onClick={() => handleRemoveItem(removeItemName)}>Remove Item</button>
                 </div>
             </div>
         </>

@@ -3,7 +3,7 @@
     padding-left: 20%;
     padding-right: 20%;
     min-height: 100vh;
-    background-image: url('../../public/images/home.jpg');
+    background-image: url('https://tigersugar.com/images/background_img/about_bg.png');
     background-repeat: no-repeat;
     background-size: cover;
     text-align: center;
@@ -14,7 +14,6 @@
 }
 
 .content{
-    background: black;
     padding-top: 20px;
     padding-bottom: 20px;
     line-height: 50px;

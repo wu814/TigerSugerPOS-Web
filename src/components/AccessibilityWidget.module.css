@@ -1,0 +1,47 @@
+/* AccessibilityWidget.module.css */
+.accessibilityWidget {
+    position: absolute;
+    right: 0;
+    margin-top: 10px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: black;
+  }
+  
+  .accessibilityWidget label {
+    margin-right: 10px;
+  }
+
+.centerScreen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+.modalContent {
+    position: absolute;
+    width: 70%;
+    padding: 20px;
+    background-color: #FFFFED !important;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.accessibilityButtons button {
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
+
+.accessibilityButtons button:hover {
+    background-color: #ddd;
+    color: black;
+}

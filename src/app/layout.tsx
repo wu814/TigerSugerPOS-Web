@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { getServerSession } from 'next-auth';
 import GoogleTranslateWrapper from '../components/GoogleTranslateWrapper';
+import AccessibilityWidget from '../components/AccessibilityWidget';
 
 import SessionProvider from '../components/SessionProvider';
 
@@ -24,6 +25,7 @@ export default async function RootLayout({
       <body className={inter.className}>
         <SessionProvider session={session}>
             <GoogleTranslateWrapper />
+            <AccessibilityWidget />
             {children}
         </SessionProvider>
       </body>

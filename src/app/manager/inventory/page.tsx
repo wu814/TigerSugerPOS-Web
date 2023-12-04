@@ -3,6 +3,7 @@ import styles from './page.module.css'
 import Navbar from '../../../components/Navbar'
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { Paper, TextField, Typography, Modal, Button } from '@mui/material';
 
 export default function Home() {
     const [inventoryData, setInventoryData] = useState<any[]>([]);
@@ -12,6 +13,7 @@ export default function Home() {
         minimum_stock: ''
     });
     const [removeItemName, setRemoveItemName] = useState(''); 
+    const sortedInventoryData = inventoryData.sort((a, b) => a.supply.localeCompare(b.supply));
 
     const fetchInventory = async () => {
         const response = await fetch('/api/manager/inventoryDisplay');
@@ -41,26 +43,109 @@ export default function Home() {
     };
 
     const handleRemoveItem = async (supply: string) => {
-        const response = await fetch('/api/manager/inventoryRemove', {
+        const isConfirmed = window.confirm('Are you sure you want to delete this drink?');
+
+        if(isConfirmed) {
+            const response = await fetch('/api/manager/inventoryRemove', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({supply: supply}),
+            });
+
+            const json = await response.json();
+            console.log(json); // Handle the response as needed
+            // Refresh the inventory data after removing an item
+
+            if (response.status == 500) {
+                alert(json.error);
+            } else {
+                alert(json.message);
+            }
+        }
+        
+        handleCloseModal();
+        fetchInventory();
+    };
+
+    const [openModal, setOpenModal] = useState(false);
+    const handleOpenModal = (item: any) => {
+        setSelectedItem(item);
+    
+        // Set the edited item with the current attributes of the selected drink
+        setEditedItem({
+            inventory_id: item.inventory_id,
+            supply: item.supply,
+            stock_remaining: item.stock_remaining,
+            minimum_stock: item.minimum_stock,
+        });
+    
+        setOpenModal(true);
+    };
+
+    const [selectedItem, setSelectedItem] = useState({
+        inventory_id: '',
+        supply: '',
+        stock_remaining: '',
+        minimum_stock: '',
+    });
+
+    const [editedItem, setEditedItem] = useState({
+        inventory_id: '',
+        supply: '',
+        stock_remaining: '',
+        minimum_stock: '',
+    });
+
+    const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setEditedItem((editedItem) => ({
+            ...editedItem,
+            [name]: value,
+        }));
+    };
+
+    const handleCloseModal = () => {
+        setOpenModal(false);
+    };
+
+    const handleSaveEdit = async () => {
+        const editMin = await fetch('/api/manager/inventoryEditMin', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({supply: supply}),
+            body: JSON.stringify({supply: selectedItem.supply, stock: editedItem.minimum_stock}),
         });
 
-        const json = await response.json();
-        console.log(json); // Handle the response as needed
-        // Refresh the inventory data after removing an item
+        const editStock = await fetch('/api/manager/inventoryEditStock', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({supply: selectedItem.supply, stock: editedItem.stock_remaining}),
+        });
 
-        if (response.status == 500) {
-            alert(json.error);
-        } else {
-            alert(json.message);
-        }
-        
+        const editName = await fetch('/api/manager/inventoryEditName', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({supply: selectedItem.supply, newsupply: editedItem.supply}),
+        });
+
+        setOpenModal(false);
         fetchInventory();
-    };
+    }
+
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const filteredInventoryData = sortedInventoryData.filter(item =>
+        item.supply.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.stock_remaining.toString().includes(searchQuery) ||
+        item.minimum_stock.toString().includes(searchQuery)
+    );
 
     useEffect(() => {  
         fetchInventory();
@@ -75,29 +160,96 @@ export default function Home() {
                     Back
                 </Link>
                 <h1 className={styles.mainHeading}>Manager View (Inventory)</h1>
+
+                <div className={styles.actions}>
+                    <h2>
+                        Search for an inventory item:
+                    </h2>
+                    <input
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                </div>
+
                 <div className={styles.inventoryData}>
-                    <h2 className={styles.subHeading}>Inventory Data:</h2>
                     <table className={styles.inventoryTable}>
                         <thead>
                             <tr>
-                                <th>Inventory ID</th>
                                 <th>Name</th>
                                 <th>Stock Remaining</th>
                                 <th>Minimum Stock</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {inventoryData.map((item) => (
+                            {filteredInventoryData.map((item) => (
                                 <tr key={item.inventory_id}>
-                                    <td>{item.inventory_id}</td>
                                     <td>{item.supply}</td>
                                     <td>{item.stock_remaining}</td>
                                     <td>{item.minimum_stock}</td>
+                                    <td>
+                                        <Button onClick={() => handleOpenModal(item)}>Edit</Button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
+
+                <Modal
+                open={openModal}
+                onClose={handleCloseModal}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                disableScrollLock={true}
+                >
+                <Paper className={styles.modalContent}>
+                    <div>
+                        <Typography id="modal-modal-title" variant="h6" component="h2">
+                            Edit Menu Item
+                        </Typography>
+                        <div className={styles.removeDrinkButton}>
+                            <Button onClick={() => handleRemoveItem(selectedItem.supply)}>Delete Supply</Button>
+                        </div>
+                    </div>
+                    <div className={styles.modalBody}>
+                        <TextField
+                            label="Supply Name"
+                            value={editedItem.supply}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEditChange(e)}
+                            name="supply"
+                            className={styles.textField}
+                        />
+                        <div>
+                        <TextField
+                            label="Stock Remaining"
+                            value={editedItem.stock_remaining}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEditChange(e)}
+                            name="stock_remaining"
+                            className={styles.textField}
+                        />
+                        </div>
+                        <div>
+                        <TextField
+                            label="Minimum Stock"
+                            value={editedItem.minimum_stock}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEditChange(e)}
+                            name="minimum_stock"
+                            className={styles.textField}
+                        />
+                        </div>
+                    </div>
+
+                    <div className={styles.modalActions}>
+                        <div className={styles.applyChangesButton}>
+                            <Button onClick={handleSaveEdit}>Apply Changes</Button>
+                        </div>
+                        <div className={styles.closeButton}>
+                            <Button className={styles.closeButton} onClick={handleCloseModal}>Close</Button>
+                        </div>
+                    </div>
+                </Paper>
+            </Modal>
                 <div className={styles.actions}>
                     <h2>Add New Item:</h2>
                     <div>
@@ -128,19 +280,6 @@ export default function Home() {
                         />
                     </div>
                     <button onClick={handleAddItem}>Add Item</button>
-                </div>
-                <div className={styles.actions}>
-                    <h2>Remove Item:</h2>
-                    <label htmlFor="removeItemId">Inventory Item Name:</label>
-                    <input
-                        type="text"
-                        id="removeItemId"
-                        onChange={(e) => {
-                            // You can add additional validation if needed
-                            setRemoveItemName(e.target.value);
-                        }}
-                    />
-                    <button onClick={() => handleRemoveItem(removeItemName)}>Remove Item</button>
                 </div>
             </div>
         </>

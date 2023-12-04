@@ -83,7 +83,6 @@ export default function Home() {
         </ul>
         {renderSelectedComponent()}
       </div>
-      <Footer />
     </>
   );
 }

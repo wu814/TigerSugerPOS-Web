@@ -82,7 +82,6 @@ export default function Home() {
         <OrderList orderList={cart} setParentOrderList={setCart} orderTotal={orderTotal} setOrderTotal={setOrderTotal} />
         {renderSelectedComponent()}
       </div>
-      <Footer />
     </>
   );
 }
