@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Dialog, DialogContent, CircularProgress, Button } from '@mui/material';
 
 interface WeatherData {
   main: {
@@ -12,8 +13,10 @@ interface WeatherData {
 }
 
 const WeatherWidget: React.FC = () => {
+  const [open, setOpen] = useState(false);
   const [temperature, setTemperature] = useState<number | null>(null);
   const [weatherIcon, setWeatherIcon] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   const apiKey = '393f27956be75ccc19965c699b656795'; // API key
   const city = 'College Station'; // City
 
@@ -27,25 +30,46 @@ const WeatherWidget: React.FC = () => {
         setWeatherIcon(response.data.weather[0].icon);
       } catch (error) {
         console.error('Error fetching weather data:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchWeather();
   }, [apiKey, city]);
 
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
-    <div className="weather-widget">
-      {temperature !== null && weatherIcon ? (
-        <div>
-          <img
-            src={`http://openweathermap.org/img/wn/${weatherIcon}.png`}
-            alt="Weather Icon"
-          />
-          <p className="temperature">{temperature}°F</p>
-        </div>
-      ) : (
-        <p className="loading">Loading...</p>
-      )}
+    <div>
+      <Button variant='contained' onClick={handleOpen}>View Weather🌤️</Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogContent>
+          {loading ? (
+            <CircularProgress />
+          ) : (
+            <>
+              {temperature !== null && weatherIcon ? (
+                <div>
+                  <img
+                    src={`http://openweathermap.org/img/wn/${weatherIcon}.png`}
+                    alt="Weather Icon"
+                  />
+                  <p className="temperature">{temperature}°F</p>
+                </div>
+              ) : (
+                <p className="loading">Error loading weather data</p>
+              )}
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

@@ -2,9 +2,13 @@
 import Link from 'next/link';
 import React from 'react';
 import WeatherWidget from './WeatherWidget'; // Import the WeatherWidget component
+import AccessibilityWidget from './AccessibilityWidget';
 import styles from './Navbar.module.css'; // Import the CSS module
 import Image from 'next/image';
-import { useSession } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
+import { AppBar, Toolbar, Button, Container } from '@mui/material';
+import { usePathname } from 'next/navigation';
+
 
 function AuthButton() {
   const { data: session } = useSession();
@@ -16,36 +20,70 @@ function AuthButton() {
 }
 
 export default function Navbar() {
-  return (
-    <>
-        <nav className={styles.navbar}>
-        {/* Container for the top-left widget (WeatherWidget) */}
-        <div className={styles.topLeftWidget}>
-          {/* Display the WeatherWidget component in the top-left */}
-          <WeatherWidget />
-        </div>
-
-        {/* Container for the logo */}
-        <div className={styles.imageContainer}>
-          {/* Display the logo */}
-          <Image
-            src="/images/tiger-sugar-logo.png"
-            alt="Tiger Sugar Logo"
-            width={0}
-            height={0}
-            sizes="100vw"
-            style={{ width: '10vw', height: 'auto' }}
-          />
-        </div>
-              <ul className={styles.navList}>
-                  <li className={styles.navItem}><Link href="/">Home</Link></li>
-                  <li className={styles.navItem}><Link href="/cashier">Cashier</Link></li>
-                  <li className={styles.navItem}><Link href="/manager">Manager</Link></li>
-                  <li className={styles.navItem}><Link href="/customer">Customer</Link></li>
-                  <li className={styles.navItem}><Link href="/menuboard">Menu Board</Link></li>
-                  <li className={styles.navItem}><AuthButton/></li>
-              </ul>
-          </nav>
-          </>
-  );
-};
+    const { data: session } = useSession();
+    const pathname = usePathname()
+  
+    const handleSignClick = () => {
+      if (session) {
+        signOut();
+      } else {
+        signIn();
+      }
+    };
+  
+    return (
+      <>
+      <div className={styles.navWidgets}>
+        <AccessibilityWidget />
+        <WeatherWidget />
+      </div>
+      <AppBar position="static" className={styles.navbar}>
+        <Container>
+          <Toolbar>
+            <div className={styles.imageContainer}>
+              <Image
+                src="/images/tiger-sugar-logo.png"
+                alt="Tiger Sugar Logo"
+                width={100} // Set the width and height as per your requirement
+                height={50}
+              />
+            </div>
+  
+            <ul className={styles.navList}>
+              <li className={`${styles.navItem} ${pathname === ('/') && styles.activeNavItem}`}>
+                <Button color="inherit">
+                    <Link href="/">Home</Link>
+                </Button>
+              </li>   
+              <li className={`${styles.navItem} ${pathname.startsWith('/cashier') && styles.activeNavItem}`}>
+                <Button color="inherit">
+                    <Link href="/cashier">Cashier</Link>
+                </Button>
+              </li>
+              <li className={`${styles.navItem} ${pathname.startsWith('/manager') && styles.activeNavItem}`}>
+                <Button color="inherit">
+                    <Link href="/manager">Manager</Link>
+                </Button>
+              </li>
+              <li className={`${styles.navItem} ${pathname.startsWith('/customer') && styles.activeNavItem}`}>
+                <Button color="inherit">
+                    <Link href="/customer">Customer</Link>
+                </Button>
+              </li>
+              <li className={`${styles.navItem} ${pathname.startsWith('/menuboard') && styles.activeNavItem}`}>
+                <Button color="inherit">
+                    <Link href="/menuboard">Menu Board</Link>
+                </Button>
+              </li>
+              <li className={styles.navItem}>
+                <Button color="inherit" onClick={handleSignClick}>
+                  {session ? 'Sign out' : 'Sign in'}
+                </Button>
+              </li>
+            </ul>
+          </Toolbar>
+        </Container>
+      </AppBar>
+      </>
+    );
+}

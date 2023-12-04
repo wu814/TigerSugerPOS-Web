@@ -3,6 +3,7 @@ import './globals.css'
 import { getServerSession } from 'next-auth';
 import GoogleTranslateWrapper from '../components/GoogleTranslateWrapper';
 import AccessibilityWidget from '../components/AccessibilityWidget';
+import WeatherWidget from '../components/WeatherWidget';
 
 import SessionProvider from '../components/SessionProvider';
 
@@ -22,7 +23,6 @@ export default async function RootLayout({
       <body className="baseFont">
         <SessionProvider session={session}>
             <GoogleTranslateWrapper />
-            <AccessibilityWidget />
             {children}
         </SessionProvider>
       </body>

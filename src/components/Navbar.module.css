@@ -1,8 +1,13 @@
 /* Navbar.module.css */
 
 .navbar {
-    background-color: black;
-    padding: 10px;
+    background-color: black !important;
+}
+
+.navWidgets {
+    background-color: black !important;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .navList {
@@ -13,19 +18,33 @@
 
 .navItem {
     list-style-type: none;
-    font-size: 20px;
+    font-size: 20px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navItem button {
+    font-size: 1rem !important;
+}
+
+.activeNavItem {
+    color: #f4f186;
 }
 
 .navItem:hover {
-  color: #f4f186;
+    color: #f4f186;
 }
 
 .imageContainer {
     display: flex;
     justify-content: center;
     align-items: center;
-    scale: 2;
-    margin-bottom: 40px;
+}
+
+.imageContainer::after {
+    content: "|";
+    margin-left: 10px;
 }
 
 /*weather stuff*/
@@ -57,3 +76,8 @@
     color: #888;
   }
   
+  .bottomRightWeatherWidget {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
