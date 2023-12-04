@@ -4,6 +4,7 @@ import { clear } from 'console';
 import { all } from 'axios';
 
 export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }: { cart: any[], setParentCart: any, orderTotal: number, setOrderTotal: any }) {
+    // Define the add on options
     const AddOnPair = {
         "Tapioca Pearls (Boba)": "None",
         "Cream Mousse": "None",
@@ -14,6 +15,8 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
         "Pudding": "None",
     }
 
+
+    // Define the drink attribute options
     const DrinkAttributePair = {
         "Dairy Free Alternative": "None",
         "Sweetness Level": "100%",
@@ -22,6 +25,8 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
         "Special Instructions": "None",
     }
     
+
+    // Pop out window for customizing drink
     const PopOutWindow = ({index, drinkName}: {index:number, drinkName:string}) => {
         return (
             <>
@@ -209,16 +214,16 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
     }
 
     const [isCartVisible, setCartVisible] = useState(false); // Show the cart if true, hide if false
-    const [isAddOnPopoutOpen, setIsAddOnPopoutOpen] = useState<boolean[]>([]);
-    const [selectedOrders, setSelectedOrders] = useState<any[]>([]); // for storing selected orders
-    const [selectedAddOns, setSelectedAddOns] = useState<any[]>([]); // for storing selected add ons
-    const [selectedDrinkAttributes, setSelectedDrinkAttributes] = useState<any[]>([]); // for storing selected drink attributes
-    const [specialInstructions, setSpecialInstructions] = useState<string[]>([]);
-    const [extraCharge, setExtraCharge] = useState<number[]>([]);
-    const [usedSupply, setUsedSupply] = useState<any[]>([]); // for tracking all the supplies need to be subtracted from inventory
-    const [subtractFromInventoryQuery, setSubtractFromInventoryQuery] = useState<string>(""); // for storing the query for subtracting from inventory
-    const [remainingStock, setRemainingStock] = useState<any[]>([]); // for storing the remaining stock of each supply
-    const [insuffientStock, setInsufficientStock] = useState<string[]>([]); // for storing the supplies that are insufficient for placing order in stock
+    const [isAddOnPopoutOpen, setIsAddOnPopoutOpen] = useState<boolean[]>([]); // For storing the state of the pop out window
+    const [selectedOrders, setSelectedOrders] = useState<any[]>([]); // For storing selected orders
+    const [selectedAddOns, setSelectedAddOns] = useState<any[]>([]); // For storing selected add ons
+    const [selectedDrinkAttributes, setSelectedDrinkAttributes] = useState<any[]>([]); // For storing selected drink attributes
+    const [specialInstructions, setSpecialInstructions] = useState<string[]>([]); // For storing special instructions
+    const [extraCharge, setExtraCharge] = useState<number[]>([]); // For storing the extra charge for each drink
+    const [usedSupply, setUsedSupply] = useState<any[]>([]); // For tracking all the supplies need to be subtracted from inventory
+    const [subtractFromInventoryQuery, setSubtractFromInventoryQuery] = useState<string>(""); // For storing the query for subtracting from inventory
+    const [remainingStock, setRemainingStock] = useState<any[]>([]); // For storing the remaining stock of each supply
+    const [insuffientStock, setInsufficientStock] = useState<string[]>([]); // For storing the supplies that are insufficient for placing order in stock
 
 
     useEffect(() => {
@@ -230,11 +235,13 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
     }, [cart]);
 
 
+    // Functionality when click on the cart button
     const toggleCart = () => {
         setCartVisible(!isCartVisible);
     };
     
     
+    // Functionality when click on the customize button
     const toggleCustomize = (drinkIndex: number) => {    
         const newIsAddOnPopoutOpen = [...isAddOnPopoutOpen];  // Create a copy of the isAddonPopoutOpen array
         newIsAddOnPopoutOpen[drinkIndex] = !newIsAddOnPopoutOpen[drinkIndex];
@@ -242,6 +249,7 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
     };
     
     
+    // Functionality when click on the add on checkbox
     const handleAddOnSelection = (drinkIndex: number, addOn: string) => {
         const newSelectedAddOns = [...selectedAddOns];  // Create a copy of the selecteAddons array
         const newAddOnPair = newSelectedAddOns[drinkIndex];
@@ -263,6 +271,7 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
     };
     
     
+    // Functionality when click on the radio button
     const handleAttributeSelection = (drinkIndex: number, attribute: string, value: string) => {
         const newSelectedDrinkAttributes = [...selectedDrinkAttributes];  // Create a copy of the selectedDrinkAttributes array
         const newDrinkAttributePair = newSelectedDrinkAttributes[drinkIndex];  
@@ -307,7 +316,7 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
             setSpecialInstructions(newSpecialInstruction);
         }
         
-        // update the drink attribute pair
+        // Update the drink attribute pair
         newDrinkAttributePair[attribute] = value;
         
         newSelectedDrinkAttributes[drinkIndex] = newDrinkAttributePair;
@@ -343,6 +352,7 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
     };
     
     
+    // Functionality when click on clear cart button
     const clearCart = () => {
         setParentCart([]);
         setSelectedAddOns([]);
@@ -357,6 +367,7 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
     };
     
     
+    // Loading used supplies after clicking on charge button
     const loadUsedSupply = () => {
         const newUsedSupply = [...usedSupply];
         const orders = [...cart];
@@ -423,6 +434,7 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
     };
     
 
+    // Load remaining stock from inventory
     const loadRemainingStock = async () => {
         try{
             const response = await fetch("/api/cashier/remainingStock");
@@ -461,6 +473,7 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
     }
 
 
+    // Print the supplies that are insufficient for placing order
     const printInsufficientStock = () => {
         let allMessage = "Insufficient Stock: \n";
         for(let i = 0; i < insuffientStock.length; i++){
@@ -471,6 +484,7 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
     }
 
 
+    // Create the query for subtracting used supply from inventory after checking if there is sufficient stock
     const loadSubtractFromInventoryQuery = () => {
         if (!sufficientStock()) {
             return;
@@ -487,6 +501,7 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
     }
         
 
+    // Get the current timestamp
     const getCurrentTimestamp = () => {
         const currentDate = new Date();
         const year = currentDate.getFullYear();
@@ -502,10 +517,12 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
 
     // Functionality when click on place order button
     const placeOrder = async () => {
-        const orderItemArray = []; // for converting an array of order items to a string
-        const drinkAddOnsArray = []; // for converting an array of drink add ons to a string
-        const drinkAttributesArray = []; // for converting an array of drink attributes to a string
-        const currentTimeStamp = getCurrentTimestamp(); // get the current timestamp
+        const orderItemArray = []; // For converting an array of order items to a string
+        const drinkAddOnsArray = []; // For converting an array of drink add ons to a string
+        const drinkAttributesArray = []; // For converting an array of drink attributes to a string
+        const currentTimeStamp = getCurrentTimestamp(); // Get the current timestamp
+
+
         for (let i = 0; i < cart.length; i++) {
             orderItemArray.push(cart[i].drink_name);
         }
@@ -517,7 +534,9 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
             drinkAttributesArray.push(Object.entries(selectedDrinkAttributes[i]).map(([key, value]) => `${key}: ${value}`)
             .join(', '));
         }
-        const orderData = { // Define orderData as an object
+
+        // Define orderData as an object
+        const orderData = { 
             orderTimestamp: currentTimeStamp,
             employeeId: 1,
             customerId: 2,
@@ -527,7 +546,7 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
             drinkAddOns: drinkAddOnsArray,
         };
         
-        // writing new order to orders table
+        // Writing new order to orders table
         try{
             const response = await fetch("/api/cashier/placeOrder", {
                 method: "POST",
@@ -550,7 +569,7 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
             console.error('Error fetching API:', error);
         }
 
-        // subtracting corresponding add ons and drink ingredients from inventory
+        // Subtracting corresponding add ons and drink ingredients from inventory
         try{
             const response = await fetch("/api/cashier/subtractFromInventory", {
                 method: "POST",
@@ -605,6 +624,9 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
         }
     }, [subtractFromInventoryQuery]);
     
+
+
+
     return (
     <div className={`${styles.cartButton} ${isCartVisible ? styles.open : ''}`}>
     <div className={styles.cartButtonContent}>

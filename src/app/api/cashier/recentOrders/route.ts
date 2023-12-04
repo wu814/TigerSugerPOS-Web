@@ -3,6 +3,7 @@ import { query } from "../../../../utils/database";
 
 export const dynamic = 'force-dynamic';
 
+// Getting the most recent 100 orders
 export async function GET(request: NextRequest) {
     try {
         const orders = await query(

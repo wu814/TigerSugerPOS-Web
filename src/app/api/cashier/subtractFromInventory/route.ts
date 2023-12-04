@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { query } from "../../../../utils/database";
 
 
+// Executing the query to subtract from inventory
 export async function POST(request: NextRequest) {
     try {
         const subtractFromInventoryQuery = await request.text();

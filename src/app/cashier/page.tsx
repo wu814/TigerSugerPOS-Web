@@ -29,10 +29,12 @@ export default function Home() {
     fetchRecentOrders();
   };
 
+
   // Function to close the modal
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
 
   const fetchRecentOrders = async () => {
     const response = await fetch('/api/cashier/recentOrders');
@@ -40,20 +42,22 @@ export default function Home() {
     setRecentOrders(data.message);
   }
 
-    const formatTimestamp = (timestamp: string | number | Date) => {
-        const date = new Date(timestamp);
-        // Adjust the format according to your preference
-        const formattedDate = date.toLocaleString('en-US', {
-            year: 'numeric',
-            month: 'numeric',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-            timeZoneName: 'short',
-        });
-        return formattedDate;
-    };
+
+  const formatTimestamp = (timestamp: string | number | Date) => {
+      const date = new Date(timestamp);
+      // Adjust the format according to your preference
+      const formattedDate = date.toLocaleString('en-US', {
+          year: 'numeric',
+          month: 'numeric',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+          timeZoneName: 'short',
+      });
+      return formattedDate;
+  };
+
 
   // Function to add a drink to the cart
   const addToCart = (drink: any): void => {
@@ -61,10 +65,12 @@ export default function Home() {
     setOrderTotal((prevOrderTotal) => parseFloat((prevOrderTotal + Number(drink.price)).toFixed(2)));
   };
 
+
   // Function to handle component selection
   const handleComponentSelect = (component: string): void => {
     setSelectedComponent(component);
   };
+
 
   // Render the selected component
   const renderSelectedComponent = (): JSX.Element | null => {
@@ -84,6 +90,7 @@ export default function Home() {
     }
   };
 
+  
   const renderButtons = (): JSX.Element => {
     const buttonData = [
       { label: 'All Drinks', value: 'allDrinks' },
