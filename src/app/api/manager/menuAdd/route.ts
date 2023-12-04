@@ -5,7 +5,7 @@ import { query } from "../../../../utils/database";
 export async function POST(request: NextRequest) {
     try{
         const data = await request.json();
-        let {drink_name, price, ingredients, drink_type,description} = data;
+        let {drink_name, price, ingredients, drink_type,description,image} = data;
 
         console.log(data);
 
@@ -40,8 +40,8 @@ export async function POST(request: NextRequest) {
         //drink type doesn't need validation because there are buttons
         //////////////////////////////
         //add new item
-        const sql = "INSERT INTO products (product_id, drink_name, price, ingredients, drink_type, description, image_url) VALUES (DEFAULT, $1, $2, $3, $4, $5, 'black-square.jpg');";
-        const result = await query(sql,[drink_name, price, ingredients, drink_type,description]);
+        const sql = "INSERT INTO products (product_id, drink_name, price, ingredients, drink_type, description, image_url) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6);";
+        const result = await query(sql,[drink_name, price, ingredients, drink_type,description,image]);
         return NextResponse.json({ message: "Menu item added" }, { status: 200 });
     }
     catch(error:any){
