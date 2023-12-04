@@ -16,6 +16,7 @@ export default function Navbar() {
     const [isCashier, setIsCashier] = useState(false);
 
     useEffect(() => {
+        if (!session) return;
         const checkEmployeeRoles = async () => {
             const res = await fetch(`/api/roles/isEmployeeType?email=${session?.user?.email}`);
             const { is_manager, is_cashier } = await res.json();
@@ -24,7 +25,7 @@ export default function Navbar() {
         }
 
         checkEmployeeRoles();
-    }, [session]);
+    }, []);
   
     const handleSignClick = () => {
       if (session) {

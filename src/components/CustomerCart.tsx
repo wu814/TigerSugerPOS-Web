@@ -427,13 +427,13 @@ export default function CustomerCart({ orderList, setParentOrderList, orderTotal
                         <div key={index} className={styles.overallDrinkContainer}>
                             <span>
                             <div className={styles.individualDrink}>
-                                <p className={styles.individualDrinkText}>
+                                <span className={styles.individualDrinkText}>
                                     {item.drink_name}
                                     <br/>
                                     <p className={styles.price}>
                                         ${(Number(item.price)+extraCharge[index]).toFixed(2)}
                                     </p>
-                                </p>
+                                </span>
                                     <Image
                                         src={`/images/${selectedOrders[index].image_url}`}
                                         alt={`${selectedOrders[index].drink_name}`}

@@ -2,9 +2,6 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { getServerSession } from 'next-auth';
 import GoogleTranslateWrapper from '../components/GoogleTranslateWrapper';
-import AccessibilityWidget from '../components/AccessibilityWidget';
-import WeatherWidget from '../components/WeatherWidget';
-
 import SessionProvider from '../components/SessionProvider';
 
 export const metadata: Metadata = {

@@ -1,8 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
 import Navbar from '../../components/Navbar';
-import Footer from '../../components/Footer';
 import CustomerCart from '@/src/components/CustomerCart';
 import CoffeeFlavored from './coffeeFlavored/CoffeeFlavored';
 import FruityAndRefreshing from './fruityAndRefreshing/FruityAndRefreshing';
@@ -10,13 +8,63 @@ import SweetAndCreamy from './sweetAndCreamy/SweetAndCreamy';
 import SeasonalDrinks from './seasonalDrinks/SeasonalDrinks';
 import AllDrinks from './allDrinks/AllDrinks';
 import styles from './page.module.css';
+import { useSession } from 'next-auth/react';
 
 export default function Home() {
   // State to manage which component to display
+  const { data: session } = useSession();
   const [selectedComponent, setSelectedComponent] = useState<string>('allDrinks');
 
   const [cart, setCart] = useState<any[]>([]);
   const [orderTotal, setOrderTotal] = useState<number>(0);
+
+  const [previousOrders, setPreviousOrders] = useState<any[]>([]);
+  const [productsMap, setProductsMap] = useState<{ [key: string]: any }>({});
+  
+//   useEffect (() => {
+//   const fetchProductDetails = async () => {
+//     try {
+//       const response = await fetch('/api/manager/menuDisplay'); // Adjust the API endpoint
+//       const productsData = await response.json();
+//       const newProductsMap: { [key: string]: any } = {};
+//       productsData.message.forEach((product: any) => {
+//         newProductsMap[product.drink_name] = product;
+//       });
+
+//       setProductsMap(newProductsMap);
+//   } catch (error) {
+//       console.error('Error fetching product details:', error);
+//     }
+//   };
+
+//   fetchProductDetails();
+//  }, []);
+
+//  useEffect(() => {
+//     if(!session) return;
+//     const fetchPreviousOrders = async () => {
+//         const res = await fetch(`/api/customer/previousOrders?email=${session?.user?.email}`, {
+//           method: 'GET',
+//           headers: {
+//             'Content-Type': 'application/json',
+//           },
+//         });
+//         const data = await res.json();
+    
+//         const prevOrderArray = data.message[0]?.order_items;
+//         setPreviousOrders(prevOrderArray);
+//         console.log('prevOrderArray', prevOrderArray);
+//         prevOrderArray.forEach((orderItem: string | number) => {
+//             const productDetails = productsMap[orderItem];
+//             if (productDetails) {
+//               addToCart(productDetails);
+//             }
+//             console.log('productDetails', productDetails);
+//         }); 
+//       }
+//       fetchPreviousOrders();
+
+//  }, [productsMap]);
 
 
   // Function to add a drink to the cart

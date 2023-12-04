@@ -2,6 +2,7 @@
 // AccessibilityWidget.tsx
 import React, { useState, useEffect } from 'react';
 import { Modal, Paper, Button, Slider, Input } from '@mui/material';
+import HTMLMagnifier from './html-magnifier'; // Assuming you have the HTMLMagnifier class in a separate file
 import styles from './AccessibilityWidget.module.css';
 
 interface AccessibilityWidgetProps {}
@@ -20,6 +21,16 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = () => {
   const [isInverted, setIsInverted] = useState<boolean>(false);
 
   const [contrast, setContrast] = useState<number>(100);
+
+  const magnifier = new HTMLMagnifier({ zoom: 2, shape: 'square', width: 200, height: 200 });
+
+  const handleShowMagnifier = (event: React.MouseEvent<HTMLButtonElement>) => {
+    magnifier.show(event.nativeEvent);
+  };
+
+  const handleHideMagnifier = () => {
+    magnifier.hide();
+  };
 
   useEffect(() => {
     document.documentElement.style.filter = `invert(${isInverted ? 1 : 0}) contrast(${contrast}%)`;
@@ -90,6 +101,19 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = () => {
         <Paper className={styles.modalContent}>
           <h2>Accessibility Options</h2>
           <div className={styles.accessibilityButtons}>
+          <p>Magnification</p>
+            <Button
+            variant="contained"
+            onClick={handleShowMagnifier}
+            >
+                Show Magnifier
+            </Button>
+            <Button
+            variant="contained"
+            onClick={handleHideMagnifier}
+            >
+                Hide Magnifier
+            </Button>
             <p>Font Size</p>
             <Button
               variant="contained"
