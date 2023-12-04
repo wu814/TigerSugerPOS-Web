@@ -25,7 +25,7 @@ export default function CoffeeFlavored({ addToCart }: { addToCart: any }) {
 
     return (
     <>
-      <div className={styles.main}>
+      <div className={styles.scrollContainer}>
         <div className={styles.drinksContainer}>
           {menuData
             .filter(menuItem => menuItem.drink_type === 'Sweet and Creamy')
@@ -35,8 +35,8 @@ export default function CoffeeFlavored({ addToCart }: { addToCart: any }) {
                 <Image
                     src={`/images/${menuItem.image_url}`}
                     alt={`${menuItem.drink_name}`}
-                    width={300}
-                    height={300}
+                    width={125}
+                    height={125}
                     className={styles.image}
                 />
                 <div className={styles.drinkDescription}>

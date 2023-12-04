@@ -234,39 +234,48 @@
   margin: 150px auto; /* Center the grid container horizontally */
 }
 
-.image {
-  /* max-width: 100%; */
-  width: 100%;
-}
-
-
 .container {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-    background-color: #000;
+    background-color: black
 }
 
-.drinksContainer {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0 auto;
+.container > li {
+    flex: 1;
+    text-align: center;
 }
+
+
+.drinksContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Move drinks to the right */
+  width: 100%;
+  align-content: flex-start; 
+}
+
 
 .imageContainer {
     text-align: center; /* Center align the content within each grid item */
     /* margin-bottom: 3vh; */
-    width: 31%;
+    width: 300px;
+    height: 150px;
     margin: 10px;
     transition: color 0.5s; /* Add a transition for a smooth effect */
-    padding: 10px;
+    font-size: 20px !important;
+    padding: 15px;
+    border: solid;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .imageContainer:hover {
     cursor: pointer;
     color: #f4f186;
     outline: solid 3px;
-    border-radius: 25px;
 }
 
 .addToOrderButton {
@@ -278,13 +287,36 @@
 }
 
 .pItem {
-  border: 20px solid #000000;
-  background-color: #000;
+  border: none !important;
+  background-color: black;
   font-size: 30px;
   color: white;
   cursor: pointer;
+  height: 100px;
 }
 
 .pItem:hover {
   color: #f4f186;
+}
+
+.activeDrinkType {
+    color: #FFD700;
+}
+
+.drinkPrice {
+    color: #FFD700;
+
+}
+
+.scrollContainer {
+  max-height: 600px;
+  overflow-x: auto; 
+  width: 100%;
+  background-color: #2a2922;
+  border-left: solid;
+}
+
+.duoContainer {
+    display: flex;
+    flex-direction: row;
 }

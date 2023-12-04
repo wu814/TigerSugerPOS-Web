@@ -1,0 +1,165 @@
+.main{
+  position: relative;
+  width: 30%;
+  flex-shrink: 0;
+}
+
+.orderList {
+  background-color: #FFD700; /* Set the background color */
+  color: #000; /* Set the text color */
+  /* position: absolute; */
+  flex-shrink: 0;
+  margin-top: 0vh;
+  left: 0;
+  min-height: 600px; /* Set the max-height to expand when open */
+  max-height: 600px;
+  overflow: auto;
+}
+
+.orderListTitles {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;
+  box-sizing: content-box;
+  font-size: 1.3em;
+}
+
+.orderListContent {
+  position: relative;
+  width: 100%;
+  top: 100%;
+  left: 0;
+}
+
+.orderListContent div{
+  margin-top: 1.5vh;
+  margin-left: 1.2vw;
+  margin-right: 1.2vw;
+}
+
+.chargeAndClear{
+  text-align: center;
+  margin-top: 20px;
+}
+
+.popOutWindow{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  
+    background-color: rgba(215, 215, 79, 0.95); /* semi-transparent black overlay */
+    display: flex;
+    border-color: black;
+    border-style: solid;
+    width: 80%;
+    border-radius: 25px;
+}
+
+.modalContent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 90%;
+
+    padding: 20px;
+    background-color: #FFFFED !important;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+  }
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    opacity: 0.5;
+    cursor: auto;
+}
+
+.attributeName{
+  font-size: 1.2vw;
+  font-weight: bold;
+  margin-bottom: 0.5vh;
+}
+
+.closeButton {
+    position: absolute;
+    top: 10px; /* Adjust the top position as needed */
+    right: 10px; /* Adjust the right position as needed */
+}
+
+.addOns {
+    display: flex;
+    flex-direction: column;
+}
+
+.customizeButton button {
+    background-color: #000000; /* Red background color for the button */
+    color: #ffffff; /* White text color */
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 0 1vw;
+}
+
+.customizeAndRemoveButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: space-between;
+
+}
+
+.price {
+    font-size: 1.2vw;
+    font-weight: bold;
+    margin-bottom: 0.5vh;
+}
+
+.imageContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.image {
+    margin-bottom: 10px;
+}
+
+.overallDrinkContainer {
+    border: solid 1px;
+    padding: 10px;
+    background-color: #e4e4ce !important;
+}
+
+.individualDrink {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 10px;
+    border-bottom: solid 1px;
+    padding-bottom: 10px;
+}
+
+.individualDrink > div {
+    flex: 1;
+}
+
+.individualDrinkImage {
+    margin-left: auto; /* This will push the image to the rightmost side */
+}
+
+.individualDrinkText {
+    width: 50%;
+}

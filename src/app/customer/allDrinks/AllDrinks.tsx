@@ -25,27 +25,26 @@ export default function AllDrinks({ addToCart }: { addToCart: any }) {
 
     return (
     <>
-      <div className={styles.main}>
-        <div className={styles.drinksContainer}>
-          {menuData
-            .map((menuItem, index) => (
-              <div className={styles.imageContainer} key={index} role='button' onClick={() => handleOrderSelection(menuItem)}>
-                {/* Wrap the Image inside a Link so it's clickable */}
-                <Image
-                    src={`/images/${menuItem.image_url}`}
-                    alt={`${menuItem.drink_name}`}
-                    width={300}
-                    height={300}
-                    className={styles.image}
-                />
-                <div className={styles.drinkDescription}>
-                    <p className={styles.drinkName}>{menuItem.drink_name}</p>
-                    <p className={styles.drinkPrice}>${menuItem.price}</p>
+        <div className={styles.scrollContainer}>
+            <div className={styles.drinksContainer}>
+            {menuData
+                .map((menuItem, index) => (
+                <div className={styles.imageContainer} key={index} role='button' onClick={() => handleOrderSelection(menuItem)}>
+                    <Image
+                        src={`/images/${menuItem.image_url}`}
+                        alt={`${menuItem.drink_name}`}
+                        width={125}
+                        height={125}
+                        className={styles.image}
+                    />
+                    <div className={styles.drinkDescription}>
+                        <p className={styles.drinkName}>{menuItem.drink_name}</p>
+                        <p className={styles.drinkPrice}>${menuItem.price}</p>
+                    </div>
                 </div>
-              </div>
-            ))}
+                ))}
+            </div>
         </div>
-      </div>
     </>
   );
 }

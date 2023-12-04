@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
-import Cart from '../../components/Cart';
+import CustomerCart from '@/src/components/CustomerCart';
 import CoffeeFlavored from './coffeeFlavored/CoffeeFlavored';
 import FruityAndRefreshing from './fruityAndRefreshing/FruityAndRefreshing';
 import SweetAndCreamy from './sweetAndCreamy/SweetAndCreamy';
@@ -33,6 +33,8 @@ export default function Home() {
   // Render the selected component
   const renderSelectedComponent = (): JSX.Element | null => {
     switch (selectedComponent) {
+      case 'allDrinks':
+        return <AllDrinks addToCart={addToCart} />;
       case 'fruityAndRefreshing':
         return <FruityAndRefreshing addToCart={addToCart} />;
       case 'sweetAndCreamy':
@@ -41,11 +43,34 @@ export default function Home() {
         return <CoffeeFlavored addToCart={addToCart} />;
       case 'seasonalDrinks':
         return <SeasonalDrinks addToCart={addToCart} />;
-      case 'allDrinks':
-        return <AllDrinks addToCart={addToCart} />;
       default:
         return null;
     }
+  };
+
+  const renderButtons = (): JSX.Element => {
+    const buttonData = [
+      { label: 'All Drinks', value: 'allDrinks' },
+      { label: 'Fruity and Refreshing', value: 'fruityAndRefreshing' },
+      { label: 'Sweet and Creamy', value: 'sweetAndCreamy' },
+      { label: 'Coffee Flavored', value: 'coffeeFlavored' },
+      { label: 'Seasonal Drinks', value: 'seasonalDrinks' },
+    ];
+  
+    return (
+      <ul className={styles.container}>
+        {buttonData.map((button) => (
+          <li className={styles.pContainer} key={button.value}>
+            <button
+              className={`${styles.pItem} ${selectedComponent === button.value ? styles.activeDrinkType : ''}`}
+              onClick={() => handleComponentSelect(button.value)}
+            >
+              {button.label}
+            </button>
+          </li>
+        ))}
+      </ul>
+    );
   };
 
   return (
@@ -53,35 +78,11 @@ export default function Home() {
       <Navbar />
       <div className={styles.main}>
         <h1>Customer Page</h1>
-        <Cart cart={cart} setParentCart={setCart} orderTotal={orderTotal} setOrderTotal={setOrderTotal} />
-        <ul className={styles.container}>
-          <li className={styles.pContainer}>
-            <button className={styles.pItem} onClick={() => handleComponentSelect('fruityAndRefreshing')}>
-              Fruity and Refreshing
-            </button>
-          </li>
-          <li className={styles.pContainer}>
-            <button className={styles.pItem} onClick={() => handleComponentSelect('sweetAndCreamy')}>
-              Sweet and Creamy
-            </button>
-          </li>
-          <li className={styles.pContainer}>
-            <button className={styles.pItem} onClick={() => handleComponentSelect('coffeeFlavored')}>
-              Coffee Flavored
-            </button>
-          </li>
-          <li className={styles.pContainer}>
-            <button className={styles.pItem} onClick={() => handleComponentSelect('seasonalDrinks')}>
-              Seasonal Drinks
-            </button>
-          </li>
-          <li className={styles.pContainer}>
-            <button className={styles.pItem} onClick={() => handleComponentSelect('allDrinks')}>
-              All Drinks
-            </button>
-          </li>
-        </ul>
-        {renderSelectedComponent()}
+        {renderButtons()}
+        <div className={styles.duoContainer}>
+            <CustomerCart orderList={cart} setParentOrderList={setCart} orderTotal={orderTotal} setOrderTotal={setOrderTotal} />
+            {renderSelectedComponent()}
+        </div>
       </div>
     </>
   );

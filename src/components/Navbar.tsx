@@ -44,8 +44,8 @@ export default function Navbar() {
               <Image
                 src="/images/tiger-sugar-logo.png"
                 alt="Tiger Sugar Logo"
-                width={100} // Set the width and height as per your requirement
-                height={50}
+                width={200} // Set the width and height as per your requirement
+                height={100}
               />
             </div>
   
