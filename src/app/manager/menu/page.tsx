@@ -13,6 +13,8 @@ export default function Home() {
         price: '',
         ingredients: [] as string[],
         drink_type: '',
+        description: '',
+        image_url: '',
     });
 
     const [drinkTypes, setDrinkTypes] = useState<string[]>([]);
@@ -78,7 +80,7 @@ export default function Home() {
             setOpenModal(false);
         }
     };
-
+    
     const fetchIngredients = async () => {
         const response = await fetch('/api/manager/inventoryDisplay');
         const json = await response.json();
@@ -102,12 +104,16 @@ export default function Home() {
         price: '',
         ingredients: [] as string[],
         drink_type: '',
+        description: '',
+        image_url: '',
     });
     const [editedItem, setEditedItem] = useState({
         drink_name: '',
         price: '',
         ingredients: [] as string[],
         drink_type: '',
+        description: '',
+        image_url: '',
     });
     // Function to open the modal and set the selected item
     const handleOpenModal = (item: any) => {
@@ -119,6 +125,8 @@ export default function Home() {
             price: item.price,
             ingredients: item.ingredients,
             drink_type: item.drink_type,
+            description: item.description,
+            image_url: item.image_url,
         });
     
         setOpenModal(true);
@@ -181,6 +189,14 @@ export default function Home() {
             },
             body: JSON.stringify({drink: selectedItem.drink_name, type: editedItem.drink_type}),
         });
+
+        const editDescription = await fetch('/api/manager/menuEditDesc', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({drink: selectedItem.drink_name, desc: editedItem.description}),
+        });
         
         const editName = await fetch('/api/manager/menuEditName', {
             method: 'POST',
@@ -189,6 +205,15 @@ export default function Home() {
             },
             body: JSON.stringify({drink: selectedItem.drink_name, newdrink: editedItem.drink_name}),
         });
+
+        const editImage = await fetch('/api/manager/menuEditImage', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({drink: selectedItem.drink_name, image: editedItem.image_url}),
+        });
+        
         // Close the modal after saving
         setOpenModal(false);
         fetchMenu();
@@ -304,6 +329,26 @@ export default function Home() {
                             value={editedItem.drink_type}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEditChange(e)}
                             name="drink_type"
+                            className={styles.textField}
+                        />
+                        </div>
+                        <div>
+                        <TextField
+                            label="Drink Description"
+                            value={editedItem.description}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEditChange(e)}
+                            name="description"
+                            multiline
+                            className={styles.textField}
+                        />
+                        </div>
+                        <div>
+                        <TextField
+                            label="Image URL"
+                            value={editedItem.image_url}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEditChange(e)}
+                            name="image_url"
+                            multiline
                             className={styles.textField}
                         />
                         </div>
@@ -425,6 +470,26 @@ export default function Home() {
                             id="drink_type"
                             value={newItem.drink_type}
                             onChange={(e) => setNewItem({ ...newItem, drink_type: e.target.value })}
+                        />
+                    </div>
+
+                    <div>
+                        <label htmlFor="description">Drink Description:</label>
+                        <input
+                            type="text"
+                            id="description"
+                            value={newItem.description}
+                            onChange={(e) => setNewItem({ ...newItem, description: e.target.value })}
+                        />
+                    </div>
+
+                    <div>
+                        <label htmlFor="image_url">Image URL:</label>
+                        <input
+                            type="text"
+                            id="image_url"
+                            value={newItem.image_url}
+                            onChange={(e) => setNewItem({ ...newItem, image_url: e.target.value })}
                         />
                     </div>
 

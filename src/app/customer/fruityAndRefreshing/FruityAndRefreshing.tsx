@@ -7,6 +7,7 @@ import Image from 'next/image';
 export default function CoffeeFlavored({ addToCart }: { addToCart: any }) {
    
     const [menuData, setMenuData] = useState<any[]>([]); // for fetching menu data
+    const sortedMenuData = menuData.sort((a, b) => a.drink_name.localeCompare(b.drink_name));
 
     const fetchMenu = async () => {
         const response = await fetch('/api/manager/menuDisplay');
@@ -26,8 +27,9 @@ export default function CoffeeFlavored({ addToCart }: { addToCart: any }) {
     return (
     <>
       <div className={styles.scrollContainer}>
+        <h2>Click to add to order!</h2>
         <div className={styles.drinksContainer}>
-          {menuData
+          {sortedMenuData
             .filter(menuItem => menuItem.drink_type === 'Fruity and Refreshing')
             .map((menuItem, index) => (
                 <div className={styles.imageContainer} key={index} role='button' onClick={() => handleOrderSelection(menuItem)}>

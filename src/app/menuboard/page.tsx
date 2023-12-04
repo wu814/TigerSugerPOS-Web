@@ -15,6 +15,8 @@ export default function Home() {
     const [isAddonPopoutOpen, setIsAddonPopoutOpen] = useState(false);
     const [orderTotal, setOrderTotal] = useState(0);
 
+    const sortedMenuData = menuData.sort((a, b) => a.drink_name.localeCompare(b.drink_name));
+
 
     const fetchMenu = async () => {
         const response = await fetch('/api/manager/menuDisplay');
@@ -99,7 +101,7 @@ export default function Home() {
             </div>
         </div> */}
         <div className={styles.container}>
-            {menuData.map((menuItem, index) => (
+            {sortedMenuData.map((menuItem, index) => (
                 <div className={styles.drinksContainer} key={index}>
                     <Image
                         src={`/images/${menuItem.image_url}`}

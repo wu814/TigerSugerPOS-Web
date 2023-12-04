@@ -1,6 +1,6 @@
 "use client";
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import WeatherWidget from './WeatherWidget'; // Import the WeatherWidget component
 import AccessibilityWidget from './AccessibilityWidget';
 import styles from './Navbar.module.css'; // Import the CSS module
@@ -9,19 +9,22 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import { AppBar, Toolbar, Button, Container } from '@mui/material';
 import { usePathname } from 'next/navigation';
 
-
-function AuthButton() {
-  const { data: session } = useSession();
-  if (session) {
-    return <Link href="/api/auth/signout">Sign out</Link>;
-  }
-  return <Link href="/api/auth/signin">Sign in</Link>;
-
-}
-
 export default function Navbar() {
     const { data: session } = useSession();
-    const pathname = usePathname()
+    const pathname = usePathname();
+    const [isManager, setIsManager] = useState(false);
+    const [isCashier, setIsCashier] = useState(false);
+
+    useEffect(() => {
+        const checkEmployeeRoles = async () => {
+            const res = await fetch(`/api/roles/isEmployeeType?email=${session?.user?.email}`);
+            const { is_manager, is_cashier } = await res.json();
+            setIsManager(is_manager);
+            setIsCashier(is_cashier);
+        }
+
+        checkEmployeeRoles();
+    }, [session]);
   
     const handleSignClick = () => {
       if (session) {
@@ -54,25 +57,29 @@ export default function Navbar() {
                 <Button color="inherit">
                     <Link href="/">Home</Link>
                 </Button>
-              </li>   
-              <li className={`${styles.navItem} ${pathname.startsWith('/cashier') && styles.activeNavItem}`}>
-                <Button color="inherit">
-                    <Link href="/cashier">Cashier</Link>
-                </Button>
               </li>
-              <li className={`${styles.navItem} ${pathname.startsWith('/manager') && styles.activeNavItem}`}>
-                <Button color="inherit">
-                    <Link href="/manager">Manager</Link>
-                </Button>
-              </li>
+              {isCashier && (
+                <li className={`${styles.navItem} ${pathname.startsWith('/cashier') && styles.activeNavItem}`}>
+                    <Button color="inherit">
+                        <Link href="/cashier">Cashier</Link>
+                    </Button>
+                </li>
+              )}
+              {isManager && (
+                <li className={`${styles.navItem} ${pathname.startsWith('/manager') && styles.activeNavItem}`}>
+                    <Button color="inherit">
+                        <Link href="/manager">Manager</Link>
+                    </Button>
+                </li>
+              )}
               <li className={`${styles.navItem} ${pathname.startsWith('/customer') && styles.activeNavItem}`}>
                 <Button color="inherit">
-                    <Link href="/customer">Customer</Link>
+                    <Link href="/customer">Order</Link>
                 </Button>
               </li>
               <li className={`${styles.navItem} ${pathname.startsWith('/menuboard') && styles.activeNavItem}`}>
                 <Button color="inherit">
-                    <Link href="/menuboard">Menu Board</Link>
+                    <Link href="/menuboard">Menu</Link>
                 </Button>
               </li>
               <li className={styles.navItem}>

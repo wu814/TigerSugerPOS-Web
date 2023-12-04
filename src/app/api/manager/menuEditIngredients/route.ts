@@ -17,6 +17,7 @@ export async function POST(request: NextRequest) {
 
         const sql = "UPDATE products SET ingredients = $1 WHERE drink_name = $2";
         const result = await query(sql,[ing,drink]);
+
         return NextResponse.json({ message: "Type of "+drink+" changed successfully" }, { status: 200 });
     }
     catch(error:any){

@@ -7,19 +7,24 @@ import styles from './AccessibilityWidget.module.css';
 interface AccessibilityWidgetProps {}
 
 const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = () => {
-  const [fontSize, setFontSize] = useState<'small' | 'medium' | 'large'>(
-    (localStorage.getItem('fontSize') as 'small' | 'medium' | 'large') || 'small'
-  );
+
+  const initialState = {
+    fontSize: typeof window !== "undefined" ? (localStorage.getItem('fontSize') as 'small' | 'medium' | 'large') || 'small' : 'small',
+    isInverted: typeof window !== "undefined" ? JSON.parse(localStorage.getItem('isInverted') || 'false') : false,
+    contrast: typeof window !== "undefined" ? parseFloat(localStorage.getItem('contrast') || '100') : 100,
+  };
+
+  const [fontSize, setFontSize] = useState<'small' | 'medium' | 'large'>('small');
+  
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [isInverted, setIsInverted] = useState<boolean>(
-    JSON.parse(localStorage.getItem('isInverted') || 'false')
-  );
-  const [contrast, setContrast] = useState<number>(
-    parseFloat(localStorage.getItem('contrast') || '100')
-  );
+  const [isInverted, setIsInverted] = useState<boolean>(false);
+
+  const [contrast, setContrast] = useState<number>(100);
+
   useEffect(() => {
     document.documentElement.style.filter = `invert(${isInverted ? 1 : 0}) contrast(${contrast}%)`;
     localStorage.setItem('isInverted', JSON.stringify(isInverted));
+    localStorage.setItem('contrast', contrast.toString());
   }, [isInverted, contrast]);
 
   useEffect(() => {
@@ -70,6 +75,12 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = () => {
     localStorage.setItem('contrast', defaultContrast.toString());
   };
 
+  useEffect(() => {
+    setFontSize(initialState.fontSize);
+    setIsInverted(initialState.isInverted);
+    setContrast(initialState.contrast);
+  }, []);
+
   return (
     <div className={styles.accessibilityWidget}>
       <Button variant="contained" onClick={handleOpenModal}>
@@ -113,17 +124,41 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = () => {
 
             <p>Contrast (current value: {contrast})</p>
             <div>
-                <Button variant="contained" onClick={() => handleContrastPreset(50)}>
-                50
+                <Button
+                    variant="contained"
+                    style={{
+                    backgroundColor: contrast === 50 ? '#1976D2' : 'black',
+                    }}
+                    onClick={() => handleContrastPreset(50)}
+                >
+                    50
                 </Button>
-                <Button variant="contained" onClick={() => handleContrastPreset(100)}>
-                100
+                <Button
+                    variant="contained"
+                    style={{
+                    backgroundColor: contrast === 100 ? '#1976D2' : 'black',
+                    }}
+                    onClick={() => handleContrastPreset(100)}
+                >
+                    100
                 </Button>
-                <Button variant="contained" onClick={() => handleContrastPreset(150)}>
-                150
+                <Button
+                    variant="contained"
+                    style={{
+                    backgroundColor: contrast === 150 ? '#1976D2' : 'black',
+                    }}
+                    onClick={() => handleContrastPreset(150)}
+                >
+                    150
                 </Button>
-                <Button variant="contained" onClick={() => handleContrastPreset(200)}>
-                200
+                <Button
+                    variant="contained"
+                    style={{
+                    backgroundColor: contrast === 200 ? '#1976D2' : 'black',
+                    }}
+                    onClick={() => handleContrastPreset(200)}
+                >
+                    200
                 </Button>
             </div>
             <Slider

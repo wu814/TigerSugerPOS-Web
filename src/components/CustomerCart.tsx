@@ -276,7 +276,9 @@ export default function CustomerCart({ orderList, setParentOrderList, orderTotal
             allMessage += insuffientStock[i] + "\n";
         }
         alert(allMessage);
-        clearOrderList();
+        setInsufficientStock([]);
+        setSubtractFromInventoryQuery("");
+        setUsedSupply([]);
     }
 
 

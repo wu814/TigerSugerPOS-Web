@@ -8,6 +8,8 @@ export default function AllDrinks({ addToCart }: { addToCart: any }) {
    
     const [menuData, setMenuData] = useState<any[]>([]); // for fetching menu data
 
+    const sortedMenuData = menuData.sort((a, b) => a.drink_name.localeCompare(b.drink_name));
+
     const fetchMenu = async () => {
         const response = await fetch('/api/manager/menuDisplay');
         const json = await response.json();
@@ -26,8 +28,9 @@ export default function AllDrinks({ addToCart }: { addToCart: any }) {
     return (
     <>
         <div className={styles.scrollContainer}>
+            <h2>Click to add to order!</h2>
             <div className={styles.drinksContainer}>
-            {menuData
+            {sortedMenuData
                 .map((menuItem, index) => (
                 <div className={styles.imageContainer} key={index} role='button' onClick={() => handleOrderSelection(menuItem)}>
                     <Image

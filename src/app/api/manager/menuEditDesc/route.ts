@@ -14,9 +14,10 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({error:"Item does not exist on Menu!"},{status: 500});
         }
 
-
         const sql = "UPDATE products SET description = $1 WHERE drink_name = $2";
         const result = await query(sql,[desc,drink]);
+
+        console.log(desc);
         return NextResponse.json({ message: "Description of "+drink+" changed successfully" }, { status: 200 });
     }
     catch(error:any){
