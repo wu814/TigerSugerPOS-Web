@@ -45,3 +45,9 @@
     background-color: #ddd;
     color: black;
 }
+
+.accessibilityButtons p {
+    border-bottom: 1px solid #ddd; /* You can adjust the color and style of the border */
+    padding-bottom: 10px; /* Add some spacing between the options */
+    margin-bottom: 10px; /* Add margin to separate the options */
+}
