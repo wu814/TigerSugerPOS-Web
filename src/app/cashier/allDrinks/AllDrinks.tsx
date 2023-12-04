@@ -8,6 +8,8 @@ export default function AllDrinks({ addToCart }: { addToCart: any }) {
    
     const [menuData, setMenuData] = useState<any[]>([]); // for fetching menu data
 
+    const sortedMenuData = menuData.sort((a, b) => a.drink_name.localeCompare(b.drink_name)); // sort menu data alphabetically
+
     const fetchMenu = async () => {
         const response = await fetch('/api/manager/menuDisplay');
         const json = await response.json();
@@ -26,18 +28,11 @@ export default function AllDrinks({ addToCart }: { addToCart: any }) {
     return (
     <>
     <div className={styles.scrollContainer}>
+        <h2>Click to add to order!</h2>
         <div className={styles.drinksContainer}>
-            {menuData
+            {sortedMenuData
             .map((menuItem, index) => (
                 <div className={styles.imageContainer} key={index} role='button' onClick={() => handleOrderSelection(menuItem)}>
-                {/* Wrap the Image inside a Link so it's clickable */}
-                <Image
-                    src={`/images/${menuItem.image_url}`}
-                    alt={`${menuItem.drink_name}`}
-                    width={300}
-                    height={300}
-                    className={styles.image}
-                />
                 <div className={styles.drinkDescription}>
                     <p className={styles.drinkName}>{menuItem.drink_name}</p>
                     <p className={styles.drinkPrice}>${menuItem.price}</p>

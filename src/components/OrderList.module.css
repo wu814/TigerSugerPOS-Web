@@ -1,16 +1,19 @@
 .main{
   position: relative;
+  width: 30%;
+  flex-shrink: 0;
 }
 
 .orderList {
   background-color: #FFD700; /* Set the background color */
   color: #000; /* Set the text color */
-  position: absolute;
+  /* position: absolute; */
+  flex-shrink: 0;
   margin-top: 0vh;
   left: 0;
-  width: 23%;
-  max-height: 800px; /* Set the max-height to expand when open */
-  overflow: scroll;
+  min-height: 600px; /* Set the max-height to expand when open */
+  max-height: 600px;
+  overflow: auto;
 }
 
 .orderListTitles {
@@ -36,7 +39,7 @@
 
 .chargeAndClear{
   text-align: center;
-  margin: 1vh 0;
+  margin-top: 20px;
 }
 
 .popOutWindow{
@@ -96,4 +99,14 @@
 .addOns {
     display: flex;
     flex-direction: column;
+}
+
+.customizeButton button {
+    background-color: #000000; /* Red background color for the button */
+    color: #ffffff; /* White text color */
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 0 1vw;
 }

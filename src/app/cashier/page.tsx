@@ -79,8 +79,10 @@ export default function Home() {
       <div className={styles.main}>
         <h1>Cashier Page</h1>
         {renderButtons()}
-        <OrderList orderList={cart} setParentOrderList={setCart} orderTotal={orderTotal} setOrderTotal={setOrderTotal} />
-        {renderSelectedComponent()}
+        <div className={styles.duoContainer}>
+            <OrderList orderList={cart} setParentOrderList={setCart} orderTotal={orderTotal} setOrderTotal={setOrderTotal} />
+            {renderSelectedComponent()}
+        </div>
       </div>
     </>
   );

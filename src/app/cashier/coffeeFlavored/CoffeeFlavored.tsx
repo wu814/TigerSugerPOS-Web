@@ -23,27 +23,24 @@ export default function CoffeeFlavored({ addToCart }: { addToCart: any }) {
         addToCart(menuItem);
     };
 
+    const sortedMenuData = menuData.sort((a, b) => a.drink_name.localeCompare(b.drink_name)); // sort menu data alphabetically
+
     return (
     <>
-    <div className={styles.drinksContainer}>
-        {menuData
-        .filter(menuItem => menuItem.drink_type === 'Coffee Flavored')
-        .map((menuItem, index) => (
-            <div className={styles.imageContainer} key={index} role='button' onClick={() => handleOrderSelection(menuItem)}>
-            {/* Wrap the Image inside a Link so it's clickable */}
-            <Image
-                src={`/images/${menuItem.image_url}`}
-                alt={`${menuItem.drink_name}`}
-                width={300}
-                height={300}
-                className={styles.image}
-            />
-            <div className={styles.drinkDescription}>
-                <p className={styles.drinkName}>{menuItem.drink_name}</p>
-                <p className={styles.drinkPrice}>${menuItem.price}</p>
-            </div>
-            </div>
-        ))}
+    <div className={styles.scrollContainer}>
+        <h2>Click to add to order!</h2>
+        <div className={styles.drinksContainer}>
+            {sortedMenuData
+            .filter(menuItem => menuItem.drink_type === 'Coffee Flavored')
+            .map((menuItem, index) => (
+                <div className={styles.imageContainer} key={index} role='button' onClick={() => handleOrderSelection(menuItem)}>
+                <div className={styles.drinkDescription}>
+                    <p className={styles.drinkName}>{menuItem.drink_name}</p>
+                    <p className={styles.drinkPrice}>${menuItem.price}</p>
+                </div>
+                </div>
+            ))}
+        </div>
     </div>
     </>
   );

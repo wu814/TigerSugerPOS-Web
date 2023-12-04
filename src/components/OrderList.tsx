@@ -2,6 +2,7 @@ import { useState, useEffect, use } from 'react';
 import styles from './OrderList.module.css';
 import { clear } from 'console';
 import { all } from 'axios';
+import { Modal, Button } from '@mui/material';
 
 export default function OrderList({ orderList, setParentOrderList, orderTotal, setOrderTotal }: { orderList: any[], setParentOrderList: any, orderTotal: number, setOrderTotal: any }) {
     const AddOnPair = {
@@ -610,19 +611,42 @@ export default function OrderList({ orderList, setParentOrderList, orderTotal, s
                     {selectedOrders.map((item, index) => (
                         <div key={index}>
                             <span>{item.drink_name} ${(Number(item.price)+extraCharge[index]).toFixed(2)} <br/>
-                            <button onClick={() => toggleCustomize(index)}>Customize</button>
+                            <Button
+                            variant='contained'
+                            onClick={() => toggleCustomize(index)}
+                            sx = {{backgroundColor: '#ADD8E6', color: '#000000', fontSize: '10px', fontWeight: 'bold', width: '100px', height: '30px', marginTop: '10px', marginLeft: '10px'}}
+                            >
+                                Customize
+                            </Button>
                             {isAddOnPopoutOpen[index] && (
                                 <PopOutWindow index={index} drinkName={item.drink_name}/>
                             )}
-                            {" "}<button id={'button${drinkIndex}' } onClick={() => removeDrink(item.price, index)}>remove</button>
+                            <Button
+                            variant='contained'
+                            onClick={() => removeDrink(item.price, index)}
+                            sx = {{backgroundColor: '#FFB6C1', color: '#000000', fontSize: '10px', fontWeight: 'bold', width: '100px', height: '30px', marginTop: '10px', marginLeft: '10px'}}
+                            >
+                                Remove
+                            </Button>
                             </span>
                         </div>
                     ))}
                 </div>
                 <div className={styles.chargeAndClear}>
-                    <button onClick={loadUsedSupply}>Charge</button>
+                    <Button
+                    variant='contained'
+                    onClick={loadUsedSupply}
+                    sx= {{backgroundColor: 'green'}}
+                    >
+                        Charge
+                    </Button>
                     <span style={{ marginLeft: '10px' }}></span>
-                    <button onClick={clearOrderList}>Clear Order</button>
+                    <Button
+                    variant='contained'
+                    onClick={clearOrderList}
+                    >
+                        Clear Order
+                    </Button>
                 </div>
             </div>
         </div>
