@@ -15,8 +15,6 @@ export async function POST(request: NextRequest) {
         const q = "SELECT * FROM orders WHERE $1 = ANY(order_items) AND  order_timestamp BETWEEN $2 AND $3";
         const data = await query(q,[drink,start,end]);
 
-        
-
 
     return NextResponse.json({ message: data.rows }, { status: 200 });
     } catch(error:any){

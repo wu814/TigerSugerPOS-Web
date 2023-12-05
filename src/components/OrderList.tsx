@@ -3,6 +3,7 @@ import styles from './OrderList.module.css';
 import { Modal, Button, Paper, Checkbox } from '@mui/material';
 
 export default function OrderList({ orderList, setParentOrderList, orderTotal, setOrderTotal }: { orderList: any[], setParentOrderList: any, orderTotal: number, setOrderTotal: any }) {
+    // Define the add on options    
     const AddOnPair = {
         "Tapioca Pearls (Boba)": "None",
         "Cream Mousse": "None",
@@ -13,6 +14,8 @@ export default function OrderList({ orderList, setParentOrderList, orderTotal, s
         "Pudding": "None",
     }
 
+
+    // Define the drink attribute options
     const DrinkAttributePair = {
         "Dairy Free Alternative": "None",
         "Sweetness Level": "100%",
@@ -21,16 +24,17 @@ export default function OrderList({ orderList, setParentOrderList, orderTotal, s
         "Special Instructions": "None",
     }
 
-    const [isAddOnPopoutOpen, setIsAddOnPopoutOpen] = useState<boolean[]>([]);
-    const [selectedOrders, setSelectedOrders] = useState<any[]>([]); // for storing selected orders
-    const [selectedAddOns, setSelectedAddOns] = useState<any[]>([]); // for storing selected add ons
-    const [selectedDrinkAttributes, setSelectedDrinkAttributes] = useState<any[]>([]); // for storing selected drink attributes
-    const [specialInstructions, setSpecialInstructions] = useState<string[]>([]);
-    const [extraCharge, setExtraCharge] = useState<number[]>([]);
-    const [usedSupply, setUsedSupply] = useState<any[]>([]); // for tracking all the supplies need to be subtracted from inventory
-    const [subtractFromInventoryQuery, setSubtractFromInventoryQuery] = useState<string>(""); // for storing the query for subtracting from inventory
-    const [remainingStock, setRemainingStock] = useState<any[]>([]); // for storing the remaining stock of each supply
-    const [insuffientStock, setInsufficientStock] = useState<string[]>([]); // for storing the supplies that are insufficient for placing order in stock
+
+    const [isAddOnPopoutOpen, setIsAddOnPopoutOpen] = useState<boolean[]>([]); // Show the cart if true, hide if false
+    const [selectedOrders, setSelectedOrders] = useState<any[]>([]); // For storing selected orders
+    const [selectedAddOns, setSelectedAddOns] = useState<any[]>([]); // For storing selected add ons
+    const [selectedDrinkAttributes, setSelectedDrinkAttributes] = useState<any[]>([]); // For storing selected drink attributes
+    const [specialInstructions, setSpecialInstructions] = useState<string[]>([]);  // For storing special instructions
+    const [extraCharge, setExtraCharge] = useState<number[]>([]); // For storing extra charge for each drink
+    const [usedSupply, setUsedSupply] = useState<any[]>([]); // For tracking all the supplies need to be subtracted from inventory
+    const [subtractFromInventoryQuery, setSubtractFromInventoryQuery] = useState<string>(""); // For storing the query for subtracting from inventory
+    const [remainingStock, setRemainingStock] = useState<any[]>([]); // For storing the remaining stock of each supply
+    const [insuffientStock, setInsufficientStock] = useState<string[]>([]); // For storing the supplies that are insufficient for placing order in stock
 
 
     useEffect(() => {
@@ -42,7 +46,7 @@ export default function OrderList({ orderList, setParentOrderList, orderTotal, s
     }, [orderList]);
 
     
-    
+    // Functionality when click on customize button
     const toggleCustomize = (drinkIndex: number) => {    
         const newIsAddOnPopoutOpen = [...isAddOnPopoutOpen];  // Create a copy of the isAddonPopoutOpen array
         newIsAddOnPopoutOpen[drinkIndex] = !newIsAddOnPopoutOpen[drinkIndex];
@@ -50,6 +54,7 @@ export default function OrderList({ orderList, setParentOrderList, orderTotal, s
     };
     
     
+    // Functionality when click on add on checkbox
     const handleAddOnSelection = (drinkIndex: number, addOn: string) => {
         const newSelectedAddOns = [...selectedAddOns];  // Create a copy of the selecteAddons array
         const newAddOnPair = newSelectedAddOns[drinkIndex];
@@ -71,6 +76,7 @@ export default function OrderList({ orderList, setParentOrderList, orderTotal, s
     };
     
     
+    // Functionality when click on drink attribute radio button
     const handleAttributeSelection = (drinkIndex: number, attribute: string, value: string) => {
         const newSelectedDrinkAttributes = [...selectedDrinkAttributes];  // Create a copy of the selectedDrinkAttributes array
         const newDrinkAttributePair = newSelectedDrinkAttributes[drinkIndex];  
@@ -115,7 +121,7 @@ export default function OrderList({ orderList, setParentOrderList, orderTotal, s
             setSpecialInstructions(newSpecialInstruction);
         }
         
-        // update the drink attribute pair
+        // Update the drink attribute pair
         newDrinkAttributePair[attribute] = value;
         
         newSelectedDrinkAttributes[drinkIndex] = newDrinkAttributePair;
@@ -151,6 +157,7 @@ export default function OrderList({ orderList, setParentOrderList, orderTotal, s
     };
     
     
+    // Functionality when click on clear order button
     const clearOrderList = () => {
         setParentOrderList([]);
         setSelectedAddOns([]);
@@ -165,6 +172,7 @@ export default function OrderList({ orderList, setParentOrderList, orderTotal, s
     };
     
     
+    // Loading used supplies after clicking on charge button
     const loadUsedSupply = () => {
         const newUsedSupply = [...usedSupply];
         const orders = [...orderList];
@@ -231,6 +239,7 @@ export default function OrderList({ orderList, setParentOrderList, orderTotal, s
     };
     
 
+    // Loading remaining stock after clicking on charge button
     const loadRemainingStock = async () => {
         try{
             const response = await fetch("/api/cashier/remainingStock");
@@ -269,6 +278,7 @@ export default function OrderList({ orderList, setParentOrderList, orderTotal, s
     }
 
 
+    // Print out the insufficient stock message
     const printInsufficientStock = () => {
         let allMessage = "Insufficient Stock: \n";
         for(let i = 0; i < insuffientStock.length; i++){
@@ -281,6 +291,7 @@ export default function OrderList({ orderList, setParentOrderList, orderTotal, s
     }
 
 
+    // Load the query for subtracting from inventory
     const loadSubtractFromInventoryQuery = () => {
         if (!sufficientStock()) {
             return;
@@ -297,6 +308,7 @@ export default function OrderList({ orderList, setParentOrderList, orderTotal, s
     }
         
 
+    // Get the current timestamp
     const getCurrentTimestamp = () => {
         const currentDate = new Date();
         const year = currentDate.getFullYear();
@@ -327,7 +339,9 @@ export default function OrderList({ orderList, setParentOrderList, orderTotal, s
             drinkAttributesArray.push(Object.entries(selectedDrinkAttributes[i]).map(([key, value]) => `${key}: ${value}`)
             .join(', '));
         }
-        const orderData = { // Define orderData as an object
+
+        // Define orderData as an object
+        const orderData = { 
             orderTimestamp: currentTimeStamp,
             employeeId: 1,
             customerId: 2,
@@ -337,7 +351,7 @@ export default function OrderList({ orderList, setParentOrderList, orderTotal, s
             drinkAddOns: drinkAddOnsArray,
         };
         
-        // writing new order to orders table
+        // Writing new order to orders table
         try{
             const response = await fetch("/api/cashier/placeOrder", {
                 method: "POST",
@@ -360,7 +374,7 @@ export default function OrderList({ orderList, setParentOrderList, orderTotal, s
             console.error('Error fetching API:', error);
         }
 
-        // subtracting corresponding add ons and drink ingredients from inventory
+        // Subtracting corresponding add ons and drink ingredients from inventory
         try{
             const response = await fetch("/api/cashier/subtractFromInventory", {
                 method: "POST",
@@ -414,6 +428,8 @@ export default function OrderList({ orderList, setParentOrderList, orderTotal, s
             placeOrder();
         }
     }, [subtractFromInventoryQuery]);
+    
+
     
     return (
         <div className={styles.main}>

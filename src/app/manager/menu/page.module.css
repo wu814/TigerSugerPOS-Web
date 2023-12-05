@@ -154,40 +154,40 @@
     border-radius: 8px;
     display: flex;
     flex-direction: column;
-  }
+}
   
-  .modalBody {
+.modalBody {
     margin-bottom: 15px;
     margin-top: 15px;
     width: 100%;
     height: 100%;
-  }
+}
   
-  .modalBody div {
+.modalBody div {
     margin-bottom: 10px;
-  }
+}
 
-  .textField {
+.textField {
     width: 100%;
     padding: 8px;
     margin-bottom: 10px;
-  }
+}
   
-  .ingredientsContainer {
+.ingredientsContainer {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-  }
+}
   
-  .ingredientBox {
+.ingredientBox {
     padding: 8px 16px;
     cursor: pointer;
     border: 1px solid #ddd;
     border-radius: 4px;
     transition: background-color 0.3s;
-  }
+}
 
-  .editIngredientsButton button {
+.editIngredientsButton button {
     padding: 10px;
     background-color: #EED484;
     color: white;
@@ -196,13 +196,13 @@
     border-radius: 4px;
     cursor: pointer;
     font-size: 1em;
-  }
+}
 
-  .editIngredientsButton button:hover {
+.editIngredientsButton button:hover {
     background-color: #f4bd18;
-  }
+}
 
-  .applyChangesButton button {
+.applyChangesButton button {
     padding: 10px;
     background-color: #84ee92;
     font-weight: bold;
@@ -211,13 +211,13 @@
     border-radius: 4px;
     cursor: pointer;
     font-size: 1em;
-  }
+}
 
-  .applyChangesButton button:hover {
+.applyChangesButton button:hover {
     background-color: #30e047
-  }
+}
 
-  .closeButton button {
+.closeButton button {
     padding: 10px;
     background-color: #ee8484;
     color: white;
@@ -225,13 +225,13 @@
     border-radius: 4px;
     cursor: pointer;
     font-size: 1em;
-  }
+}
 
-  .closeButton button:hover {
+.closeButton button:hover {
     background-color: #ea5c5c;
-  }
+}
 
-  .removeDrinkButton button {
+.removeDrinkButton button {
     padding: 10px;
     background-color: #f90000;
     color: white;
@@ -242,8 +242,8 @@
     right: 0;
     top: 0;
     position: absolute;
-  }
+}
 
-    .removeDrinkButton button:hover {
-        background-color: rgb(156, 147, 182);
-    }
+.removeDrinkButton button:hover {
+    background-color: rgb(156, 147, 182);
+}

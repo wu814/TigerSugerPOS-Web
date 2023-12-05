@@ -5,6 +5,7 @@ import { NextApiRequest } from 'next';
 
 export const dynamic = 'force-dynamic';
 
+// Getting the remaining stock for all ingredients
 export async function GET(request: NextRequest) {
     try {
         const sqlQuery = "SELECT supply, stock_remaining FROM inventory";

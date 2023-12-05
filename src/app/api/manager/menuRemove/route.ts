@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ message: "Menu item removed: "+drink_name }, { status: 200 });
     }
     catch(error:any){
-       console.log("ASDF");
+        console.log("ASDF");
         return NextResponse.json({error: error.toString()},{status: 500});
     }
 
