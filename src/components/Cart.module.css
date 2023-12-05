@@ -1,48 +1,48 @@
 .cartButton {
-  background-color: #FFD700; /* Set the background color */
-  color: #000; /* Set the text color */
-  border: none; /* Remove the button border */
-  cursor: pointer; /* Change the cursor on hover */
-  transition: max-height 0.3s ease-in-out; /* Add a smooth transition for max-height */
-  max-height: 5vh; /* Set the initial max-height (collapsed) */
-  overflow: hidden;
+    background-color: #FFD700; /* Set the background color */
+    color: #000; /* Set the text color */
+    border: none; /* Remove the button border */
+    cursor: pointer; /* Change the cursor on hover */
+    transition: max-height 0.3s ease-in-out; /* Add a smooth transition for max-height */
+    max-height: 5vh; /* Set the initial max-height (collapsed) */
+    overflow: hidden;
 }
 
 .cartButton.open {
-  max-height: 500px; /* Set the max-height to expand when open */
-  overflow: auto;
+    max-height: 500px; /* Set the max-height to expand when open */
+    overflow: auto;
 }
 
 .cartButtonContent {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  box-sizing: content-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    box-sizing: content-box;
 }
 
 .cartDropdownButton {
-  background-color: #FFA500; /* Set the background color of the dropdown button */
-  color: #fff; /* Set the text color of the dropdown button */
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
+    background-color: #FFA500; /* Set the background color of the dropdown button */
+    color: #fff; /* Set the text color of the dropdown button */
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
 }
 
 .cartDropdownContent {
-  background-color: #FFD700; /* Set the background color of the dropdown content */
-  padding: 10px;
-  width: 100%;
-  height: auto;
-  max-height: 5vh;
-  overflow-y: hidden;
+    background-color: #FFD700; /* Set the background color of the dropdown content */
+    padding: 10px;
+    width: 100%;
+    height: auto;
+    max-height: 5vh;
+    overflow-y: hidden;
 }
 
 .open .cartDropdownContent {
-  max-height: 500px;
-  width: 100%;
-  top: 100%;
-  left: 0;
+    max-height: 500px;
+    width: 100%;
+    top: 100%;
+    left: 0;
 }
 
 .popOutWindow{
@@ -75,9 +75,9 @@
 }
 
 .attributeName{
-  font-size: 1.2vw;
-  font-weight: bold;
-  margin-bottom: 0.5vh;
+    font-size: 1.2vw;
+    font-weight: bold;
+    margin-bottom: 0.5vh;
 }
 
 .closeButton {

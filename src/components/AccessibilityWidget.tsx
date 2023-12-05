@@ -9,203 +9,203 @@ interface AccessibilityWidgetProps {}
 
 const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = () => {
 
-  const initialState = {
-    fontSize: typeof window !== "undefined" ? (localStorage.getItem('fontSize') as 'small' | 'medium' | 'large') || 'small' : 'small',
-    isInverted: typeof window !== "undefined" ? JSON.parse(localStorage.getItem('isInverted') || 'false') : false,
-    contrast: typeof window !== "undefined" ? parseFloat(localStorage.getItem('contrast') || '100') : 100,
-  };
+    const initialState = {
+        fontSize: typeof window !== "undefined" ? (localStorage.getItem('fontSize') as 'small' | 'medium' | 'large') || 'small' : 'small',
+        isInverted: typeof window !== "undefined" ? JSON.parse(localStorage.getItem('isInverted') || 'false') : false,
+        contrast: typeof window !== "undefined" ? parseFloat(localStorage.getItem('contrast') || '100') : 100,
+    };
 
-  const [fontSize, setFontSize] = useState<'small' | 'medium' | 'large'>('small');
-  
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [isInverted, setIsInverted] = useState<boolean>(false);
+    const [fontSize, setFontSize] = useState<'small' | 'medium' | 'large'>('small');
+    
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [isInverted, setIsInverted] = useState<boolean>(false);
 
-  const [contrast, setContrast] = useState<number>(100);
+    const [contrast, setContrast] = useState<number>(100);
 
-  const magnifier = new HTMLMagnifier({ zoom: 2, shape: 'square', width: 200, height: 200 });
+    const magnifier = new HTMLMagnifier({ zoom: 2, shape: 'square', width: 200, height: 200 });
 
-  const handleShowMagnifier = (event: React.MouseEvent<HTMLButtonElement>) => {
-    magnifier.show(event.nativeEvent);
-  };
+    const handleShowMagnifier = (event: React.MouseEvent<HTMLButtonElement>) => {
+        magnifier.show(event.nativeEvent);
+    };
 
-  const handleHideMagnifier = () => {
-    magnifier.hide();
-  };
+    const handleHideMagnifier = () => {
+        magnifier.hide();
+    };
 
-  useEffect(() => {
-    document.documentElement.style.filter = `invert(${isInverted ? 1 : 0}) contrast(${contrast}%)`;
-    localStorage.setItem('isInverted', JSON.stringify(isInverted));
-    localStorage.setItem('contrast', contrast.toString());
-  }, [isInverted, contrast]);
+    useEffect(() => {
+        document.documentElement.style.filter = `invert(${isInverted ? 1 : 0}) contrast(${contrast}%)`;
+        localStorage.setItem('isInverted', JSON.stringify(isInverted));
+        localStorage.setItem('contrast', contrast.toString());
+    }, [isInverted, contrast]);
 
-  useEffect(() => {
-    document.documentElement.style.fontSize =
-      fontSize === 'small' ? '15px' : fontSize === 'large' ? '30px' : '25px';
-    localStorage.setItem('fontSize', fontSize);
-  }, [fontSize]);
+    useEffect(() => {
+        document.documentElement.style.fontSize =
+        fontSize === 'small' ? '15px' : fontSize === 'large' ? '30px' : '25px';
+        localStorage.setItem('fontSize', fontSize);
+    }, [fontSize]);
 
-  const handleInvertChange = () => {
-    setIsInverted(!isInverted);
-  };
+    const handleInvertChange = () => {
+        setIsInverted(!isInverted);
+    };
 
-  const handleFontSizeChange = (e: string) => {
-    setFontSize(e as 'small' | 'medium' | 'large');
-  };
+    const handleFontSizeChange = (e: string) => {
+        setFontSize(e as 'small' | 'medium' | 'large');
+    };
 
-  const handleContrastChange = (_event: Event, value: number | number[]) => {
+    const handleContrastChange = (_event: Event, value: number | number[]) => {
 
-    setContrast(value as number);
-  };
+        setContrast(value as number);
+    };
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
+    const handleOpenModal = () => {
+        setIsModalOpen(true);
+    };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
 
-  const handleContrastPreset = (presetValue: number) => {
-    setContrast(presetValue);
-  };
+    const handleContrastPreset = (presetValue: number) => {
+        setContrast(presetValue);
+    };
 
-  const handleResetToDefault = () => {
-    const defaultFontSize: 'small' | 'medium' | 'large' = 'small';
-    const defaultIsInverted: boolean = false;
-    const defaultContrast: number = 100;
+    const handleResetToDefault = () => {
+        const defaultFontSize: 'small' | 'medium' | 'large' = 'small';
+        const defaultIsInverted: boolean = false;
+        const defaultContrast: number = 100;
 
-    setFontSize(defaultFontSize);
-    setIsInverted(defaultIsInverted);
-    setContrast(defaultContrast);
+        setFontSize(defaultFontSize);
+        setIsInverted(defaultIsInverted);
+        setContrast(defaultContrast);
 
-    document.documentElement.style.filter = 'invert(0) contrast(100%)';
-    fontSize === 'small' ? '15px' : fontSize === 'large' ? '30px' : '25px';
+        document.documentElement.style.filter = 'invert(0) contrast(100%)';
+        fontSize === 'small' ? '15px' : fontSize === 'large' ? '30px' : '25px';
 
-    localStorage.setItem('fontSize', defaultFontSize);
-    localStorage.setItem('isInverted', JSON.stringify(defaultIsInverted));
-    localStorage.setItem('contrast', defaultContrast.toString());
-  };
+        localStorage.setItem('fontSize', defaultFontSize);
+        localStorage.setItem('isInverted', JSON.stringify(defaultIsInverted));
+        localStorage.setItem('contrast', defaultContrast.toString());
+    };
 
-  useEffect(() => {
-    setFontSize(initialState.fontSize);
-    setIsInverted(initialState.isInverted);
-    setContrast(initialState.contrast);
-  }, []);
+    useEffect(() => {
+        setFontSize(initialState.fontSize);
+        setIsInverted(initialState.isInverted);
+        setContrast(initialState.contrast);
+    }, []);
 
-  return (
-    <div className={styles.accessibilityWidget}>
-      <Button variant="contained" onClick={handleOpenModal}>
-        Accessibility Options
-      </Button>
-      <Modal className={styles.centerScreen} open={isModalOpen} onClose={handleCloseModal} disableScrollLock>
-        <Paper className={styles.modalContent}>
-          <h2>Accessibility Options</h2>
-          <div className={styles.accessibilityButtons}>
-          <p>Magnification</p>
-            <Button
-            variant="contained"
-            onClick={handleShowMagnifier}
-            >
-                Show Magnifier
-            </Button>
-            <Button
-            variant="contained"
-            onClick={handleHideMagnifier}
-            >
-                Hide Magnifier
-            </Button>
-            <p>Font Size</p>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: fontSize === 'small' ? '#1976D2' : 'black' }}
-              onClick={() => handleFontSizeChange('small')}
-            >
-              100%
-            </Button>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: fontSize === 'medium' ? '#1976D2' : 'black' }}
-              onClick={() => handleFontSizeChange('medium')}
-            >
-              150%
-            </Button>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: fontSize === 'large' ? '#1976D2' : 'black' }}
-              onClick={() => handleFontSizeChange('large')}
-            >
-              200%
-            </Button>
-
-            <p>Color Inversion</p>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: isInverted ? '#1976D2' : 'black' }}
-              onClick={handleInvertChange}
-            >
-              {isInverted ? 'On' : 'Off'}
-            </Button>
-
-            <p>Contrast (current value: {contrast})</p>
-            <div>
+    return (
+        <div className={styles.accessibilityWidget}>
+        <Button variant="contained" onClick={handleOpenModal}>
+            Accessibility Options
+        </Button>
+        <Modal className={styles.centerScreen} open={isModalOpen} onClose={handleCloseModal} disableScrollLock>
+            <Paper className={styles.modalContent}>
+            <h2>Accessibility Options</h2>
+            <div className={styles.accessibilityButtons}>
+            <p>Magnification</p>
                 <Button
-                    variant="contained"
-                    style={{
-                    backgroundColor: contrast === 50 ? '#1976D2' : 'black',
-                    }}
-                    onClick={() => handleContrastPreset(50)}
+                variant="contained"
+                onClick={handleShowMagnifier}
                 >
-                    50
+                    Show Magnifier
                 </Button>
                 <Button
-                    variant="contained"
-                    style={{
-                    backgroundColor: contrast === 100 ? '#1976D2' : 'black',
-                    }}
-                    onClick={() => handleContrastPreset(100)}
+                variant="contained"
+                onClick={handleHideMagnifier}
                 >
-                    100
+                    Hide Magnifier
+                </Button>
+                <p>Font Size</p>
+                <Button
+                variant="contained"
+                style={{ backgroundColor: fontSize === 'small' ? '#1976D2' : 'black' }}
+                onClick={() => handleFontSizeChange('small')}
+                >
+                100%
                 </Button>
                 <Button
-                    variant="contained"
-                    style={{
-                    backgroundColor: contrast === 150 ? '#1976D2' : 'black',
-                    }}
-                    onClick={() => handleContrastPreset(150)}
+                variant="contained"
+                style={{ backgroundColor: fontSize === 'medium' ? '#1976D2' : 'black' }}
+                onClick={() => handleFontSizeChange('medium')}
                 >
-                    150
+                150%
                 </Button>
                 <Button
-                    variant="contained"
-                    style={{
-                    backgroundColor: contrast === 200 ? '#1976D2' : 'black',
-                    }}
-                    onClick={() => handleContrastPreset(200)}
+                variant="contained"
+                style={{ backgroundColor: fontSize === 'large' ? '#1976D2' : 'black' }}
+                onClick={() => handleFontSizeChange('large')}
                 >
-                    200
+                200%
+                </Button>
+
+                <p>Color Inversion</p>
+                <Button
+                variant="contained"
+                style={{ backgroundColor: isInverted ? '#1976D2' : 'black' }}
+                onClick={handleInvertChange}
+                >
+                {isInverted ? 'On' : 'Off'}
+                </Button>
+
+                <p>Contrast (current value: {contrast})</p>
+                <div>
+                    <Button
+                        variant="contained"
+                        style={{
+                        backgroundColor: contrast === 50 ? '#1976D2' : 'black',
+                        }}
+                        onClick={() => handleContrastPreset(50)}
+                    >
+                        50
+                    </Button>
+                    <Button
+                        variant="contained"
+                        style={{
+                        backgroundColor: contrast === 100 ? '#1976D2' : 'black',
+                        }}
+                        onClick={() => handleContrastPreset(100)}
+                    >
+                        100
+                    </Button>
+                    <Button
+                        variant="contained"
+                        style={{
+                        backgroundColor: contrast === 150 ? '#1976D2' : 'black',
+                        }}
+                        onClick={() => handleContrastPreset(150)}
+                    >
+                        150
+                    </Button>
+                    <Button
+                        variant="contained"
+                        style={{
+                        backgroundColor: contrast === 200 ? '#1976D2' : 'black',
+                        }}
+                        onClick={() => handleContrastPreset(200)}
+                    >
+                        200
+                    </Button>
+                </div>
+                <Slider
+                value={contrast}
+                onChange={handleContrastChange}
+                aria-labelledby="contrast-slider"
+                valueLabelDisplay="auto"
+                min={50}
+                max={200}
+                />
+
+                {/* Reset to Default Button */}
+                <Button variant="contained" onClick={handleResetToDefault}>
+                Reset to Default
                 </Button>
             </div>
-            <Slider
-              value={contrast}
-              onChange={handleContrastChange}
-              aria-labelledby="contrast-slider"
-              valueLabelDisplay="auto"
-              min={50}
-              max={200}
-            />
-
-            {/* Reset to Default Button */}
-            <Button variant="contained" onClick={handleResetToDefault}>
-              Reset to Default
+            <Button variant="contained" onClick={handleCloseModal}>
+                Close Modal
             </Button>
-          </div>
-          <Button variant="contained" onClick={handleCloseModal}>
-            Close Modal
-          </Button>
-        </Paper>
-      </Modal>
-    </div>
-  );
+            </Paper>
+        </Modal>
+        </div>
+    );
 };
 
 export default AccessibilityWidget;

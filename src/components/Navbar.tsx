@@ -26,72 +26,72 @@ export default function Navbar() {
 
         checkEmployeeRoles();
     }, []);
-  
+
     const handleSignClick = () => {
-      if (session) {
+    if (session) {
         signOut();
-      } else {
+    } else {
         signIn();
-      }
+    }
     };
-  
+    
     return (
-      <>
-      <div className={styles.navWidgets}>
+    <>
+    <div className={styles.navWidgets}>
         <AccessibilityWidget />
         <WeatherWidget />
-      </div>
-      <AppBar position="static" className={styles.navbar}>
+    </div>
+    <AppBar position="static" className={styles.navbar}>
         <Container>
-          <Toolbar>
+        <Toolbar>
             <div className={styles.imageContainer}>
-              <Image
+            <Image
                 src="/images/tiger-sugar-logo.png"
                 alt="Tiger Sugar Logo"
                 width={200} // Set the width and height as per your requirement
                 height={100}
-              />
+            />
             </div>
-  
+
             <ul className={styles.navList}>
-              <li className={`${styles.navItem} ${pathname === ('/') && styles.activeNavItem}`}>
+            <li className={`${styles.navItem} ${pathname === ('/') && styles.activeNavItem}`}>
                 <Button color="inherit">
                     <Link href="/">Home</Link>
                 </Button>
-              </li>
-              {isCashier && (
+            </li>
+            {isCashier && (
                 <li className={`${styles.navItem} ${pathname.startsWith('/cashier') && styles.activeNavItem}`}>
                     <Button color="inherit">
                         <Link href="/cashier">Cashier</Link>
                     </Button>
                 </li>
-              )}
-              {isManager && (
+            )}
+            {isManager && (
                 <li className={`${styles.navItem} ${pathname.startsWith('/manager') && styles.activeNavItem}`}>
                     <Button color="inherit">
                         <Link href="/manager">Manager</Link>
                     </Button>
                 </li>
-              )}
-              <li className={`${styles.navItem} ${pathname.startsWith('/customer') && styles.activeNavItem}`}>
+            )}
+            <li className={`${styles.navItem} ${pathname.startsWith('/customer') && styles.activeNavItem}`}>
                 <Button color="inherit">
                     <Link href="/customer">Order</Link>
                 </Button>
-              </li>
-              <li className={`${styles.navItem} ${pathname.startsWith('/menuboard') && styles.activeNavItem}`}>
+            </li>
+            <li className={`${styles.navItem} ${pathname.startsWith('/menuboard') && styles.activeNavItem}`}>
                 <Button color="inherit">
                     <Link href="/menuboard">Menu</Link>
                 </Button>
-              </li>
-              <li className={styles.navItem}>
+            </li>
+            <li className={styles.navItem}>
                 <Button color="inherit" onClick={handleSignClick}>
-                  {session ? 'Sign out' : 'Sign in'}
+                {session ? 'Sign out' : 'Sign in'}
                 </Button>
-              </li>
+            </li>
             </ul>
-          </Toolbar>
+        </Toolbar>
         </Container>
-      </AppBar>
-      </>
+    </AppBar>
+    </>
     );
 }
