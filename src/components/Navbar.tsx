@@ -40,6 +40,10 @@ export default function Navbar() {
     <div className={styles.navWidgets}>
         <AccessibilityWidget />
         <WeatherWidget />
+        <dl aria-hidden="true" style={{display: 'none'}}>
+            <dt>Current User</dt>
+            <dd>{session?.user?.email}</dd>
+        </dl>
     </div>
     <AppBar position="static" className={styles.navbar}>
         <Container>
