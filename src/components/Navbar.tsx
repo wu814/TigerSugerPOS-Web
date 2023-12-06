@@ -57,8 +57,7 @@ export default function Navbar() {
             <button aria-label="Click me">Button with accessible name</button>
             <a href="#" aria-label="Link with accessible name">Accessible Link</a>
             <menu>
-                <menuitem aria-label="Menu item with accessible name">Item 1</menuitem>
-                <menuitem aria-label="Menu item with accessible name">Item 2</menuitem>
+                <menuitem aria-label="Menu item with accessible name"></menuitem>
             </menu>
             <input type="text" aria-label="Enter your name" />
         </div>
