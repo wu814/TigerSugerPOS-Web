@@ -1,4 +1,7 @@
-(function(window) {
+(function(global) {
+    if (typeof global === 'undefined') {
+        return;
+    }    
 
     function HTMLMagnifier(options) {
         const _this = this;
@@ -442,7 +445,11 @@
   
     }
   
-    if (typeof module !== 'undefined' && module.exports) module.exports = HTMLMagnifier; 
-    else window.HTMLMagnifier = HTMLMagnifier;
+    if (typeof module !== 'undefined' && module.exports) {
+        module.exports = HTMLMagnifier;
+      } else {
+        // Use a different global object if 'window' is not defined
+        global.HTMLMagnifier = HTMLMagnifier;
+      }
   
-  })(window);
+})(typeof window !== 'undefined' ? window : global);

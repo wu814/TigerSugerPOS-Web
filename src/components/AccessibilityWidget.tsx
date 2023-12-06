@@ -1,12 +1,13 @@
 "use client"
 // AccessibilityWidget.tsx
-import React, { useState, useEffect, useRef } from 'react';
-import { Modal, Paper, Button, Slider, Input } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Modal, Paper, Button, Slider } from '@mui/material';
 import HTMLMagnifier from './html-magnifier'; // Assuming you have the HTMLMagnifier class in a separate file
 import styles from './AccessibilityWidget.module.css';
 
 interface AccessibilityWidgetProps {}
 
+let magnifierInstance: HTMLMagnifier | null = null;
 const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = () => {
 
     const initialState = {
@@ -22,28 +23,73 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = () => {
 
     const [contrast, setContrast] = useState<number>(100);
 
-    const magnifierRef = useRef<HTMLMagnifier | null>(null);
-
-    // Other state and functions...
+    // // Other state and functions...
   
-    const handleShowMagnifier = (event: React.MouseEvent<HTMLButtonElement>) => {
-      if (!magnifierRef.current) {
-        magnifierRef.current = new HTMLMagnifier({ zoom: 2, shape: 'circle', width: 200, height: 200 });
-      }
-      magnifierRef.current.show(event.nativeEvent);
+    const handleShowMagnifier = () => {
+        if (!magnifierInstance) {
+            magnifierInstance = new HTMLMagnifier({ zoom: 2, shape: 'circle', width: 200, height: 200 });
+        }
+        magnifierInstance.show();
     };
 
     const handleHideMagnifier = () => {
-        if (magnifierRef.current) {
-            magnifierRef.current.hide();
+        if (magnifierInstance) {
+            magnifierInstance.hide();
         }
     }
-  
+    
+    const handleInvertChange = () => {
+        setIsInverted(!isInverted);
+    };
+    
+    const handleFontSizeChange = (e: string) => {
+        setFontSize(e as 'small' | 'medium' | 'large');
+    };
+    
+    const handleContrastChange = (_event: Event, value: number | number[]) => {
+        setContrast(value as number);
+    };
+
+    const handleOpenModal = () => {
+        setIsModalOpen(true);
+    };
+    
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
+    
+    const handleContrastPreset = (presetValue: number) => {
+        setContrast(presetValue);
+    };
+    
+    const handleResetToDefault = () => {
+        const defaultFontSize: 'small' | 'medium' | 'large' = 'small';
+        const defaultIsInverted: boolean = false;
+        const defaultContrast: number = 100;
+        
+        setFontSize(defaultFontSize);
+        setIsInverted(defaultIsInverted);
+        setContrast(defaultContrast);
+        
+        document.documentElement.style.filter = 'invert(0) contrast(100%)';
+        fontSize === 'small' ? '15px' : fontSize === 'large' ? '30px' : '25px';
+        
+        localStorage.setItem('fontSize', defaultFontSize);
+        localStorage.setItem('isInverted', JSON.stringify(defaultIsInverted));
+        localStorage.setItem('contrast', defaultContrast.toString());
+    };
+    
+    useEffect(() => {
+            setFontSize(initialState.fontSize);
+            setIsInverted(initialState.isInverted);
+            setContrast(initialState.contrast);
+    }, []);
+        
     useEffect(() => {
       return () => {
-        if (magnifierRef.current) {
-          magnifierRef.current.hide();
-          magnifierRef.current = null;
+        if (magnifierInstance) {
+          magnifierInstance.hide();
+          magnifierInstance = null;
         }
       };
     }, []);
@@ -60,64 +106,16 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = () => {
         localStorage.setItem('fontSize', fontSize);
     }, [fontSize]);
 
-    const handleInvertChange = () => {
-        setIsInverted(!isInverted);
-    };
-
-    const handleFontSizeChange = (e: string) => {
-        setFontSize(e as 'small' | 'medium' | 'large');
-    };
-
-    const handleContrastChange = (_event: Event, value: number | number[]) => {
-
-        setContrast(value as number);
-    };
-
-    const handleOpenModal = () => {
-        setIsModalOpen(true);
-    };
-
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-    };
-
-    const handleContrastPreset = (presetValue: number) => {
-        setContrast(presetValue);
-    };
-
-    const handleResetToDefault = () => {
-        const defaultFontSize: 'small' | 'medium' | 'large' = 'small';
-        const defaultIsInverted: boolean = false;
-        const defaultContrast: number = 100;
-
-        setFontSize(defaultFontSize);
-        setIsInverted(defaultIsInverted);
-        setContrast(defaultContrast);
-
-        document.documentElement.style.filter = 'invert(0) contrast(100%)';
-        fontSize === 'small' ? '15px' : fontSize === 'large' ? '30px' : '25px';
-
-        localStorage.setItem('fontSize', defaultFontSize);
-        localStorage.setItem('isInverted', JSON.stringify(defaultIsInverted));
-        localStorage.setItem('contrast', defaultContrast.toString());
-    };
-
-    useEffect(() => {
-        setFontSize(initialState.fontSize);
-        setIsInverted(initialState.isInverted);
-        setContrast(initialState.contrast);
-    }, []);
-
-    return (
-        <div className={styles.accessibilityWidget}>
+        return (
+            <div className={styles.accessibilityWidget}>
         <Button variant="contained" onClick={handleOpenModal}>
             Accessibility Options
         </Button>
         <Modal className={styles.centerScreen} open={isModalOpen} onClose={handleCloseModal} disableScrollLock>
             <Paper className={styles.modalContent}>
-            <h2>Accessibility Options</h2>
-            <div className={styles.accessibilityButtons}>
-            <p>Magnification</p>
+                <h2>Accessibility Options</h2>
+                <div className={styles.accessibilityButtons}>
+                <p>Magnification</p>
                 <Button
                 variant="contained"
                 onClick={handleShowMagnifier}
@@ -209,8 +207,6 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = () => {
                 min={50}
                 max={200}
                 />
-
-                {/* Reset to Default Button */}
                 <Button variant="contained" onClick={handleResetToDefault}>
                 Reset to Default
                 </Button>
