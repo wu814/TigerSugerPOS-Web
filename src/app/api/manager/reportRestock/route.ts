@@ -5,6 +5,11 @@ export const dynamic = 'force-dynamic';
 
 //Contacts the database and calculates a restock report
 //Returns a matrix with columns supply, stock_remaining, and minimum_stock
+/**
+ * Gets which items need to be restocked
+ *
+ * @returns a JSON containing the restock report
+ */
 export async function GET(request: NextRequest) {
     try{
         //Query

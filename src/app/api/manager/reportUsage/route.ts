@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { query } from "../../../../utils/database";
 
+/**
+ * Gets inventory usage
+ *
+ * @param request contains data needed for SQL query: start date, end date
+ * @returns a message indicating whether the query was successful or not
+ */
 export async function POST(request: NextRequest) {
     try{
         const input = await request.json();

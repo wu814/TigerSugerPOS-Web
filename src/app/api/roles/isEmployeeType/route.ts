@@ -3,6 +3,12 @@ import { query } from "../../../../utils/database";
 
 export const dynamic = 'force-dynamic';
 
+/**
+ * Gets the classification of the user to see if they  have access
+ *
+ * @param request contains data needed for SQL query: email
+ * @returns booleans containing the classificatioin for cashier and manager
+ */
 export async function GET(request: NextRequest) {
     try {
         // Assuming you have a user_id in the query parameters, adjust it based on your actual setup

@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { query } from "../../../../utils/database";
 
-//edit the name of a inventory item
+/**
+ * Edit the name of a inventory item
+ *
+ * @param request contains data needed for SQL query: name, new name
+ * @returns a message indicating whether the query was successful or not
+ */
 export async function POST(request: NextRequest) {
     try{
         const data = await request.json();

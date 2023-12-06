@@ -5,6 +5,11 @@ import { query } from "../../../../utils/database";
 export const dynamic = 'force-dynamic';
 
 //returns all items in the inventory database
+/**
+ * Returns all items in the inventory database
+ *
+ * @returns a JSON containing all elements from inventory database
+ */
 export async function GET(request: NextRequest) {
    
     const queryMsg = await query("SELECT * FROM inventory");

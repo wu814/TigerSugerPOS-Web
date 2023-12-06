@@ -6,6 +6,11 @@ import { NextApiRequest } from 'next';
 export const dynamic = 'force-dynamic';
 
 // Getting the remaining stock for all ingredients
+/**
+ * Gets the remaining stock for all ingredients
+ *
+ * @returns a JSON containing the supply and remaining stock for all inventory
+ */
 export async function GET(request: NextRequest) {
     try {
         const sqlQuery = "SELECT supply, stock_remaining FROM inventory";

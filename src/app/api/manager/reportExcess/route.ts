@@ -3,6 +3,12 @@ import { query } from "../../../../utils/database";
 
 // excess report:
 // given a timestamp, display the list of inventory items that only sold less than 10% of their inventory between the timestamp and now
+/**
+ * Calculates which inventory items are in excess
+ *
+ * @param request contains data needed for SQL query: start date
+ * @returns a JSON containing the excess report
+ */
 export async function POST(request: NextRequest) {
     //initialize variables and input
     try{

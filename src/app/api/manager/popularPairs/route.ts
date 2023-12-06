@@ -4,6 +4,12 @@ import { query } from "../../../../utils/database";
 // generate popular pairs
 // input:  two dates in format 'yyyy-mm-dd'
 // output: a matrix where each row consists of drink1, drink2, and the frequency
+/**
+ * Gets Items that sell well together
+ *
+ * @param request contains data needed for SQL query: start date, end date
+ * @returns a JSON containing the popular pairs report
+ */
 export async function POST(request: NextRequest) {
     try{
         let table: string[][] = [];

@@ -2,6 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { query } from "../../../../utils/database";
 
 //adding a new item to the database
+/**
+ * Adding a new item to the database
+ *
+ * @param request contains data needed for SQL query: drink_name, price, ingredients, drink_type, description, image
+ * @returns a message indicating whether the query was successful or not
+ */
 export async function POST(request: NextRequest) {
     try{
         const data = await request.json();

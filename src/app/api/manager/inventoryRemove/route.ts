@@ -2,6 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { query } from "../../../../utils/database";
 
 //remove an item from inventory by id
+/**
+ * Remove an inventory item
+ *
+ * @param request contains data needed for SQL query: supply
+ * @returns a message indicating whether the query was successful or not
+ */
 export async function POST(request: NextRequest) {
     try{
         const data = await request.json();

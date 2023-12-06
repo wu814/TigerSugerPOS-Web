@@ -5,6 +5,12 @@ import { query } from "../../../../utils/database";
 //Contacts the database and calculates a sales report
 //Returns a matrix
 //input: 'yyyy-mm-dd' 'yyyy-mm-dd'
+/**
+ * Gets a sales report for each drink
+ *
+ * @param request contains data needed for SQL query: start date, end date
+ * @returns a JSON containing the sales report
+ */
 export async function POST(request: NextRequest) {
     try{ 
         const input = await request.json();

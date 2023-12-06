@@ -2,6 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { query } from "../../../../utils/database";
 
 // Writing new order to the database
+/**
+ * Places an order, alters the database
+ *
+ * @param request contains data needed for SQL query: orderTimestamp, employeeId, customerId, orderItems, orderTotal, drinkAttributes, drinkAddOns
+ * @returns a message indicating whether the query was successful or not
+ */
 export async function POST(request: NextRequest) {
     try {
         const reqData = await request.json();

@@ -2,6 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { query } from "../../../../utils/database";
 
 //edit the ingredients of a menu item
+/**
+ * Edit the Ingredients of a menu item
+ *
+ * @param request contains data needed for SQL query: drink, list of ingredients
+ * @returns a message indicating whether the query was successful or not
+ */
 export async function POST(request: NextRequest) {
     try{
         const data = await request.json();

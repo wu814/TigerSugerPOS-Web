@@ -2,6 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { query } from "../../../../utils/database";
 
 //add a new item to the inventory
+/**
+ * Adds a new item to the inventory
+ *
+ * @param request contains data needed for SQL query: supply, stock_remaining, minimum_stock
+ * @returns a message indicating whether the query was successful or not
+ */
 export async function POST(request: NextRequest) {
     try{
         const data = await request.json();
