@@ -42,11 +42,6 @@
     align-items: center;
 }
 
-.imageContainer::after {
-    content: "|";
-    margin-left: 10px;
-}
-
 /*weather stuff*/
 .weather-widget {
     position: relative;

@@ -135,7 +135,7 @@
         function syncViewport() {
             const x1 = magnifier.offsetLeft;
             const y1 = magnifier.offsetTop;
-            const x2 = document.body.scrollLeft;
+            const x2 = document.documentElement.scrollLeft;
             const y2 = document.documentElement.scrollTop;
             const left = -x1 * _this.options.zoom - x2 * _this.options.zoom;
             const top = -y1 * _this.options.zoom - y2 * _this.options.zoom - (magnifier.offsetHeight / 2); // Adjusted line
