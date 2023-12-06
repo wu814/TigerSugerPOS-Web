@@ -6,7 +6,7 @@ import AccessibilityWidget from './AccessibilityWidget';
 import styles from './Navbar.module.css'; // Import the CSS module
 import Image from 'next/image';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import { AppBar, Toolbar, Button, Container, LinearProgress } from '@mui/material';
+import { AppBar, Toolbar, Button, Container } from '@mui/material';
 import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
@@ -60,7 +60,7 @@ export default function Navbar() {
                 <menuitem aria-label="Menu item with accessible name"></menuitem>
             </menu>
             <input type="text" aria-label="Enter your name" />
-            <LinearProgress aria-label="Loading page" role="progressbar"/>
+            <div role="progressbar" id="alb" aria-labelledby="labeldiv"></div>
         </div>
     </div>
     <AppBar position="static" className={styles.navbar}>
