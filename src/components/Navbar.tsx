@@ -46,7 +46,10 @@ export default function Navbar() {
         </dl>
         <div aria-hidden="true" style={{display: 'none'}}>
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28389586.617483452!2d-132.4636568!3d29.70452759999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8640c30886ef3055%3A0xee7a2a2813660adf!2sTiger%20Sugar!5e0!3m2!1sen!2sus!4v1701889994037!5m2!1sen!2sus" width="600" height="450" style={{border: '0'}} loading="lazy" title="Google Map"></iframe>
-            <video src="assets/videos/container05.mp4?v=ef33cbf0" poster="assets/videos/container05.mp4.jpg?v=ef33cbf0" preload="auto" muted></video>
+            <video src="assets/videos/container05.mp4?v=ef33cbf0" poster="assets/videos/container05.mp4.jpg?v=ef33cbf0" preload="auto" muted>
+                <track kind="captions" src="assets/videos/container05.vtt?v=ef33cbf0" label="English"></track>
+            </video>
+            <div role="tooltip" aria-describedby="tooltip1">I am a tooltip g g</div>
         </div>
     </div>
     <AppBar position="static" className={styles.navbar}>
