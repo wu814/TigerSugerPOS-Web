@@ -51,6 +51,17 @@ export default function Navbar() {
             </video>
             <div role="tooltip" aria-describedby="tooltip1">I am a tooltip g g</div>
         </div>
+        <div style={{display: 'none'}}>
+            <button accessKey="a" aria-label="Activate">Button A</button>
+            <button accessKey="b" aria-label="Activate">Button B</button>
+            <button aria-label="Click me">Button with accessible name</button>
+            <a href="#" aria-label="Link with accessible name">Accessible Link</a>
+            <menu>
+                <menuitem aria-label="Menu item with accessible name">Item 1</menuitem>
+                <menuitem aria-label="Menu item with accessible name">Item 2</menuitem>
+            </menu>
+            <input type="text" aria-label="Enter your name" />
+        </div>
     </div>
     <AppBar position="static" className={styles.navbar}>
         <Container>
