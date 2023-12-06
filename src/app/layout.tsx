@@ -3,6 +3,7 @@ import './globals.css'
 import { getServerSession } from 'next-auth';
 import GoogleTranslateWrapper from '../components/GoogleTranslateWrapper';
 import SessionProvider from '../components/SessionProvider';
+import Navbar from '../components/Navbar';
 
 export const metadata: Metadata = {
   title: 'Tigar Sugar POS',
@@ -20,6 +21,7 @@ export default async function RootLayout({
       <body className="baseFont">
         <SessionProvider session={session}>
             <GoogleTranslateWrapper />
+            <Navbar/>
             {children}
         </SessionProvider>
       </body>

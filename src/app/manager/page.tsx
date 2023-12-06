@@ -9,7 +9,7 @@ import { useState } from 'react';
 export default function Home() {
   return (
     <>
-        <Navbar/>
+        
         <div className={styles.main}>
             <h1 className={styles.mainHeading}>Manager View</h1>
 

@@ -136,11 +136,13 @@
             const x1 = magnifier.offsetLeft;
             const y1 = magnifier.offsetTop;
             const x2 = document.body.scrollLeft;
-            const y2 = document.body.scrollTop;
+            const y2 = document.documentElement.scrollTop;
             const left = -x1 * _this.options.zoom - x2 * _this.options.zoom;
-            const top = -y1 * _this.options.zoom - y2 * _this.options.zoom;
+            const top = -y1 * _this.options.zoom - y2 * _this.options.zoom - (magnifier.offsetHeight / 2); // Adjusted line
             setPosition(magnifierContent, left, top);
             triggerEvent('viewPortChanged', magnifierBody);
+
+            console.log(y2);
         }
     
         function removeSelectors(container, selector) {

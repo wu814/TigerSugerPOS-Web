@@ -246,7 +246,7 @@ export default function Home() {
 
     return (
         <>
-            <Navbar />
+            
 
             <div className={styles.main}>
                 <Link role="link" className={styles.backButton} href="/manager">

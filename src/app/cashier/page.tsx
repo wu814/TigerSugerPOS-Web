@@ -118,7 +118,7 @@ export default function Home() {
 
     return (
         <>
-        <Navbar />
+        
         <div className={styles.main}>
 
             <Button variant='contained' onClick={openModal}>

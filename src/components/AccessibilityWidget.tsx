@@ -1,6 +1,6 @@
 "use client"
 // AccessibilityWidget.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Modal, Paper, Button, Slider, Input } from '@mui/material';
 import HTMLMagnifier from './html-magnifier'; // Assuming you have the HTMLMagnifier class in a separate file
 import styles from './AccessibilityWidget.module.css';
@@ -22,16 +22,32 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = () => {
 
     const [contrast, setContrast] = useState<number>(100);
 
-    const magnifier = new HTMLMagnifier({ zoom: 2, shape: 'square', width: 200, height: 200 });
+    const magnifierRef = useRef<HTMLMagnifier | null>(null);
 
+    // Other state and functions...
+  
     const handleShowMagnifier = (event: React.MouseEvent<HTMLButtonElement>) => {
-        magnifier.show(event.nativeEvent);
+      if (!magnifierRef.current) {
+        magnifierRef.current = new HTMLMagnifier({ zoom: 2, shape: 'circle', width: 200, height: 200 });
+      }
+      magnifierRef.current.show(event.nativeEvent);
     };
 
     const handleHideMagnifier = () => {
-        magnifier.hide();
-    };
-
+        if (magnifierRef.current) {
+            magnifierRef.current.hide();
+        }
+    }
+  
+    useEffect(() => {
+      return () => {
+        if (magnifierRef.current) {
+          magnifierRef.current.hide();
+          magnifierRef.current = null;
+        }
+      };
+    }, []);
+    
     useEffect(() => {
         document.documentElement.style.filter = `invert(${isInverted ? 1 : 0}) contrast(${contrast}%)`;
         localStorage.setItem('isInverted', JSON.stringify(isInverted));

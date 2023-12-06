@@ -88,7 +88,7 @@ export default function Home() {
 
     return (
     <>
-      <Navbar/>
+      
       <div className={styles.main}>
         <h1>Menu Board</h1>
         {/* <div className={styles.container}>
