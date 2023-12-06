@@ -445,6 +445,7 @@ export default function CustomerCart({ orderList, setParentOrderList, orderTotal
 
                             <div className={styles.customizeAndRemoveButtons}>
                                 <Button
+                                aria-label="Customize"
                                 variant='contained'
                                 onClick={() => toggleCustomize(index)}
                                 sx = {{backgroundColor: '#ADD8E6', color: '#000000', fontSize: '10px', fontWeight: 'bold', width: '100px', height: '30px', marginTop: '10px', marginLeft: '10px'}}
@@ -565,13 +566,14 @@ export default function CustomerCart({ orderList, setParentOrderList, orderTotal
                                     )}
 
                                     <div className={styles.closeButton}>
-                                        <Button variant='contained' sx={{backgroundColor: 'red'}} onClick={()=>toggleCustomize(index)}>✕</Button>
+                                        <Button aria-label="close" variant='contained' sx={{backgroundColor: 'red'}} onClick={()=>toggleCustomize(index)}>✕</Button>
                                     </div>
-                                    <Button variant='contained' onClick={()=>toggleCustomize(index)}>Apply Changes</Button>
+                                    <Button aria-label="Apply Changes" variant='contained' onClick={()=>toggleCustomize(index)}>Apply Changes</Button>
 
                                 </Paper> 
                                 </Modal>
                                 <Button
+                                aria-label="Remove Drink"
                                 variant='contained'
                                 onClick={() => removeDrink(item.price, index)}
                                 sx = {{backgroundColor: '#FFB6C1', color: '#000000', fontSize: '10px', fontWeight: 'bold', width: '100px', height: '30px', marginTop: '10px', marginLeft: '10px'}}
@@ -585,6 +587,7 @@ export default function CustomerCart({ orderList, setParentOrderList, orderTotal
                 </div>
                 <div className={styles.chargeAndClear}>
                     <Button
+                    aria-label='Charge'
                     variant='contained'
                     onClick={loadUsedSupply}
                     sx= {{backgroundColor: 'green'}}
@@ -593,6 +596,7 @@ export default function CustomerCart({ orderList, setParentOrderList, orderTotal
                     </Button>
                     <span style={{ marginLeft: '10px' }}></span>
                     <Button
+                    aria-label="Clear Order"
                     variant='contained'
                     onClick={clearOrderList}
                     >

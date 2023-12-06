@@ -55,36 +55,36 @@ export default function Navbar() {
 
             <ul className={styles.navList}>
             <li className={`${styles.navItem} ${pathname === ('/') && styles.activeNavItem}`}>
-                <Button color="inherit">
+                <Button color="inherit" aria-label="Home">
                     <Link href="/">Home</Link>
                 </Button>
             </li>
             {isCashier && (
                 <li className={`${styles.navItem} ${pathname.startsWith('/cashier') && styles.activeNavItem}`}>
-                    <Button color="inherit">
+                    <Button color="inherit" aria-label="Cashier">
                         <Link href="/cashier">Cashier</Link>
                     </Button>
                 </li>
             )}
             {isManager && (
                 <li className={`${styles.navItem} ${pathname.startsWith('/manager') && styles.activeNavItem}`}>
-                    <Button color="inherit">
+                    <Button color="inherit" aria-label="Cashier">
                         <Link href="/manager">Manager</Link>
                     </Button>
                 </li>
             )}
             <li className={`${styles.navItem} ${pathname.startsWith('/customer') && styles.activeNavItem}`}>
-                <Button color="inherit">
+                <Button color="inherit" aria-label="Order">
                     <Link href="/customer">Order</Link>
                 </Button>
             </li>
             <li className={`${styles.navItem} ${pathname.startsWith('/menuboard') && styles.activeNavItem}`}>
-                <Button color="inherit">
+                <Button color="inherit" aria-label="Menu">
                     <Link href="/menuboard">Menu</Link>
                 </Button>
             </li>
             <li className={styles.navItem}>
-                <Button color="inherit" onClick={handleSignClick}>
+                <Button color="inherit" onClick={handleSignClick} aria-label="Sign In/Out">
                 {session ? 'Sign out' : 'Sign in'}
                 </Button>
             </li>

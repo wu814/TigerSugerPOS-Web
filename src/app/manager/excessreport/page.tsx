@@ -59,7 +59,7 @@ export default function Home() {
                         min="1000-01-01"
                         max="9999-12-31"
                     />
-                    <button className={styles.submitButton} type="submit">Submit</button>
+                    <button aria-label="Submit" className={styles.submitButton} type="submit">Submit</button>
                 </form>
 
                 {loading && <p>Loading...</p>}

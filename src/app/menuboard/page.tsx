@@ -113,7 +113,6 @@ export default function Home() {
                     <p className={styles.drinkName}>{menuItem.drink_name}</p>
                     <p className={styles.drinkPrice}>${menuItem.price}</p>
                     <p className={styles.drinkDescription}>{menuItem.description}</p>
-                    {/* <button onClick={() => handleOrderSelection(menuItem.drink_name)}>Add to Order</button> */}
                 </div>
             ))}
         </div>

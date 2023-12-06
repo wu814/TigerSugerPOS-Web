@@ -112,6 +112,7 @@ export default function Home() {
             <button
               className={`${styles.pItem} ${selectedComponent === button.value ? styles.activeDrinkType : ''}`}
               onClick={() => handleComponentSelect(button.value)}
+              aria-label={button.label}
             >
               {button.label}
             </button>

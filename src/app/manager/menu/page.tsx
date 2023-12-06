@@ -283,7 +283,7 @@ export default function Home() {
                                     <td>{item.ingredients.join(', ')}</td>
                                     <td>{item.drink_type}</td>
                                     <td>
-                                        <Button onClick={() => handleOpenModal(item)}>Edit</Button>
+                                        <Button aria-label="Edit" onClick={() => handleOpenModal(item)}>Edit</Button>
                                     </td>
                                 </tr>
                             ))}
@@ -303,7 +303,7 @@ export default function Home() {
                             Edit Menu Item
                         </Typography>
                         <div className={styles.removeDrinkButton}>
-                            <Button onClick={() => handleRemoveItem(selectedItem.drink_name)}>Delete Drink</Button>
+                            <Button aria-label="Delete Drink" onClick={() => handleRemoveItem(selectedItem.drink_name)}>Delete Drink</Button>
                         </div>
                     </div>
                     <div className={styles.modalBody}>
@@ -365,7 +365,7 @@ export default function Home() {
                                 ))}
                                 <div className={styles.modalActions}>
                                     <div className={styles.editIngredientsButton}>
-                                        <Button onClick={handleOpenIngredientModal}>Edit Ingredients</Button>
+                                        <Button aria-label="Edit Ingredients" onClick={handleOpenIngredientModal}>Edit Ingredients</Button>
                                     </div>
                                 </div>
                             </div>
@@ -374,10 +374,10 @@ export default function Home() {
 
                     <div className={styles.modalActions}>
                         <div className={styles.applyChangesButton}>
-                            <Button onClick={handleSaveEdit}>Apply Changes</Button>
+                            <Button aria-label="Apply Changes" onClick={handleSaveEdit}>Apply Changes</Button>
                         </div>
                         <div className={styles.closeButton}>
-                            <Button className={styles.closeButton} onClick={handleCloseModal}>Close</Button>
+                            <Button aria-label="Close" className={styles.closeButton} onClick={handleCloseModal}>Close</Button>
                         </div>
                     </div>
                 </Paper>
@@ -416,7 +416,7 @@ export default function Home() {
                     </div>
                 </div>
                 </div>
-                <Button onClick={() => setOpenIngredientModal(false)}>Close</Button>
+                <Button aria-label="Close" onClick={() => setOpenIngredientModal(false)}>Close</Button>
             </Paper>
             </Modal>
 
@@ -493,7 +493,7 @@ export default function Home() {
                         />
                     </div>
 
-                    <button onClick={handleAddItem}>Add Item</button>
+                    <button aria-label="Add Item" onClick={handleAddItem}>Add Item</button>
                 </div>
             </div>
         </>

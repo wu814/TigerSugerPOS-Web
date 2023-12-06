@@ -442,6 +442,7 @@ export default function OrderList({ orderList, setParentOrderList, orderTotal, s
                         <div key={index}>
                             <span>{item.drink_name} ${(Number(item.price)+extraCharge[index]).toFixed(2)} <br/>
                             <Button
+                            aria-label="Customize"
                             variant='contained'
                             onClick={() => toggleCustomize(index)}
                             sx = {{backgroundColor: '#ADD8E6', color: '#000000', fontSize: '10px', fontWeight: 'bold', width: '100px', height: '30px', marginTop: '10px', marginLeft: '10px'}}
@@ -640,11 +641,12 @@ export default function OrderList({ orderList, setParentOrderList, orderTotal, s
                                 )}
 
                                 <div className={styles.closeButton}>
-                                    <Button variant='contained' sx={{backgroundColor: 'red'}} onClick={()=>toggleCustomize(index)}>✕</Button>
+                                    <Button aria-label="Close" variant='contained' sx={{backgroundColor: 'red'}} onClick={()=>toggleCustomize(index)}>✕</Button>
                                 </div>
                             </Paper> 
                             </Modal>
                             <Button
+                            aria-label="Remove Drink"
                             variant='contained'
                             onClick={() => removeDrink(item.price, index)}
                             sx = {{backgroundColor: '#FFB6C1', color: '#000000', fontSize: '10px', fontWeight: 'bold', width: '100px', height: '30px', marginTop: '10px', marginLeft: '10px'}}
@@ -657,6 +659,7 @@ export default function OrderList({ orderList, setParentOrderList, orderTotal, s
                 </div>
                 <div className={styles.chargeAndClear}>
                     <Button
+                    aria-label="Charge"
                     variant='contained'
                     onClick={loadUsedSupply}
                     sx= {{backgroundColor: 'green'}}
@@ -665,6 +668,7 @@ export default function OrderList({ orderList, setParentOrderList, orderTotal, s
                     </Button>
                     <span style={{ marginLeft: '10px' }}></span>
                     <Button
+                    aria-label="Clear Order"
                     variant='contained'
                     onClick={clearOrderList}
                     >

@@ -205,7 +205,7 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
                     </label>
                     <br />
                     <div className={styles.closeButton}>
-                        <button onClick={()=>toggleCustomize(index)}>✕</button>
+                        <button aria-label="Exit" onClick={()=>toggleCustomize(index)}>✕</button>
                     </div>
                 </div> 
             </div>
@@ -632,7 +632,7 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
     <div className={styles.cartButtonContent}>
         <p>CART</p>
         <p>Order Total: ${orderTotal.toFixed(2)}</p>
-        <button className={styles.cartDropdownButton} onClick={toggleCart}>
+        <button aria-label="Toggle Cart" className={styles.cartDropdownButton} onClick={toggleCart}>
             {isCartVisible ? 'Hide' : 'Show'}
         </button>
     </div>
@@ -640,19 +640,19 @@ export default function Cart({ cart, setParentCart, orderTotal, setOrderTotal }:
         {selectedOrders.map((item, index) => (
             <div key={index}>
                 <span>{item.drink_name} ${(Number(item.price)+extraCharge[index]).toFixed(2)} <br/>
-                <button onClick={() => toggleCustomize(index)}>Customize</button>
+                <button aria-label="Customize" onClick={() => toggleCustomize(index)}>Customize</button>
                 {isAddOnPopoutOpen[index] && (
                     <PopOutWindow index={index} drinkName={item.drink_name}/>
                 )}
-                {" "}<button id={'button${drinkIndex}' } onClick={() => removeDrink(item.price, index)}>remove</button>
+                {" "}<button id={'button${drinkIndex}' } aria-label="Remove" onClick={() => removeDrink(item.price, index)}>remove</button>
                 </span>
             </div>
         ))}
     </div>
     <center>
-    <button onClick={loadUsedSupply}>Charge</button>
+    <button aria-label="Charge" onClick={loadUsedSupply}>Charge</button>
     <span style={{ marginLeft: '10px' }}></span>
-    <button onClick={clearCart}>Clear Cart</button>
+    <button aria-label="Clear Cart" onClick={clearCart}>Clear Cart</button>
     </center>
     </div>
     );

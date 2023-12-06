@@ -42,7 +42,7 @@ export default function Home() {
                 {loading && <p>Loading...</p>}
 
                 {!loading &&
-                    <button className={styles.refreshButton} onClick={fetchRestockReport}> Refresh </button>
+                    <button aria-label="Refresh" className={styles.refreshButton} onClick={fetchRestockReport}> Refresh </button>
                 }
 
                 {!loading && (

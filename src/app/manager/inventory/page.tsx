@@ -188,7 +188,7 @@ export default function Home() {
                                     <td>{item.stock_remaining}</td>
                                     <td>{item.minimum_stock}</td>
                                     <td>
-                                        <Button onClick={() => handleOpenModal(item)}>Edit</Button>
+                                        <Button aria-label="Edit" onClick={() => handleOpenModal(item)}>Edit</Button>
                                     </td>
                                 </tr>
                             ))}
@@ -209,7 +209,7 @@ export default function Home() {
                             Edit Menu Item
                         </Typography>
                         <div className={styles.removeDrinkButton}>
-                            <Button onClick={() => handleRemoveItem(selectedItem.supply)}>Delete Supply</Button>
+                            <Button aria-label="Remove Drink" onClick={() => handleRemoveItem(selectedItem.supply)}>Delete Supply</Button>
                         </div>
                     </div>
                     <div className={styles.modalBody}>
@@ -242,10 +242,10 @@ export default function Home() {
 
                     <div className={styles.modalActions}>
                         <div className={styles.applyChangesButton}>
-                            <Button onClick={handleSaveEdit}>Apply Changes</Button>
+                            <Button aria-label="Apply Changes" onClick={handleSaveEdit}>Apply Changes</Button>
                         </div>
                         <div className={styles.closeButton}>
-                            <Button className={styles.closeButton} onClick={handleCloseModal}>Close</Button>
+                            <Button aria-label="Close" className={styles.closeButton} onClick={handleCloseModal}>Close</Button>
                         </div>
                     </div>
                 </Paper>
@@ -279,7 +279,7 @@ export default function Home() {
                             onChange={(e) => setNewItem({ ...newItem, minimum_stock: e.target.value })}
                         />
                     </div>
-                    <button onClick={handleAddItem}>Add Item</button>
+                    <button aria-label="Add Item" onClick={handleAddItem}>Add Item</button>
                 </div>
             </div>
         </>

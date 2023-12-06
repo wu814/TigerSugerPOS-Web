@@ -102,7 +102,7 @@ export default function Home() {
                         onChange={(e) => setDrink(e.target.value)}
                     />
 
-                    <button className={styles.submitButton} type="submit">Submit</button>
+                    <button aria-label="Submit" className={styles.submitButton} type="submit">Submit</button>
                 </form>
 
                 {loading && <p>Loading...</p>}

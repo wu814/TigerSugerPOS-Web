@@ -104,7 +104,7 @@ export default function Home() {
         <ul className={styles.container}>
             {buttonData.map((button) => (
             <li className={styles.pContainer} key={button.value}>
-                <button
+                <button aria-label={button.label}
                 className={`${styles.pItem} ${selectedComponent === button.value ? styles.activeDrinkType : ''}`}
                 onClick={() => handleComponentSelect(button.value)}
                 >
@@ -121,7 +121,7 @@ export default function Home() {
         
         <div className={styles.main}>
 
-            <Button variant='contained' onClick={openModal}>
+            <Button variant='contained' onClick={openModal} aria-label="View Recent Orders">
             View Recent Orders
             </Button>
 
@@ -163,7 +163,7 @@ export default function Home() {
                 </Table>
                 </TableContainer>
                 {/* Use a more visually appealing button style */}
-                <Button variant="contained" onClick={closeModal}>
+                <Button variant="contained" onClick={closeModal} aria-label="Close Menu">
                 Close
                 </Button>
             </Paper>

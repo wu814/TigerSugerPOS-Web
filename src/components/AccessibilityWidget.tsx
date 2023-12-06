@@ -108,7 +108,7 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = () => {
 
         return (
             <div className={styles.accessibilityWidget}>
-        <Button variant="contained" onClick={handleOpenModal}>
+        <Button aria-label="Accessibility Options" variant="contained" onClick={handleOpenModal}>
             Accessibility Options
         </Button>
         <Modal className={styles.centerScreen} open={isModalOpen} onClose={handleCloseModal} disableScrollLock>
@@ -117,12 +117,14 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = () => {
                 <div className={styles.accessibilityButtons}>
                 <p>Magnification</p>
                 <Button
+                aria-label="Show Magnifier"
                 variant="contained"
                 onClick={handleShowMagnifier}
                 >
                     Show Magnifier
                 </Button>
                 <Button
+                aria-label="Hide Magnifier"
                 variant="contained"
                 onClick={handleHideMagnifier}
                 >
@@ -131,6 +133,7 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = () => {
                 <p>Font Size</p>
                 <Button
                 variant="contained"
+                aria-label="Small Font"
                 style={{ backgroundColor: fontSize === 'small' ? '#1976D2' : 'black' }}
                 onClick={() => handleFontSizeChange('small')}
                 >
@@ -138,6 +141,7 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = () => {
                 </Button>
                 <Button
                 variant="contained"
+                aria-label="Medium Font"
                 style={{ backgroundColor: fontSize === 'medium' ? '#1976D2' : 'black' }}
                 onClick={() => handleFontSizeChange('medium')}
                 >
@@ -145,6 +149,7 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = () => {
                 </Button>
                 <Button
                 variant="contained"
+                aria-label="Large Font"
                 style={{ backgroundColor: fontSize === 'large' ? '#1976D2' : 'black' }}
                 onClick={() => handleFontSizeChange('large')}
                 >
@@ -154,6 +159,7 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = () => {
                 <p>Color Inversion</p>
                 <Button
                 variant="contained"
+                aria-label = {isInverted ? 'Invert Color Toggle: On' : 'Invert Color Toggle: Off'}
                 style={{ backgroundColor: isInverted ? '#1976D2' : 'black' }}
                 onClick={handleInvertChange}
                 >
@@ -165,8 +171,9 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = () => {
                     <Button
                         variant="contained"
                         style={{
-                        backgroundColor: contrast === 50 ? '#1976D2' : 'black',
+                            backgroundColor: contrast === 50 ? '#1976D2' : 'black',
                         }}
+                        aria-label = "Contrast 50"
                         onClick={() => handleContrastPreset(50)}
                     >
                         50
@@ -176,6 +183,7 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = () => {
                         style={{
                         backgroundColor: contrast === 100 ? '#1976D2' : 'black',
                         }}
+                        aria-label = "Contrast 100"
                         onClick={() => handleContrastPreset(100)}
                     >
                         100
@@ -185,6 +193,7 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = () => {
                         style={{
                         backgroundColor: contrast === 150 ? '#1976D2' : 'black',
                         }}
+                        aria-label = "Contrast 150"
                         onClick={() => handleContrastPreset(150)}
                     >
                         150
@@ -194,6 +203,7 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = () => {
                         style={{
                         backgroundColor: contrast === 200 ? '#1976D2' : 'black',
                         }}
+                        aria-label = "Contrast 200"
                         onClick={() => handleContrastPreset(200)}
                     >
                         200
@@ -207,11 +217,11 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = () => {
                 min={50}
                 max={200}
                 />
-                <Button variant="contained" onClick={handleResetToDefault}>
+                <Button aria-label="Reset to Defeault" variant="contained" onClick={handleResetToDefault}>
                 Reset to Default
                 </Button>
             </div>
-            <Button variant="contained" onClick={handleCloseModal}>
+            <Button aria-label="Close Modal" variant="contained" onClick={handleCloseModal}>
                 Close Modal
             </Button>
             </Paper>
