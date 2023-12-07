@@ -18,6 +18,8 @@
 .modalContent {
     position: absolute;
     width: 70%;
+    max-height: 90%;
+    overflow: auto;
     padding: 20px;
     background-color: #FFFFED !important;
     border: 1px solid #ddd;

@@ -2,6 +2,7 @@
 
 .navbar {
     background-color: black !important;
+    overflow: auto;
 }
 
 .navWidgets {
