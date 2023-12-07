@@ -135,6 +135,12 @@ export default function Home() {
             body: JSON.stringify({supply: selectedItem.supply, newsupply: editedItem.supply}),
         });
 
+        if(editMin.status == 500 || editStock.status == 500 || editName.status == 500) {
+            alert('Error: One or more of the fields was invalid.');
+        } else {
+            alert('Successfully edited item.');
+        }
+
         setOpenModal(false);
         fetchInventory();
     }

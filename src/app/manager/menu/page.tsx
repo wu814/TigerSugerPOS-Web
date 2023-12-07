@@ -213,6 +213,13 @@ export default function Home() {
             },
             body: JSON.stringify({drink: selectedItem.drink_name, image: editedItem.image_url}),
         });
+
+        if(editIngredients.status == 500 || editPrice.status == 500 || editType.status == 500 || editDescription.status == 500 || editName.status == 500 || editImage.status == 500) {
+            alert('One or more of the fields was invalid.');
+        }
+        else {
+            alert('Item edited successfully');
+        }
         
         // Close the modal after saving
         setOpenModal(false);
