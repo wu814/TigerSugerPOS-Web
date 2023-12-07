@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './page.module.css';
 import Navbar from '../../../components/Navbar';
+import { Button } from '@mui/material';
 import Link from 'next/link';
 
 export default function Home() {
@@ -42,7 +43,7 @@ export default function Home() {
                 {loading && <p>Loading...</p>}
 
                 {!loading &&
-                    <button aria-label="Refresh" className={styles.refreshButton} onClick={fetchRestockReport}> Refresh </button>
+                    <Button variant='contained' aria-label="Refresh" className={styles.refreshButton} onClick={fetchRestockReport}> Refresh Table </Button>
                 }
 
                 {!loading && (
