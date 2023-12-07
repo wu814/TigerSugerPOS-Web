@@ -5,9 +5,10 @@
 }
 
 .navWidgets {
-    background-color: black !important;
     display: flex;
-    justify-content: flex-end;
+    align-items: flex-end;
+    width: 100%;
+    flex-direction: column;
 }
 
 .navList {

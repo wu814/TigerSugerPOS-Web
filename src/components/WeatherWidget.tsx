@@ -48,7 +48,7 @@ const WeatherWidget: React.FC = () => {
 
     return (
         <div>
-            <Button aria-label="View Weather" variant='contained' onClick={handleOpen}>View Weather🌤️</Button>
+            <Button aria-label="View Weather" variant='contained' style={{backgroundColor: "#C51D34", margin: "10px"}} onClick={handleOpen}>View Weather🌤️</Button>
             <Dialog open={open} onClose={handleClose}>
             <DialogContent>
                 {loading ? (

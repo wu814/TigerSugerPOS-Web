@@ -20,7 +20,6 @@ export default async function RootLayout({
     <html lang="en">
       <body className="baseFont">
         <SessionProvider session={session}>
-            <GoogleTranslateWrapper />
             <Navbar/>
             {children}
         </SessionProvider>

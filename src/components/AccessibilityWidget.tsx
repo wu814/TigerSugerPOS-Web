@@ -108,7 +108,7 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = () => {
 
         return (
             <div className={styles.accessibilityWidget}>
-        <Button aria-label="Accessibility Options" variant="contained" onClick={handleOpenModal}>
+        <Button aria-label="Accessibility Options" variant="contained" style={{backgroundColor: "#497E76", margin: "10px"}} onClick={handleOpenModal}>
             Accessibility Options
         </Button>
         <Modal className={styles.centerScreen} open={isModalOpen} onClose={handleCloseModal} disableScrollLock>
