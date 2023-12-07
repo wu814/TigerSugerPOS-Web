@@ -326,7 +326,7 @@ export default function Home() {
                             label="Drink Price"
                             value={editedItem.price}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEditChange(e)}
-                            name="drink_price"
+                            name="price"
                             className={styles.textField}
                         />
                         </div>
